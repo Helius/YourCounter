@@ -14,6 +14,7 @@ private slots:
     void test_set_scale();
     void test_check_column_count();
     void test_isSame_week();
+    void test_isSame_month();
 private:
     std::unique_ptr<DateColumnAdapter> adapter;
 };
@@ -65,7 +66,19 @@ void test_DateColumnAdapter::test_isSame_week()
 {
     QTEST_ASSERT(adapter);
     adapter->setScale(DateColumnAdapter::TimeScale::Week);
-    QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,3), QTime())));
+    QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,4), QTime())));
+    QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,9), QTime())));
+    QVERIFY(adapter->isSame(1, QDateTime(QDate(2021,1,11), QTime())));
+}
+
+void test_DateColumnAdapter::test_isSame_month()
+{
+    QTEST_ASSERT(adapter);
+    adapter->setScale(DateColumnAdapter::TimeScale::Month);
+    QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,4), QTime())));
+    QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,31), QTime())));
+    QVERIFY(adapter->isSame(1, QDateTime(QDate(2021,2,1), QTime())));
+
 }
 
 

@@ -26,7 +26,7 @@ private:
     QDateTime colToDate(int column);
 
 private:
-    TimeScale m_scale = TimeScale::Day;
+    TimeScale m_scale = TimeScale::Month;
     int m_year = 2021; //TODO
 };
 

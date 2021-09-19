@@ -14,16 +14,13 @@ bool DateColumnAdapter::isSame(int column, const QDateTime & dateTime)
 {
     switch (m_scale) {
     case TimeScale::Month:
-        return QDateTime::currentDateTime().date().month() == colToDate(column).date().month();
-        break;
+        return dateTime.date().month() - 1 == column;
 
     case TimeScale::Week:
-        return QDateTime::currentDateTime().date().weekNumber() == colToDate(column).date().weekNumber();
-        break;
+        return dateTime.date().weekNumber() - 1 == column;
 
     case TimeScale::Day:
         return dateTime.daysTo(colToDate(column)) == 0;
-        break;
     }
 
     return false;
