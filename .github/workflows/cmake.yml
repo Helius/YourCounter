@@ -23,14 +23,12 @@ jobs:
     - uses: jurplel/install-qt-action@v2
       with:
         version: '5.15.2'
-        host: 'ubuntu'
+        host: 'linux'
         target: 'desktop'
         arch: 'gcc_64'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
-        cached: 'true'
-        setup-python: 'true'
-        set-env: 'false'
+        cached: 'false'
         tools-only: 'false'
         aqtversion: '==1.2.5'
         py7zrversion: '==0.16.1'
