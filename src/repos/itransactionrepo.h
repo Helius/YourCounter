@@ -2,7 +2,7 @@
 #define ITRANSACTIONREPO_H
 
 #include <QObject>
-#include <src/entities/transaction.h>
+#include <entities/transaction.h>
 
 using Categories = std::vector<QString>;
 

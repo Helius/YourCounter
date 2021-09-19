@@ -2,8 +2,8 @@
 #include <QColor>
 #include <QDebug>
 
-#include <src/repos/itransactionrepo.h>
-#include <src/repos/idatecolumnadapter.h>
+#include <repos/itransactionrepo.h>
+#include <repos/idatecolumnadapter.h>
 
 
 TimeLineTableModel::TimeLineTableModel(ITransactionRepo * repo, IDateColumnAdapter * m_dateAdapter, QObject * parent)

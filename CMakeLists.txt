@@ -33,6 +33,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
 
 set(TS_FILES src/YourCounter_prg_001.ts)
 
+add_subdirectory(src)
+
 if(ANDROID)
     add_library(YourCounter SHARED
       main.cpp
@@ -41,14 +43,6 @@ if(ANDROID)
     )
 else()
     add_executable(YourCounter
-      src/main.cpp
-      src/Theme.cpp
-      src/timelinetablemodel.cpp
-      src/repos/transactionrepo.cpp
-      src/repos/itransactionrepo.cpp
-      src/repos/idatecolumnadapter.h
-      src/repos/datecolumnadapter.cpp
-      src/entities/transaction.cpp
       qml.qrc
       ${TS_FILES}
     )
@@ -57,8 +51,7 @@ endif()
 target_compile_definitions(YourCounter
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(YourCounter
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
-
+  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick src)
 #add_executable(mytest
 #    tests/test_one.cpp)
 

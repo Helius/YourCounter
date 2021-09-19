@@ -5,8 +5,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <src/entities/transaction.h>
-#include <src/repos/idatecolumnadapter.h>
+#include <entities/transaction.h>
+#include <repos/idatecolumnadapter.h>
 
 
 Transaction fromJson(const QJsonObject & obj)

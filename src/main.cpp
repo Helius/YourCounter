@@ -1,9 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <src/Theme.h>
-#include <src/timelinetablemodel.h>
-#include <src/repos/transactionrepo.h>
-#include <src/repos/datecolumnadapter.h>
+#include <Theme.h>
+#include <timelinetablemodel.h>
+#include <repos/transactionrepo.h>
+#include <repos/datecolumnadapter.h>
 
 int main(int argc, char *argv[])
 {
