@@ -35,7 +35,6 @@ test_DateColumnAdapter::~test_DateColumnAdapter()
 void test_DateColumnAdapter::test_init_state()
 {
     QTEST_ASSERT(adapter);
-    QCOMPARE(adapter->scale(), DateColumnAdapter::TimeScale::Day);
 }
 
 void test_DateColumnAdapter::test_set_scale()
