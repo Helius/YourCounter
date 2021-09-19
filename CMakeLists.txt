@@ -52,8 +52,3 @@ target_compile_definitions(YourCounter
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(YourCounter
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick src)
-#add_executable(mytest
-#    tests/test_one.cpp)
-
-#add_test(NAME mytest COMMAND mytest)
-#target_link_libraries(mytest PRIVATE Qt6::Test)
