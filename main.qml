@@ -44,8 +44,8 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 anchors.top: hHeader.bottom
                 anchors.left: vHeader.right
-                rowSpacing: 2
-                columnSpacing: 2
+                rowSpacing: 1
+                columnSpacing: 1
                 model: Models.TimeTable
                 columnWidthProvider: Models.TimeTable.getColumnWidth
 

@@ -1,20 +1,13 @@
 #include "transactionrepo.h"
 #include <set>
 #include <QString>
-#include <entities/transaction.h>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <src/entities/transaction.h>
+#include <src/repos/idatecolumnadapter.h>
 
-namespace  {
-
-QDateTime colToDateTime(int ind)
-{
-    return QDateTime(QDate(2021, 1, 1), QTime(0,0,0)).addDays(ind);
-}
-
-}
 
 Transaction fromJson(const QJsonObject & obj)
 {
@@ -59,10 +52,12 @@ void fillTransactions(Transactions & transactions) {
     });
 }
 
-
-TransactionRepo::TransactionRepo(QObject *parent)
+TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, QObject *parent)
     : ITransactionRepo(parent)
+    , m_dateAdapter(dateAdapter)
 {
+    Q_ASSERT(dateAdapter);
+
     fillTransactions(m_transactions);
 
     std::set<QString> categoriesSet;
@@ -76,36 +71,39 @@ TransactionRepo::TransactionRepo(QObject *parent)
     }
 }
 
-bool TransactionRepo::hasDailyAmount(int dayNumber)
+
+bool TransactionRepo::hasColumnAmount(int column)
 {
     for(const auto & t : m_transactions)
     {
-        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
+        if(m_dateAdapter->isSame(column, t.when)) {
+//        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
             return true;
         }
     }
     return false;
 }
 
-float TransactionRepo::dailyAmountOverAll(int dayNumber)
+float TransactionRepo::columnAmountOverAll(int column)
 {
     float amount = 0.0;
     for(const auto & t : m_transactions)
     {
-        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
+        if(m_dateAdapter->isSame(column, t.when)) {
+//        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
             amount += t.amount;
         }
     }
     return amount;
 }
 
-float TransactionRepo::calcAmount(int categoryInd, int dayNumber)
+float TransactionRepo::calcAmount(int categoryInd, int column)
 {
     std::vector<Transaction> daily;
     const auto & cat = m_categories[categoryInd];
     float amount = 0.0;
     for(const auto & t: m_transactions) {
-        if((t.category == cat) && (colToDateTime(dayNumber).daysTo(t.when) == 0)) {
+        if((t.category == cat) && m_dateAdapter->isSame(column, t.when)) {
             daily.push_back(t);
             amount += t.amount;
         }

@@ -8,6 +8,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -26,8 +27,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
+#find_package(Qt6Test REQUIRED)
 
-set(TS_FILES YourCounter_prg_001.ts)
+#enable_testing(true)
+
+set(TS_FILES src/YourCounter_prg_001.ts)
 
 if(ANDROID)
     add_library(YourCounter SHARED
@@ -37,12 +41,14 @@ if(ANDROID)
     )
 else()
     add_executable(YourCounter
-      main.cpp
-      Theme.cpp
-      timelinetablemodel.cpp
-      repos/transactionrepo.cpp
-      repos/itransactionrepo.cpp
-      entities/transaction.cpp
+      src/main.cpp
+      src/Theme.cpp
+      src/timelinetablemodel.cpp
+      src/repos/transactionrepo.cpp
+      src/repos/itransactionrepo.cpp
+      src/repos/idatecolumnadapter.h
+      src/repos/datecolumnadapter.cpp
+      src/entities/transaction.cpp
       qml.qrc
       ${TS_FILES}
     )
@@ -52,3 +58,9 @@ target_compile_definitions(YourCounter
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(YourCounter
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+
+#add_executable(mytest
+#    tests/test_one.cpp)
+
+#add_test(NAME mytest COMMAND mytest)
+#target_link_libraries(mytest PRIVATE Qt6::Test)

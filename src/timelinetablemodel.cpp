@@ -1,31 +1,25 @@
 #include "timelinetablemodel.h"
 #include <QColor>
-#include <QDateTime>
 #include <QDebug>
 
-#include <repos/itransactionrepo.h>
-
-namespace  {
-
-QDateTime colToDateTime(int ind)
-{
-    return QDateTime(QDate(2021, 1, 1), QTime(0,0,0)).addDays(ind);
-}
-
-}
+#include <src/repos/itransactionrepo.h>
+#include <src/repos/idatecolumnadapter.h>
 
 
-TimeLineTableModel::TimeLineTableModel(ITransactionRepo * repo, QObject * parent)
+TimeLineTableModel::TimeLineTableModel(ITransactionRepo * repo, IDateColumnAdapter * m_dateAdapter, QObject * parent)
     : QAbstractListModel(parent)
     , m_repo(repo)
+    , m_dateAdapter(m_dateAdapter)
 {
+    Q_ASSERT(repo);
+    Q_ASSERT(m_dateAdapter);
 }
 
 int TimeLineTableModel::getColumnWidth(int column)
 {
-    if (colToDateTime(column).daysTo(QDateTime::currentDateTime()) == 0)
+    if(m_dateAdapter->isCurrent(column))
         return -1;
-    return m_repo->hasDailyAmount(column) ? -1 : 0;
+    return m_repo->hasColumnAmount(column) ? -1 : 0;
 }
 
 int TimeLineTableModel::rowCount(const QModelIndex & ) const
@@ -35,7 +29,7 @@ int TimeLineTableModel::rowCount(const QModelIndex & ) const
 
 int TimeLineTableModel::columnCount(const QModelIndex &) const
 {
-    return 365;
+    return m_dateAdapter->columnCount();
 }
 
 QVariant TimeLineTableModel::data(const QModelIndex & ind, int role) const
@@ -62,7 +56,7 @@ QVariant TimeLineTableModel::data(const QModelIndex & ind, int role) const
     case Roles::Amount:
         return calcAmount(row, col);
     case Roles::Current:
-        return colToDateTime(col).daysTo(QDateTime::currentDateTime()) == 0;
+        return m_dateAdapter->isCurrent(col);
     }
 
 
@@ -78,7 +72,7 @@ QHash<int, QByteArray> TimeLineTableModel::roleNames() const
     };
 }
 
-QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation, int /*role*/) const
 {
     if(orientation == Qt::Orientation::Vertical)
     {
@@ -88,7 +82,7 @@ QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation
     }
     else
     {
-        return colToDateTime(section).toString("dd MMM");
+        return m_dateAdapter->columnName(section);
     }
     return QVariant();
 }
