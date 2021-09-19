@@ -82,4 +82,5 @@ int DateColumnAdapter::columnCount()
     case TimeScale::Day:
         return 365;
     }
+    return 0;
 }
