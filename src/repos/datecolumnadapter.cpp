@@ -46,7 +46,6 @@ QDateTime DateColumnAdapter::colToDate(int column)
         return QDateTime(QDate(m_year, 1, 1), QTime(0,0,0)).addDays(column);
         break;
     }
-    qCritical() << "Unsupported time scale:" << static_cast<int>(m_scale);
     return QDateTime();
 }
 
@@ -70,6 +69,7 @@ QString DateColumnAdapter::columnName(int column)
     case TimeScale::Day:
         return date.toString("dd MMM");
     }
+    return QString();
 }
 
 int DateColumnAdapter::columnCount()

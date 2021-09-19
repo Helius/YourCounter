@@ -33,6 +33,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
 
 set(TS_FILES src/YourCounter_prg_001.ts)
 
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
 add_subdirectory(src)
 
 if(ANDROID)
