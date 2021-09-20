@@ -21,5 +21,5 @@ add_subdirectory(.. src)
 add_executable(test_unit test_datecolumnadapter.cpp)
 add_test(NAME test_unit COMMAND test_unit)
 
-target_link_libraries(test_unit PRIVATE Test src)
+target_link_libraries(test_unit PRIVATE Qt::Test src)
 
