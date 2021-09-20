@@ -12,13 +12,20 @@ add_library(src
         Theme.h
         timelinetablemodel.cpp
         timelinetablemodel.h
+        entities/transaction.cpp
         repos/transactionrepo.cpp
         repos/itransactionrepo.cpp
         repos/idatecolumnadapter.h
         repos/datecolumnadapter.h
         repos/datecolumnadapter.cpp
-        entities/transaction.cpp
+        repos/itransactionprovider.h
+        repos/itransactionprovider.cpp
+        repos/transactionproviderfromfile.h
+        repos/transactionproviderfromfile.cpp
+        repos/transactionjsonmapper.h
+        repos/transactionjsonmapper.cpp
         )
+
 target_include_directories(src
           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
           )

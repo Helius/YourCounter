@@ -1,5 +1,6 @@
 #include <QtTest>
 #include "../src/repos/datecolumnadapter.h"
+#include "../src/repos/transactionrepo.h"
 
 class test_DateColumnAdapter : public QObject
 {
@@ -17,6 +18,7 @@ private slots:
     void test_isSame_month();
 private:
     std::unique_ptr<DateColumnAdapter> adapter;
+    std::unique_ptr<TransactionRepo> repo;
 };
 
 
@@ -25,6 +27,8 @@ private:
 test_DateColumnAdapter::test_DateColumnAdapter()
 {
     adapter = std::make_unique<DateColumnAdapter>();
+    //TODO: split it to different test files http://qtcreator.blogspot.com/2009/10/running-multiple-unit-tests.html
+//    repo = std::make_unique<TransactionRepo>(adapter.get());
 }
 
 test_DateColumnAdapter::~test_DateColumnAdapter()
@@ -35,6 +39,7 @@ test_DateColumnAdapter::~test_DateColumnAdapter()
 void test_DateColumnAdapter::test_init_state()
 {
     QTEST_ASSERT(adapter);
+//    QTEST_ASSERT(repo);
 }
 
 void test_DateColumnAdapter::test_set_scale()

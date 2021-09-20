@@ -3,14 +3,16 @@
 
 #include <QObject>
 #include "itransactionrepo.h"
+#include "itransactionprovider.h"
 
 class IDateColumnAdapter;
+class ITransactionProvider;
 
 class TransactionRepo : public ITransactionRepo
 {
     Q_OBJECT
 public:
-    explicit TransactionRepo(IDateColumnAdapter * dateAdapter, QObject *parent = nullptr);
+    explicit TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionProvider * provider,  QObject *parent = nullptr);
 
     // ITransactionRepo interface
 public:
@@ -23,6 +25,7 @@ private:
     std::vector<Transaction> m_transactions;
     std::vector<QString> m_categories;
     IDateColumnAdapter * m_dateAdapter;
+    ITransactionProvider * m_provider;
 };
 
 #endif // TRANSACTIONREPO_H

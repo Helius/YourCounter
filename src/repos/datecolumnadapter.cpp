@@ -65,7 +65,7 @@ QString DateColumnAdapter::columnName(int column)
     case TimeScale::Month:
         return date.toString("MMM");
     case TimeScale::Week:
-        return date.toString("dd MM");
+        return date.toString("d MMM");
     case TimeScale::Day:
         return date.toString("dd MMM");
     }

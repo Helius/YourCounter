@@ -4,6 +4,7 @@
 #include <timelinetablemodel.h>
 #include <repos/transactionrepo.h>
 #include <repos/datecolumnadapter.h>
+#include <repos/transactionproviderfromfile.h>
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +16,8 @@ int main(int argc, char *argv[])
 
 
     auto * dateColumnAdapter = new DateColumnAdapter(&engine);
-    auto * transactRepo = new TransactionRepo(dateColumnAdapter, &engine);
+    auto * transactionProvider = new TransactionProviderFromFile("/home/eugene/project/YourCounter/test/testdata/transactions.json", &engine);
+    auto * transactRepo = new TransactionRepo(dateColumnAdapter, transactionProvider, &engine);
 
 
     qmlRegisterSingletonType<Theme>("Ui", 1, 0, "Theme", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {

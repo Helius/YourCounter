@@ -7,30 +7,9 @@
 #include <QJsonArray>
 #include <entities/transaction.h>
 #include <repos/idatecolumnadapter.h>
+#include <repos/transactionjsonmapper.h>
 
-
-Transaction fromJson(const QJsonObject & obj)
-{
-    float amount = obj.value("amount").toDouble(0);
-    QString category = obj.value("category").toString();
-    if(category.isEmpty())
-    {
-        category = "Без категории";
-    }
-    QString comment = obj.value("comment").toString();
-    QDateTime when = QDateTime::fromString(obj.value("when").toString(), Qt::DateFormat::ISODate);
-    return Transaction(category, amount, when, comment);
-}
-
-QJsonObject toJson(const Transaction & transaction)
-{
-    return {
-        {"amount", transaction.amount},
-        {"category", transaction.category},
-        {"comment", transaction.coment},
-        {"when", transaction.when.toString(Qt::DateFormat::ISODate)}
-    };
-}
+using namespace TransactionJsonMapper;
 
 void fillTransactions(Transactions & transactions) {
 
@@ -52,9 +31,10 @@ void fillTransactions(Transactions & transactions) {
     });
 }
 
-TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, QObject *parent)
+TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionProvider * provider, QObject *parent)
     : ITransactionRepo(parent)
     , m_dateAdapter(dateAdapter)
+    , m_provider(provider)
 {
     Q_ASSERT(dateAdapter);
 
@@ -77,7 +57,6 @@ bool TransactionRepo::hasColumnAmount(int column)
     for(const auto & t : m_transactions)
     {
         if(m_dateAdapter->isSame(column, t.when)) {
-//        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
             return true;
         }
     }
@@ -90,7 +69,6 @@ float TransactionRepo::columnAmountOverAll(int column)
     for(const auto & t : m_transactions)
     {
         if(m_dateAdapter->isSame(column, t.when)) {
-//        if(colToDateTime(dayNumber).daysTo(t.when) == 0) {
             amount += t.amount;
         }
     }
