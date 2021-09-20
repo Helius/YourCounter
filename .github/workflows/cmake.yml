@@ -31,13 +31,13 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: '5.15.2'
         host: 'linux'
         target: 'desktop'
         arch: 'gcc_64'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
-        cached: 'false'
         tools-only: 'false'
         aqtversion: '==1.2.5'
         py7zrversion: '==0.16.1'
