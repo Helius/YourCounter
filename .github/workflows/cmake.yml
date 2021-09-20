@@ -37,7 +37,7 @@ jobs:
         arch: 'gcc_64'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
-        cached: 'true'
+        cached: 'false'
         tools-only: 'false'
         aqtversion: '==1.2.5'
         py7zrversion: '==0.16.1'
