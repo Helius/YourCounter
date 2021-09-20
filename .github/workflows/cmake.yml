@@ -21,22 +21,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v1
-      with:
-        path: ../Qt
-        key: ${{ runner.os }}-QtCache
+    #- name: Cache Qt
+      #id: cache-qt
+      #uses: actions/cache@v1
+      #with:
+        #path: ../Qt
+        #key: ${{ runner.os }}-QtCache
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        #cached: ${{ steps.cache-qt.outputs.cache-hit }}
         version: '5.15.2'
         host: 'linux'
         target: 'desktop'
         arch: 'gcc_64'
-        dir: '${{ github.workspace }}/example/'
+        dir: '${{ github.workspace }}/app'
         install-deps: 'true'
         tools-only: 'false'
         aqtversion: '==1.2.5'
