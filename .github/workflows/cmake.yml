@@ -32,11 +32,11 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         #cached: ${{ steps.cache-qt.outputs.cache-hit }}
-        version: '5.15.2'
+        version: '6.1.3'
         host: 'linux'
         target: 'desktop'
         arch: 'gcc_64'
-        dir: '${{ github.workspace }}/app'
+        #dir: '${{ github.workspace }}/app'
         install-deps: 'true'
         tools-only: 'false'
         aqtversion: '==1.2.5'
