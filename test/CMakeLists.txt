@@ -5,7 +5,8 @@ project(test_unit LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6Test REQUIRED)
+find_package(QT NAMES Qt6 Qt5 CPOMPONENTS Core Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
