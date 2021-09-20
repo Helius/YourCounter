@@ -16,7 +16,6 @@ public:
 public:
     bool isCurrent(int column) override;
     bool isSame(int column, const QDateTime &dateTime) override;
-    int dateToColumn(const QDateTime &dateTime) override;
     void setScale(TimeScale scale) override;
     TimeScale scale() override { return m_scale; }
     QString columnName(int column) override;

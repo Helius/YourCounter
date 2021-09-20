@@ -13,6 +13,10 @@ TimeLineTableModel::TimeLineTableModel(ITransactionRepo * repo, IDateColumnAdapt
 {
     Q_ASSERT(repo);
     Q_ASSERT(m_dateAdapter);
+    connect(m_repo, &ITransactionRepo::dataChanged, this, [this](){
+        emit beginResetModel();
+        emit endResetModel();
+    });
 }
 
 int TimeLineTableModel::getColumnWidth(int column)

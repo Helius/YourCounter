@@ -18,7 +18,6 @@ public:
 public:
     virtual bool isCurrent(int column) = 0;
     virtual bool isSame(int column, const QDateTime & dateTime) = 0;
-    virtual int dateToColumn(const QDateTime & dateTime) = 0;
     virtual QString columnName(int column) = 0;
     virtual int columnCount() = 0;
     virtual void setScale(TimeScale scale) = 0;

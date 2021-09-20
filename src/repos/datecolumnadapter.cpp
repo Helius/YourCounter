@@ -26,11 +26,6 @@ bool DateColumnAdapter::isSame(int column, const QDateTime & dateTime)
     return false;
 }
 
-int DateColumnAdapter::dateToColumn(const QDateTime &)
-{
-    return 0;
-}
-
 QDateTime DateColumnAdapter::colToDate(int column)
 {
     switch (m_scale) {

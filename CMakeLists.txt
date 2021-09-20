@@ -27,7 +27,12 @@ add_executable(YourCounter
         ${TS_FILES}
         )
 
-add_executable(tests test/test_datecolumnadapter.cpp)
+add_executable(tests 
+	test/test_main.cpp 
+	test/AutoTest.h
+	test/test_datecolumnadapter.cpp 
+	test/test_transactionrepo.cpp
+	)
 
 target_link_libraries(tests src Qt::Test)
 

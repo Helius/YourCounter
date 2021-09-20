@@ -11,25 +11,22 @@
 
 using namespace TransactionJsonMapper;
 
-void fillTransactions(Transactions & transactions) {
+//void fillTransactions(Transactions & transactions) {
 
-    QFile f("/home/eugene/project/YourCounter/testdata/transactions.json");
-    f.open(QFile::ReadOnly | QFile::Text);
-    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
-    f.close();
+//    QFile f("/home/eugene/project/YourCounter/testdata/transactions.json");
+//    f.open(QFile::ReadOnly | QFile::Text);
+//    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
+//    f.close();
 
-    QJsonObject obj = doc.object();
+//    QJsonObject obj = doc.object();
 
-    QJsonArray tarr = obj.value("transactions").toArray();
-    for (const auto & t : tarr)
-    {
-        transactions.push_back(fromJson(t.toObject()));
-    }
+//    QJsonArray tarr = obj.value("transactions").toArray();
+//    for (const auto & t : tarr)
+//    {
+//        transactions.push_back(fromJson(t.toObject()));
+//    }
 
-    std::sort(transactions.begin(), transactions.end(), [](const auto & a, const auto & b){
-        return a.when < b.when;
-    });
-}
+//}
 
 TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionProvider * provider, QObject *parent)
     : ITransactionRepo(parent)
@@ -38,17 +35,26 @@ TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionP
 {
     Q_ASSERT(dateAdapter);
 
-    fillTransactions(m_transactions);
+    connect(provider, &ITransactionProvider::transactionReady, this, [this](const Transactions & transactions ){
+        std::set<QString> categoriesSet;
+        m_transactions = std::move(transactions);
+        for(const auto & t: m_transactions)
+        {
+            categoriesSet.insert(t.category);
+        }
+        m_categories.reserve(categoriesSet.size());
+        for(const auto & c: categoriesSet)
+        {
+            m_categories.push_back(c);
+        }
+        //Do we really need that?
+        std::sort(m_transactions.begin(), m_transactions.end(), [](const auto & a, const auto & b){
+            return a.when < b.when;
+        });
+        emit dataChanged();
+    });
+    provider->loadTransactions();
 
-    std::set<QString> categoriesSet;
-    for(const auto & t: m_transactions)
-    {
-        categoriesSet.insert(t.category);
-    }
-    m_categories.reserve(categoriesSet.size());
-    for(const auto & c: categoriesSet) {
-        m_categories.push_back(c);
-    }
 }
 
 

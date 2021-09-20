@@ -15,7 +15,7 @@ TransactionProviderFromFile::TransactionProviderFromFile(const QString &filePath
 void TransactionProviderFromFile::loadTransactions()
 {
     using namespace TransactionJsonMapper;
-    Q_ASSERT(m_filePath.isEmpty());
+    Q_ASSERT(!m_filePath.isEmpty());
 
     QFile f(m_filePath);
     f.open(QFile::ReadOnly | QFile::Text);
