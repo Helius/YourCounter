@@ -40,14 +40,26 @@ void test_DateColumnAdapter::test_init_state()
 void test_DateColumnAdapter::test_set_scale()
 {
     QTEST_ASSERT(adapter);
+    adapter->setScale(DateColumnAdapter::TimeScale::Day);
+
+    QSignalSpy spy(adapter.get(), &DateColumnAdapter::scaleChanged);
+
+    QCOMPARE(adapter->scale(), DateColumnAdapter::TimeScale::Day);
+    QCOMPARE(spy.count(), 0);
+
     adapter->setScale(DateColumnAdapter::TimeScale::Month);
     QCOMPARE(adapter->scale(), DateColumnAdapter::TimeScale::Month);
+    QCOMPARE(spy.count(), 1);
+    spy.clear();
 
     adapter->setScale(DateColumnAdapter::TimeScale::Week);
     QCOMPARE(adapter->scale(), DateColumnAdapter::TimeScale::Week);
+    QCOMPARE(spy.count(), 1);
+    spy.clear();
 
     adapter->setScale(DateColumnAdapter::TimeScale::Day);
     QCOMPARE(adapter->scale(), DateColumnAdapter::TimeScale::Day);
+    QCOMPARE(spy.count(), 1);
 }
 
 void test_DateColumnAdapter::test_check_column_count()
