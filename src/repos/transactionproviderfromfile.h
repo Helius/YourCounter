@@ -8,7 +8,8 @@ class TransactionProviderFromFile : public ITransactionProvider
 {
     Q_OBJECT
 public:
-    TransactionProviderFromFile(const QString & filePath, QObject * parent = nullptr);
+    TransactionProviderFromFile(const QString & filePath);
+    ~TransactionProviderFromFile() override;
 
     // ITransactionProvider interface
 public:

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <entities/transaction.h>
 
+
 class ITransactionProvider : public QObject
 {
         Q_OBJECT
@@ -18,5 +19,7 @@ public:
         using QObject::QObject;
 
 };
+
+using ITransactionProviderUnq = std::unique_ptr<ITransactionProvider>;
 
 #endif // ITRANSACTIONPROVIDER_H

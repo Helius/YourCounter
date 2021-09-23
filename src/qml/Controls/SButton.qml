@@ -3,8 +3,6 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
-import Models 1.0 as Models
-
 Rectangle {
     id: root
     property alias text: label.text
@@ -14,9 +12,15 @@ Rectangle {
 
     implicitHeight: 30
     implicitWidth: 70
+
+    color: selected ? Material.highlightedButtonColor : Material.dialogColor
+
+    radius: 5
+
     Text {
         id: label
         anchors.fill: parent
+        color: "white"
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.bold: selected

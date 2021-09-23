@@ -10,7 +10,7 @@ class DateColumnAdapter
     Q_OBJECT
 
 public:
-    DateColumnAdapter(QObject * parent = nullptr);
+    DateColumnAdapter();
 
     // IDateColumnAdapter interface
 public:

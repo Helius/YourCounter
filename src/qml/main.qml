@@ -2,15 +2,12 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
-
+import presenters
+import injector
 import Models 1.0 as Models
+import "Controls"
 
 ApplicationWindow {
-    visibility: "Maximized"
-    visible: true
-    title: qsTr("Your Counter")
-    Material.theme: Material.Dark
-
     //    menuBar: MenuBar {
     //        Menu {
     //            title: qsTr("Menu")
@@ -23,23 +20,35 @@ ApplicationWindow {
     //        }
     //    }
 
+    visibility: "Maximized"
+    visible: true
+    title: qsTr("Your Counter")
+    Material.theme: Material.Dark
+
     Component {
-        id: mainComponent
-        Item {
+    id: mainComponent
+
+         Item {
+
             HorizontalHeaderView {
                 id: hHeader
+
                 anchors.left: vHeader.right
                 width: tableView.width
                 syncView: tableView
             }
+
             VerticalHeaderView {
                 id: vHeader
-                anchors.top:tableView.top
+
+                anchors.top: tableView.top
                 height: tableView.height
                 syncView: tableView
             }
+
             TableView {
                 id: tableView
+
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.top: hHeader.bottom
@@ -48,7 +57,6 @@ ApplicationWindow {
                 columnSpacing: 1
                 model: Models.TimeTable
                 columnWidthProvider: Models.TimeTable.getColumnWidth
-
 
                 ScrollBar.vertical: ScrollBar {
                     visible: true
@@ -59,21 +67,27 @@ ApplicationWindow {
                     background: model.color
                     current: model.isCurrent
                 }
+
             }
+
         }
+
+
     }
 
     Timer {
         id: timer
+
         interval: 300
-        onTriggered: {
-            mainStack.push(mainComponent)
-        }
         Component.onCompleted: timer.running = true
+        onTriggered: {
+            mainStack.push(mainComponent);
+        }
     }
 
     StackView {
         id: mainStack
+
         anchors.fill: parent
 
         initialItem: Item {
@@ -89,20 +103,11 @@ ApplicationWindow {
     header: Rectangle {
         color: Material.backgroundDimColor
         height: buttonRow.height
-        Row {
+        width: parent.width
+
+        HeaderButtonRow {
             id: buttonRow
-            SButton {
-                text: "Year"
-            }
-            SButton {
-                text: "Month"
-            }
-            SButton {
-                text: "Week"
-            }
-            SButton {
-                text: "Days"
-            }
+            width: parent.width
         }
     }
 

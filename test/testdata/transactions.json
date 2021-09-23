@@ -49,6 +49,8 @@
         {"category": "ЗП", "amount":20000 , "when": "2021-11-01T15:46:29", "comment": ""},
         {"category": "ЗП", "amount":20000 , "when": "2021-11-17T15:46:29", "comment": ""},
         {"category": "ЗП", "amount":20000 , "when": "2021-12-01T15:46:29", "comment": ""},
-        {"category": "ЗП", "amount":20000 , "when": "2021-12-17T15:46:29", "comment": ""}
+        {"category": "ЗП", "amount":8000 , "when": "2021-08-08T15:46:29", "comment": "отпускные"},
+        {"category": "Интернет дом", "amount":-570 , "when": "2021-09-22T15:46:29", "comment": ""},
+        {"category": "Сигналка", "amount":-90 , "when": "2021-09-22T15:46:29", "comment": ""}
     ]
 }

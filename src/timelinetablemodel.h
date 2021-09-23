@@ -2,8 +2,8 @@
 #define TIMELINETABLEMODEL_H
 
 #include <QAbstractListModel>
+#include <repos/itransactionrepo.h>
 
-class ITransactionRepo;
 class IDateColumnAdapter;
 
 class TimeLineTableModel
@@ -19,10 +19,8 @@ class TimeLineTableModel
     };
 
 public:
-    TimeLineTableModel(
-            ITransactionRepo *repo,
-            IDateColumnAdapter * adapter,
-            QObject *parent = nullptr);
+    TimeLineTableModel(ITransactionRepoUnq repo,
+            std::shared_ptr<IDateColumnAdapter> adapter);
 
 public slots:
     int getColumnWidth(int column);
@@ -38,8 +36,8 @@ public:
 
 private:
     QString calcAmount(int row, int col) const;
-    ITransactionRepo * m_repo;
-    IDateColumnAdapter * m_dateAdapter;
+    ITransactionRepoUnq m_repo;
+    std::shared_ptr<IDateColumnAdapter> m_dateAdapter;
 
 };
 

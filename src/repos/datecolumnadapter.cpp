@@ -1,8 +1,8 @@
 #include "datecolumnadapter.h"
 #include <QDateTime>
 
-DateColumnAdapter::DateColumnAdapter(QObject * parent)
-    : IDateColumnAdapter(parent)
+DateColumnAdapter::DateColumnAdapter()
+//    : IDateColumnAdapter(parent)
 {}
 
 bool DateColumnAdapter::isCurrent(int column)

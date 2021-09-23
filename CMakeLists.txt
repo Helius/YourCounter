@@ -32,7 +32,7 @@ add_executable(tests
 	test/AutoTest.h
 	test/test_datecolumnadapter.cpp 
 	test/test_transactionrepo.cpp
-	)
+        )
 
 target_link_libraries(tests src Qt::Test)
 

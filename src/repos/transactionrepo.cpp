@@ -11,31 +11,17 @@
 
 using namespace TransactionJsonMapper;
 
-//void fillTransactions(Transactions & transactions) {
 
-//    QFile f("/home/eugene/project/YourCounter/testdata/transactions.json");
-//    f.open(QFile::ReadOnly | QFile::Text);
-//    QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
-//    f.close();
-
-//    QJsonObject obj = doc.object();
-
-//    QJsonArray tarr = obj.value("transactions").toArray();
-//    for (const auto & t : tarr)
-//    {
-//        transactions.push_back(fromJson(t.toObject()));
-//    }
-
-//}
-
-TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionProvider * provider, QObject *parent)
-    : ITransactionRepo(parent)
-    , m_dateAdapter(dateAdapter)
-    , m_provider(provider)
+TransactionRepo::TransactionRepo(std::shared_ptr<IDateColumnAdapter> dateAdapter, ITransactionProviderUnq provider)
+    : m_dateAdapter(dateAdapter)
+    , m_provider(std::move(provider))
 {
-    Q_ASSERT(dateAdapter);
+    Q_ASSERT(m_dateAdapter);
+    Q_ASSERT(m_provider);
 
-    connect(provider, &ITransactionProvider::transactionReady, this, [this](const Transactions & transactions ){
+    connect(m_dateAdapter.get(), &IDateColumnAdapter::scaleChanged, this, &TransactionRepo::dataChanged);
+
+    connect(m_provider.get(), &ITransactionProvider::transactionReady, this, [this](const Transactions & transactions ){
         std::set<QString> categoriesSet;
         m_transactions = std::move(transactions);
         for(const auto & t: m_transactions)
@@ -47,13 +33,23 @@ TransactionRepo::TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionP
         {
             m_categories.push_back(c);
         }
-        //Do we really need that?
+
+
+        const auto [min, max] = std::minmax_element(m_transactions.cbegin(), m_transactions.cend(), []
+                                             (const auto & a, const auto & b){
+                                                        return a.amount < b.amount;
+                                             });
+        m_min = min->amount;
+        m_max = max->amount;
+
+
         std::sort(m_transactions.begin(), m_transactions.end(), [](const auto & a, const auto & b){
             return a.when < b.when;
         });
+
         emit dataChanged();
     });
-    provider->loadTransactions();
+    m_provider->loadTransactions();
 
 }
 

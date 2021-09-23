@@ -79,6 +79,7 @@ void test_DateColumnAdapter::test_isSame_week()
     QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,4), QTime())));
     QVERIFY(adapter->isSame(0, QDateTime(QDate(2021,1,9), QTime())));
     QVERIFY(adapter->isSame(1, QDateTime(QDate(2021,1,11), QTime())));
+    QVERIFY(adapter->isSame(37, QDateTime(QDate(2021,9,21), QTime())));
 }
 
 void test_DateColumnAdapter::test_isSame_month()

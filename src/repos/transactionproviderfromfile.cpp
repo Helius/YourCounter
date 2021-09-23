@@ -6,10 +6,16 @@
 #include <repos/transactionjsonmapper.h>
 
 
-TransactionProviderFromFile::TransactionProviderFromFile(const QString &filePath, QObject * parent)
-    : ITransactionProvider(parent)
-    , m_filePath(filePath)
-{}
+TransactionProviderFromFile::TransactionProviderFromFile(const QString &filePath)
+    : m_filePath(filePath)
+{
+    qDebug() << "helius: transactionprovider CTOR";
+}
+
+TransactionProviderFromFile::~TransactionProviderFromFile()
+{
+    qDebug() << "helius: transactionprovider ~DTOR";
+}
 
 
 void TransactionProviderFromFile::loadTransactions()

@@ -1,21 +1,23 @@
 #include "timelinetablemodel.h"
 #include <QColor>
 #include <QDebug>
+#include <algorithm>
 
 #include <repos/itransactionrepo.h>
 #include <repos/idatecolumnadapter.h>
 
 
-TimeLineTableModel::TimeLineTableModel(ITransactionRepo * repo, IDateColumnAdapter * m_dateAdapter, QObject * parent)
-    : QAbstractListModel(parent)
-    , m_repo(repo)
-    , m_dateAdapter(m_dateAdapter)
+TimeLineTableModel::TimeLineTableModel(ITransactionRepoUnq repo, std::shared_ptr<IDateColumnAdapter> dateAdapter)
+    : QAbstractListModel()
+    , m_repo(std::move(repo))
+    , m_dateAdapter(dateAdapter)
 {
-    Q_ASSERT(repo);
+    Q_ASSERT(m_repo);
     Q_ASSERT(m_dateAdapter);
-    connect(m_repo, &ITransactionRepo::dataChanged, this, [this](){
-        emit beginResetModel();
-        emit endResetModel();
+    connect(m_repo.get(), &ITransactionRepo::dataChanged, this, [this](){
+        emit headerDataChanged(Qt::Orientation::Vertical, 0, rowCount({})-1);
+        emit headerDataChanged(Qt::Orientation::Horizontal, 0, columnCount({})-1);
+        emit layoutChanged();
     });
 }
 
@@ -51,10 +53,13 @@ QVariant TimeLineTableModel::data(const QModelIndex & ind, int role) const
         QColor spend(0xff, 0, 0);
         QColor earn(0, 0xff, 0);
         auto & resultColor = amount > 0 ? earn : spend;
-        resultColor.setAlpha((100 * abs(amount))/10000);
-//        if (colToDateTime(col).daysTo(QDateTime::currentDateTime()) == 0) {
-//            resultColor.setAlpha(resultColor.alpha()+30);
-//        }
+
+        resultColor.setAlpha(amount > 0
+                                 ? std::min(static_cast<int>(10+(100 * amount)/m_repo->max()), 100)
+                                 : std::min(static_cast<int>(10+(100 * amount)/m_repo->min()), 100));
+        if(amount == 0) {
+            resultColor.setAlpha(0);
+        }
         return resultColor;
     }
     case Roles::Amount:
@@ -62,7 +67,6 @@ QVariant TimeLineTableModel::data(const QModelIndex & ind, int role) const
     case Roles::Current:
         return m_dateAdapter->isCurrent(col);
     }
-
 
     return QVariant();
 }
@@ -78,6 +82,7 @@ QHash<int, QByteArray> TimeLineTableModel::roleNames() const
 
 QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation, int /*role*/) const
 {
+    emit
     if(orientation == Qt::Orientation::Vertical)
     {
         if(section < static_cast<int>(m_repo->getCategories().size())) {

@@ -7,7 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 add_library(src
+        qmlinjector/qmlinjector.h
+        qmlinjector/qmlinjector.cpp
+        qmlinjector/qmlinjectorbuilder.h
+        qmlinjector/iqmlobjectcreator.h
+        qmlinjector/iqmlobjectcreator.cpp
         main.cpp
+        di.hpp
         Theme.cpp
         Theme.h
         timelinetablemodel.cpp
@@ -24,6 +30,9 @@ add_library(src
         repos/transactionproviderfromfile.cpp
         repos/transactionjsonmapper.h
         repos/transactionjsonmapper.cpp
+        presenters/timescalebuttonpresenter.h
+        presenters/timescalebuttonpresenter.cpp
+
         )
 
 target_include_directories(src
@@ -32,5 +41,5 @@ target_include_directories(src
 
 target_link_libraries(
         src
-        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
+        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick fruit
         )

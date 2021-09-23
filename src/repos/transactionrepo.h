@@ -6,13 +6,12 @@
 #include "itransactionprovider.h"
 
 class IDateColumnAdapter;
-class ITransactionProvider;
 
 class TransactionRepo : public ITransactionRepo
 {
     Q_OBJECT
 public:
-    explicit TransactionRepo(IDateColumnAdapter * dateAdapter, ITransactionProvider * provider,  QObject *parent = nullptr);
+    explicit TransactionRepo(std::shared_ptr<IDateColumnAdapter> dateAdapter, ITransactionProviderUnq provider);
 
     // ITransactionRepo interface
 public:
@@ -20,12 +19,17 @@ public:
     const std::vector<QString> & getCategories() override;
     bool hasColumnAmount(int column) override;
     float columnAmountOverAll(int column) override;
+    float max() override { return m_max; }
+    float min() override { return m_min; }
 
 private:
     std::vector<Transaction> m_transactions;
     std::vector<QString> m_categories;
-    IDateColumnAdapter * m_dateAdapter;
-    ITransactionProvider * m_provider;
+    std::shared_ptr<IDateColumnAdapter> m_dateAdapter;
+    ITransactionProviderUnq m_provider;
+    float m_min = 0.0;
+    float m_max = 0.0;
+
 };
 
 #endif // TRANSACTIONREPO_H
