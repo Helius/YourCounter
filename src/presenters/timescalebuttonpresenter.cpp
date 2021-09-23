@@ -1,6 +1,5 @@
 #include "timescalebuttonpresenter.h"
 #include <QQmlEngine>
-#include <fruit/fruit.h>
 
 
 TimeScaleButtonPresenter::TimeScaleButtonPresenter(std::shared_ptr<IDateColumnAdapter> adapter)

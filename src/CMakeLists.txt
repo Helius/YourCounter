@@ -41,5 +41,5 @@ target_include_directories(src
 
 target_link_libraries(
         src
-        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick fruit
+        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
         )
