@@ -17,6 +17,7 @@ public:
     virtual float columnAmountOverAll(int column) = 0;
     virtual float calcAmount(int categoryInd, int dayMumber) = 0;
     virtual const std::vector<QString> & getCategories() = 0;
+    virtual void addTransaction(Transaction t) = 0;
     virtual float max() = 0;
     virtual float min() = 0;
 signals:

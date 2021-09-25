@@ -21,6 +21,7 @@ public:
     float columnAmountOverAll(int column) override;
     float max() override { return m_max; }
     float min() override { return m_min; }
+    void addTransaction(Transaction t) override;
 
 private:
     std::vector<Transaction> m_transactions;
@@ -29,7 +30,6 @@ private:
     ITransactionProviderUnq m_provider;
     float m_min = 0.0;
     float m_max = 0.0;
-
 };
 
 #endif // TRANSACTIONREPO_H

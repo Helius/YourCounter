@@ -93,6 +93,4 @@ void test_DateColumnAdapter::test_isSame_month()
 }
 
 DECLARE_TEST(test_DateColumnAdapter)
-
-
 #include "test_datecolumnadapter.moc"

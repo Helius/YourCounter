@@ -10,6 +10,12 @@ AddTransactionButtonPresenter::AddTransactionButtonPresenter(
     , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9][0-9]*"), this))
 {
     Q_ASSERT(m_repo);
+    Q_ASSERT(m_usecase);
+
+    connect(m_usecase.get(), &AddNewTransactionUseCase::transactionInvalid, this, [](){});
+    connect(m_usecase.get(), &AddNewTransactionUseCase::isItNewCategory, this, [](){
+        return true;
+    });
 }
 
 void AddTransactionButtonPresenter::add()

@@ -3,21 +3,33 @@
 
 #include <QObject>
 #include <domain/entities/transaction.h>
+#include <domain/repos/itransactionrepo.h>
 
 
 class AddNewTransactionUseCase : public QObject
 {
     Q_OBJECT
 public:
-    explicit AddNewTransactionUseCase();
+
+    enum class InvalidReason: int {
+        BadAmount = 0,
+        EmptyCategory,
+    };
+
+    explicit AddNewTransactionUseCase(ITransactionRepoPtr repo);
 
     void addTransaction(const Transaction & t);
 
 signals:
-    void transactionIvalid();
-    void isItNewCategory();
+    void transactionInvalid(const InvalidReason & r);
+    bool isItNewCategory();
     void transactionAdded();
 
+private:
+    bool checkCategoryExist(const QString &category);
+
+private:
+    ITransactionRepoPtr m_repo;
 };
 
 using AddNewTransactionUseCaseUnq = std::unique_ptr<AddNewTransactionUseCase>;

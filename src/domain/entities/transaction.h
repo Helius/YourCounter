@@ -16,6 +16,18 @@ struct Transaction {
     float amount;
     QDateTime when;
     QString coment;
+
+    bool operator==(const Transaction & other) const {
+        return category == other.category
+               && amount == amount
+               && when == when
+               && coment == coment;
+    }
+
+    QString toString() const {
+        return QString("%1 %2 %3 %4").arg(category).arg(amount).arg(when.toString()).arg(coment);
+
+    }
 };
 
 using Transactions = std::vector<Transaction>;

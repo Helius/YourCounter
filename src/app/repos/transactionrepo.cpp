@@ -77,6 +77,12 @@ float TransactionRepo::columnAmountOverAll(int column)
     return amount;
 }
 
+void TransactionRepo::addTransaction(Transaction t)
+{
+    m_transactions.push_back(std::move(t));
+    emit dataChanged();
+}
+
 float TransactionRepo::calcAmount(int categoryInd, int column)
 {
     std::vector<Transaction> daily;
