@@ -7,8 +7,21 @@ import injector
 import "Controls"
 
 QmlInjector {
+    id: root
+    signal closePopup
     sourceComponent: ColumnLayout {
         property AddTransactionButtonPresenter $presenter
+        property Item injector
+
+        Connections {
+            target: $presenter
+            function onAskAboutNewCategory() {
+                dialog.open()
+            }
+            function onClosePopup() {
+                injector.closePopup()
+            }
+        }
 
         width: parent.width
         spacing: 20
@@ -62,6 +75,19 @@ QmlInjector {
         }
         Keys.onReturnPressed: {
             $presenter.add()
+        }
+
+        Dialog {
+            id: dialog
+            title: "Add new category: " + $presenter.category
+            standardButtons: Dialog.Ok | Dialog.Cancel
+            modal: true
+            onAccepted: {
+                $presenter.add(true)
+            }
+            onRejected: {
+                console.log("Cancel clicked")
+            }
         }
     }
 }

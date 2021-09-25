@@ -10,5 +10,6 @@ Popup {
     id: root
 
     contentItem: AddTransactionView {
+        onClosePopup: root.close()
     }
 }

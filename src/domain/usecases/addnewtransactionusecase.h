@@ -18,7 +18,7 @@ public:
 
     explicit AddNewTransactionUseCase(ITransactionRepoPtr repo);
 
-    void addTransaction(const Transaction & t);
+    void addTransaction(const Transaction & t, bool allowNewCategory = false);
 
 signals:
     void transactionInvalid(const InvalidReason & r);

@@ -22,18 +22,8 @@ TransactionRepo::TransactionRepo(std::shared_ptr<IDateColumnAdapter> dateAdapter
     connect(m_dateAdapter.get(), &IDateColumnAdapter::scaleChanged, this, &TransactionRepo::dataChanged);
 
     connect(m_provider.get(), &ITransactionProvider::transactionReady, this, [this](const Transactions & transactions ){
-        std::set<QString> categoriesSet;
         m_transactions = std::move(transactions);
-        for(const auto & t: m_transactions)
-        {
-            categoriesSet.insert(t.category);
-        }
-        m_categories.reserve(categoriesSet.size());
-        for(const auto & c: categoriesSet)
-        {
-            m_categories.push_back(c);
-        }
-
+        updateCategories();
 
         const auto [min, max] = std::minmax_element(m_transactions.cbegin(), m_transactions.cend(), []
                                              (const auto & a, const auto & b){
@@ -80,7 +70,23 @@ float TransactionRepo::columnAmountOverAll(int column)
 void TransactionRepo::addTransaction(Transaction t)
 {
     m_transactions.push_back(std::move(t));
+    updateCategories();
     emit dataChanged();
+}
+
+void TransactionRepo::updateCategories()
+{
+        m_categories.clear();
+        std::set<QString> categoriesSet;
+        for(const auto & t: m_transactions)
+        {
+            categoriesSet.insert(t.category);
+        }
+        m_categories.reserve(categoriesSet.size());
+        for(const auto & c: categoriesSet)
+        {
+            m_categories.push_back(c);
+        }
 }
 
 float TransactionRepo::calcAmount(int categoryInd, int column)

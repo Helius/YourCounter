@@ -12,18 +12,27 @@ AddTransactionButtonPresenter::AddTransactionButtonPresenter(
     Q_ASSERT(m_repo);
     Q_ASSERT(m_usecase);
 
-    connect(m_usecase.get(), &AddNewTransactionUseCase::transactionInvalid, this, [](){});
-    connect(m_usecase.get(), &AddNewTransactionUseCase::isItNewCategory, this, [](){
-        return true;
+    connect(m_usecase.get(), &AddNewTransactionUseCase::transactionInvalid,
+            this, [](AddNewTransactionUseCase::InvalidReason r){
+                switch(r) {
+                case AddNewTransactionUseCase::InvalidReason::BadAmount:
+                    qDebug() << "bad amount";
+                    break;
+                case AddNewTransactionUseCase::InvalidReason::EmptyCategory:
+                    qDebug() << "empty category";
+                }
     });
+
+    connect(m_usecase.get(), &AddNewTransactionUseCase::isItNewCategory,
+            this, &AddTransactionButtonPresenter::askAboutNewCategory);
+
+    connect(m_usecase.get(), &AddNewTransactionUseCase::transactionAdded,
+            this, &AddTransactionButtonPresenter::closePopup);
 }
 
-void AddTransactionButtonPresenter::add()
+void AddTransactionButtonPresenter::add(bool allowNewCategory)
 {
-    qDebug() << m_amount;
-    qDebug() << m_category;
-    qDebug() << m_coment;
-    qDebug() << m_when;
-    qDebug() << m_who;
+    Transaction t(m_category, m_amount.toFloat(), QDateTime::currentDateTime(), m_coment);
+    m_usecase->addTransaction(t, allowNewCategory);
 }
 

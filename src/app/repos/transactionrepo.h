@@ -24,6 +24,8 @@ public:
     void addTransaction(Transaction t) override;
 
 private:
+    void updateCategories();
+private:
     std::vector<Transaction> m_transactions;
     std::vector<QString> m_categories;
     std::shared_ptr<IDateColumnAdapter> m_dateAdapter;

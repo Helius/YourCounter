@@ -40,16 +40,17 @@ public:
 
 private slots:
     void test_check_amount();
+    void test_empty_category();
+    void test_new_category();
 private:
     std::shared_ptr<MockTransactionRepo> repo;
 };
 
 
-
 void test_AddTransactionUseCase::test_check_amount()
 {
     AddNewTransactionUseCaseUnq usecase = std::make_unique<AddNewTransactionUseCase>(repo);
-    Transaction t ("Category", 0, QDateTime::currentDateTime(), QString());
+    Transaction t ("cat1", 0, QDateTime::currentDateTime(), QString());
 
     QSignalSpy spyInvalid(usecase.get(), &AddNewTransactionUseCase::transactionInvalid);
     QSignalSpy spyAdded(usecase.get(), &AddNewTransactionUseCase::transactionAdded);
@@ -67,7 +68,6 @@ void test_AddTransactionUseCase::test_check_amount()
     spyAdded.clear();
     spyAsk.clear();
 
-
     Transaction t1 ("cat1", 1, QDateTime::currentDateTime(), QString());
 
     usecase->addTransaction(t1);
@@ -81,34 +81,74 @@ void test_AddTransactionUseCase::test_check_amount()
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+}
 
+void test_AddTransactionUseCase::test_empty_category()
+{
 
-    Transaction t2 ("new cat", -1, QDateTime::currentDateTime(), QString());
-    connect(usecase.get(), &AddNewTransactionUseCase::isItNewCategory, this, [](){
-        return false;
-        }, Qt::ConnectionType::UniqueConnection);
-    usecase->addTransaction(t2);
+    AddNewTransactionUseCaseUnq usecase = std::make_unique<AddNewTransactionUseCase>(repo);
+    Transaction t ("", 1, QDateTime::currentDateTime(), QString());
+
+    QSignalSpy spyInvalid(usecase.get(), &AddNewTransactionUseCase::transactionInvalid);
+    QSignalSpy spyAdded(usecase.get(), &AddNewTransactionUseCase::transactionAdded);
+    QSignalSpy spyAsk(usecase.get(), &AddNewTransactionUseCase::isItNewCategory);
+
+    repo->transactionUnq.reset();
+    usecase->addTransaction(t);
 
     QCOMPARE(spyAdded.count(), 0);
-    QCOMPARE(spyInvalid.count(), 0);
-    QCOMPARE(spyAsk.count(), 1);
-    QVERIFY(repo->transactionUnq);
-    QCOMPARE(*(repo->transactionUnq), t1);
+    QCOMPARE(spyInvalid.count(), 1);
+    QList<QVariant> arguments = spyInvalid.takeFirst();
+    QVERIFY(arguments.at(0).toInt() == static_cast<int>(AddNewTransactionUseCase::InvalidReason::EmptyCategory));
+    QCOMPARE(spyAsk.count(), 0);
+    QVERIFY(!repo->transactionUnq);
 
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
 
-    connect(usecase.get(), &AddNewTransactionUseCase::isItNewCategory, this, [](){
-        return true;
-        }, Qt::ConnectionType::UniqueConnection);
-    usecase->addTransaction(t2);
+    t.category = "cat1";
+
+    usecase->addTransaction(t);
 
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
-    QCOMPARE(spyAsk.count(), 1);
+    QCOMPARE(spyAsk.count(), 0);
     QVERIFY(repo->transactionUnq);
-    QCOMPARE(*(repo->transactionUnq), t2);
+    QCOMPARE(*(repo->transactionUnq), t);
+
+    spyInvalid.clear();
+    spyAdded.clear();
+    spyAsk.clear();
+}
+
+void test_AddTransactionUseCase::test_new_category()
+{
+
+    AddNewTransactionUseCaseUnq usecase = std::make_unique<AddNewTransactionUseCase>(repo);
+    Transaction t ("new cat", 1, QDateTime::currentDateTime(), QString());
+
+    QSignalSpy spyInvalid(usecase.get(), &AddNewTransactionUseCase::transactionInvalid);
+    QSignalSpy spyAdded(usecase.get(), &AddNewTransactionUseCase::transactionAdded);
+    QSignalSpy spyAsk(usecase.get(), &AddNewTransactionUseCase::isItNewCategory);
+
+    usecase->addTransaction(t);
+
+    QCOMPARE(spyAdded.count(), 0);
+    QCOMPARE(spyInvalid.count(), 0);
+    QCOMPARE(spyAsk.count(), 1);
+
+    spyInvalid.clear();
+    spyAdded.clear();
+    spyAsk.clear();
+
+    usecase->addTransaction(t, true);
+
+    QCOMPARE(spyAdded.count(), 1);
+    QCOMPARE(spyInvalid.count(), 0);
+    QCOMPARE(spyAsk.count(), 0);
+    QVERIFY(repo->transactionUnq);
+    QCOMPARE(*(repo->transactionUnq), t);
 }
 
 DECLARE_TEST(test_AddTransactionUseCase)

@@ -71,6 +71,7 @@ void QmlInjector::loadComponent()
                         QObject * value = creator->createObject(typeName.remove('*')).release();
                         QVariant val = QVariant::fromValue(value);
                         obj->setProperty(p.name(), val);
+                        obj->setProperty("injector", QVariant::fromValue(this));
 
                     }
                 }

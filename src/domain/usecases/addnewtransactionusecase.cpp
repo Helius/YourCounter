@@ -8,24 +8,20 @@ AddNewTransactionUseCase::AddNewTransactionUseCase(ITransactionRepoPtr repo)
     Q_ASSERT(m_repo);
 }
 
-void AddNewTransactionUseCase::addTransaction(const Transaction &t)
+void AddNewTransactionUseCase::addTransaction(const Transaction &t, bool allowNewCategory)
 {
     if (abs(t.amount) > 0.01)
     {
         if (!t.category.isEmpty())
         {
-            if (checkCategoryExist(t.category))
+            if (checkCategoryExist(t.category) || allowNewCategory)
             {
                 m_repo->addTransaction(std::move(t));
                 emit transactionAdded();
             }
             else
             {
-                if (isItNewCategory())
-                {
-                    m_repo->addTransaction(std::move(t));
-                    emit transactionAdded();
-                }
+                emit isItNewCategory();
             }
         }
         else

@@ -18,6 +18,7 @@ TimeLineTableModel::TimeLineTableModel(ITransactionRepoPtr repo, std::shared_ptr
         emit headerDataChanged(Qt::Orientation::Vertical, 0, rowCount({})-1);
         emit headerDataChanged(Qt::Orientation::Horizontal, 0, columnCount({})-1);
         emit layoutChanged();
+        emit dataChanged(index(0,0), index(rowCount({}), columnCount({})));
     });
 }
 

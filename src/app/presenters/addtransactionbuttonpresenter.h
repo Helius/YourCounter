@@ -25,7 +25,7 @@ public:
         ITransactionRepoPtr repo,
         AddNewTransactionUseCaseUnq usecase);
 
-    Q_INVOKABLE void add();
+    Q_INVOKABLE void add(bool allowNewCategory = false);
 
 signals:
     void categoryChanged();
@@ -33,6 +33,8 @@ signals:
     void whoChanged();
     void amountChanged();
     void comentChanged();
+    void askAboutNewCategory();
+    void closePopup();
 
 private:
     ITransactionRepoPtr m_repo;
