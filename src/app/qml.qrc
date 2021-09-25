@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>AmountCell.qml</file>
+        <file>SButton.qml</file>
+    </qresource>
+</RCC>
