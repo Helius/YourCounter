@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQUIRED)
 
-set(TS_FILES src/YourCounter_prg_001.ts)
+set(TS_FILES src/app/YourCounter_prg_001.ts)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
@@ -27,11 +27,11 @@ add_executable(YourCounter
         ${TS_FILES}
         )
 
-add_executable(tests 
-	test/test_main.cpp 
-	test/AutoTest.h
-	test/test_datecolumnadapter.cpp 
-	test/test_transactionrepo.cpp
+add_executable(tests
+        test/test_main.cpp
+        test/AutoTest.h
+        test/test_datecolumnadapter.cpp
+        test/test_transactionrepo.cpp
         )
 
 target_link_libraries(tests src Qt::Test)

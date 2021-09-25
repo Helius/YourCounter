@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "../src/repos/datecolumnadapter.h"
+#include "../src/app/repos/datecolumnadapter.h"
 #include "AutoTest.h"
 
 class test_DateColumnAdapter : public QObject
