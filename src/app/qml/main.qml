@@ -79,50 +79,63 @@ ApplicationWindow {
                 width: 200
                 height: parent.height
                 color: Material.backgroundDimColor
-                ColumnLayout {
+
+                QmlInjector {
                     anchors.fill: parent
-                    spacing: 10
-                    ListView {
-                        width: parent.width
-                        Layout.fillHeight: true
-                        model: 6
-                        spacing: 3
-                        delegate: Item {
+
+                    function addTransaction() {
+                        addTransactionPopup.open()
+                    }
+
+                    sourceComponent: ColumnLayout {
+
+                        property TransactionSortedListModel $transactionModel
+
+                        property Item injector
+                        anchors.fill: parent
+                        spacing: 10
+                        ListView {
                             width: parent.width
-                            height: col.height
-                            Column {
-                                id: col
-                                anchors {
-                                    left: parent.left
-                                    right: parent.right
-                                    leftMargin: 10
-                                    rightMargin: 10
-                                }
-                                RowLayout {
-                                    width: parent.width
+                            Layout.fillHeight: true
+                            model: $transactionModel
+                            spacing: 3
+                            delegate: Item {
+                                width: 200
+                                height: col.height
+                                Column {
+                                    id: col
+                                    anchors {
+                                        left: parent.left
+                                        right: parent.right
+                                        leftMargin: 10
+                                        rightMargin: 10
+                                    }
+                                    RowLayout {
+                                        width: parent.width
+                                        Text {
+                                            Layout.fillWidth: true
+                                            text: model.category
+                                            color: "white"
+                                            font.pointSize: 12
+                                        }
+                                        AmountCell {
+                                            amount: model.amount
+                                            background: Material.backgroundDimColor
+                                        }
+                                    }
                                     Text {
-                                        Layout.fillWidth: true
-                                        text: "Английский"
-                                        color: "white"
-                                        font.pointSize: 12
+                                        text: model.date + " by " + model.who
+                                        font.pointSize: 8
+                                        font.weight: Font.Light
                                     }
-                                    AmountCell {
-                                        amount: "-6794"
-                                        background: Material.backgroundDimColor
-                                    }
-                                }
-                                Text {
-                                    text: "24 Сентября 2021 by Alexandra"
-                                    font.pointSize: 8
-                                    font.weight: Font.Light
                                 }
                             }
                         }
-                    }
-                    SButton {
-                        Layout.alignment: Qt.AlignHCenter
-                        text: "Add"
-                        onClicked: addTransactionPopup.open()
+                        SButton {
+                            Layout.alignment: Qt.AlignHCenter
+                            text: "Add"
+                            onClicked: injector.addTransaction()
+                        }
                     }
                 }
             }

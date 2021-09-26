@@ -7,7 +7,6 @@
 class QmlInjectorBuilder
 {
 public:
-
     template<typename T>
     void add(Creator c) {
         QString type(T::staticMetaObject.className());
@@ -18,7 +17,6 @@ public:
     QmlObjectCreator * build() {
         return new QmlObjectCreator(std::move(m_creators));
     }
-
 
 private:
     QHash<QString, Creator> m_creators;

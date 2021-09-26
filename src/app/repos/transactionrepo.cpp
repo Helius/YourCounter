@@ -33,9 +33,9 @@ TransactionRepo::TransactionRepo(std::shared_ptr<IDateColumnAdapter> dateAdapter
         m_max = max->amount;
 
 
-        std::sort(m_transactions.begin(), m_transactions.end(), [](const auto & a, const auto & b){
-            return a.when < b.when;
-        });
+//        std::sort(m_transactions.begin(), m_transactions.end(), [](const auto & a, const auto & b){
+//            return a.when < b.when;
+//        });
 
         emit dataChanged();
     });
@@ -72,6 +72,11 @@ void TransactionRepo::addTransaction(Transaction t)
     m_transactions.push_back(std::move(t));
     updateCategories();
     emit dataChanged();
+}
+
+const Transactions &TransactionRepo::transactions()
+{
+    return m_transactions;
 }
 
 void TransactionRepo::updateCategories()

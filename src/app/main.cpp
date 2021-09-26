@@ -15,6 +15,7 @@
 #include <qmlinjector/iqmlobjectcreator.h>
 #include <qmlinjector/qmlinjectorbuilder.h>
 #include <app/presenters/addtransactionbuttonpresenter.h>
+#include <app/presenters/transactionlistmodel.h>
 
 int main(int argc, char *argv[])
 {
@@ -38,12 +39,14 @@ int main(int argc, char *argv[])
     builder.add<TimeScaleButtonPresenter>([&injector](const QVariant& )->std::unique_ptr<TimeScaleButtonPresenter>{
         return injector.create<std::unique_ptr<TimeScaleButtonPresenter>>();
     });
-
     builder.add<TimeLineTableModel>([&injector](const QVariant &)->std::unique_ptr<TimeLineTableModel>{
         return injector.create<std::unique_ptr<TimeLineTableModel>>();
     });
     builder.add<AddTransactionButtonPresenter>([&injector](const QVariant &)->AddTransactionButtonPresenterUnq{
         return injector.create<AddTransactionButtonPresenterUnq>();
+    });
+    builder.add<TransactionSortedListModel>([&injector](const QVariant &)->TransactionSortedListModelUnq{
+        return injector.create<TransactionSortedListModelUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");

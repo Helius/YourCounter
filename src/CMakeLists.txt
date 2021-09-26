@@ -52,6 +52,8 @@ add_library(src
     app/presenters/timelinetablemodel.h
     app/presenters/addtransactionbuttonpresenter.h
     app/presenters/addtransactionbuttonpresenter.cpp
+    app/presenters/transactionlistmodel.h
+    app/presenters/transactionlistmodel.cpp
 
     )
 

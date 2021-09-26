@@ -22,6 +22,7 @@ public:
     float max() override { return m_max; }
     float min() override { return m_min; }
     void addTransaction(Transaction t) override;
+    const Transactions &transactions() override;
 
 private:
     void updateCategories();
@@ -32,6 +33,7 @@ private:
     ITransactionProviderUnq m_provider;
     float m_min = 0.0;
     float m_max = 0.0;
+
 };
 
 #endif // TRANSACTIONREPO_H

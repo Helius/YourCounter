@@ -19,12 +19,12 @@ public:
     };
 
     void addTransaction(Transaction t) override {
-        transactionUnq = std::make_unique<Transaction>(std::move(t));
-
+        m_transactions.push_back(t);
     };
     float max() override { return 0; }
     float min() override { return 0; }
-    std::unique_ptr<Transaction> transactionUnq;
+    const Transactions & transactions() override { return m_transactions; }
+    Transactions m_transactions;
 private:
 };
 
@@ -67,6 +67,7 @@ void test_AddTransactionUseCase::test_check_amount()
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+    repo->m_transactions.clear();
 
     Transaction t1 ("cat1", 1, QDateTime::currentDateTime(), QString());
 
@@ -75,12 +76,13 @@ void test_AddTransactionUseCase::test_check_amount()
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(repo->transactionUnq);
-    QCOMPARE(*(repo->transactionUnq), t1);
+    QVERIFY(repo->transactions().size());
+    QCOMPARE(repo->transactions().front(), t1);
 
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+    repo->m_transactions.clear();
 }
 
 void test_AddTransactionUseCase::test_empty_category()
@@ -93,7 +95,7 @@ void test_AddTransactionUseCase::test_empty_category()
     QSignalSpy spyAdded(usecase.get(), &AddNewTransactionUseCase::transactionAdded);
     QSignalSpy spyAsk(usecase.get(), &AddNewTransactionUseCase::isItNewCategory);
 
-    repo->transactionUnq.reset();
+    repo->m_transactions.clear();
     usecase->addTransaction(t);
 
     QCOMPARE(spyAdded.count(), 0);
@@ -101,11 +103,12 @@ void test_AddTransactionUseCase::test_empty_category()
     QList<QVariant> arguments = spyInvalid.takeFirst();
     QVERIFY(arguments.at(0).toInt() == static_cast<int>(AddNewTransactionUseCase::InvalidReason::EmptyCategory));
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(!repo->transactionUnq);
+    QVERIFY(repo->transactions().empty());
 
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+    repo->m_transactions.clear();
 
     t.category = "cat1";
 
@@ -114,12 +117,13 @@ void test_AddTransactionUseCase::test_empty_category()
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(repo->transactionUnq);
-    QCOMPARE(*(repo->transactionUnq), t);
+    QVERIFY(!repo->transactions().empty());
+    QCOMPARE(repo->transactions().front(), t);
 
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+    repo->m_transactions.clear();
 }
 
 void test_AddTransactionUseCase::test_new_category()
@@ -141,14 +145,15 @@ void test_AddTransactionUseCase::test_new_category()
     spyInvalid.clear();
     spyAdded.clear();
     spyAsk.clear();
+    repo->m_transactions.clear();
 
     usecase->addTransaction(t, true);
 
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(repo->transactionUnq);
-    QCOMPARE(*(repo->transactionUnq), t);
+    QVERIFY(!repo->transactions().empty());
+    QCOMPARE(repo->transactions().front(), t);
 }
 
 DECLARE_TEST(test_AddTransactionUseCase)
