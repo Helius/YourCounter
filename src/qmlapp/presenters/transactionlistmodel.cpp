@@ -13,24 +13,24 @@ TransactionListModel::TransactionListModel(ITransactionRepoPtr repo, QObject * p
 
 int TransactionListModel::rowCount(const QModelIndex &) const
 {
-    return m_repo->transactions().size();
+    return m_repo->getTransactions().size();
 }
 
 QVariant TransactionListModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(static_cast<size_t>(row) >= m_repo->transactions().size()) return QVariant();
+    if(static_cast<size_t>(row) >= m_repo->getTransactions().size()) return QVariant();
     switch (role) {
     case Category:
-        return m_repo->transactions().at(row).category;
+        return m_repo->getTransactions().at(row).category;
     case Amount:
-        return m_repo->transactions().at(row).amount;
+        return m_repo->getTransactions().at(row).amount;
     case Who:
         return "??";
     case Date:
-        return m_repo->transactions().at(row).when.toString();
+        return m_repo->getTransactions().at(row).when.toString();
     case RawDate:
-        return m_repo->transactions().at(row).when;
+        return m_repo->getTransactions().at(row).when;
     }
     return QVariant();
 }

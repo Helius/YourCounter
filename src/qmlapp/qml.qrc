@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>src/qmlapp/qml/main.qml</file>
+        <file>src/qmlapp/qml/Controls/AmountCell.qml</file>
+        <file>src/qmlapp/qml/Controls/SButton.qml</file>
+        <file>src/qmlapp/qml/Controls/EditButtonBar.qml</file>
+        <file>src/qmlapp/qml/Controls/TimeScaleButtonBar.qml</file>
+        <file>src/qmlapp/qml/Controls/HeaderButtonRow.qml</file>
+        <file>src/qmlapp/qml/AddTransactionPopup.qml</file>
+        <file>src/qmlapp/qml/AddTransactionView.qml</file>
+        <file>src/qmlapp/qml/NamedField.qml</file>
+    </qresource>
+</RCC>

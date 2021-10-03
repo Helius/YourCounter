@@ -16,13 +16,13 @@ public:
     // ITransactionRepo interface
 public:
     float calcAmount(int categoryInd, int dayNumber) override;
-    const std::vector<QString> & getCategories() override;
+    const Categories & getCategories() override;
     bool hasColumnAmount(int column) override;
     float columnAmountOverAll(int column) override;
     float max() override { return m_max; }
     float min() override { return m_min; }
     void addTransaction(Transaction t) override;
-    const Transactions &transactions() override;
+    const Transactions &getTransactions() override;
 
 private:
     void updateCategories();

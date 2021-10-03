@@ -74,7 +74,7 @@ void TransactionRepo::addTransaction(Transaction t)
     emit dataChanged();
 }
 
-const Transactions &TransactionRepo::transactions()
+const Transactions &TransactionRepo::getTransactions()
 {
     return m_transactions;
 }
@@ -108,7 +108,7 @@ float TransactionRepo::calcAmount(int categoryInd, int column)
     return amount;
 }
 
-const std::vector<QString> &TransactionRepo::getCategories()
+const Categories &TransactionRepo::getCategories()
 {
     return m_categories;
 }
