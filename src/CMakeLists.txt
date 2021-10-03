@@ -8,9 +8,9 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 add_library(src
     di.hpp
-    app/main.cpp
-    app/Theme.cpp
-    app/Theme.h
+        qmlapp/main.cpp
+        qmlapp/Theme.cpp
+        qmlapp/Theme.h
 
     qmlinjector/qmlinjector.h
     qmlinjector/qmlinjector.cpp
@@ -19,7 +19,10 @@ add_library(src
     qmlinjector/iqmlobjectcreator.cpp
 
     domain/entities/transaction.h
+    domain/entities/interval.h
     domain/entities/transaction.cpp
+
+
 
     domain/usecases/startupusecase.h
     domain/usecases/startupusecase.cpp
@@ -31,29 +34,29 @@ add_library(src
     domain/repos/isettingsrepository.h
     domain/repos/isettingsrepository.cpp
 
-    app/repos/idatecolumnadapter.h
-    app/repos/itransactionprovider.h
-    app/repos/itransactionprovider.cpp
+        qmlapp/repos/idatecolumnadapter.h
+        qmlapp/repos/itransactionprovider.h
+        qmlapp/repos/itransactionprovider.cpp
 
-    app/repos/transactionrepo.h
-    app/repos/transactionrepo.cpp
-    app/repos/datecolumnadapter.h
-    app/repos/datecolumnadapter.cpp
-    app/repos/transactionproviderfromfile.h
-    app/repos/transactionproviderfromfile.cpp
-    app/repos/transactionjsonmapper.h
-    app/repos/transactionjsonmapper.cpp
-    app/repos/settingsrepositoryimpl.h
-    app/repos/settingsrepositoryimpl.cpp
+        qmlapp/repos/transactionrepo.h
+        qmlapp/repos/transactionrepo.cpp
+        qmlapp/repos/datecolumnadapter.h
+        qmlapp/repos/datecolumnadapter.cpp
+        qmlapp/repos/transactionproviderfromfile.h
+        qmlapp/repos/transactionproviderfromfile.cpp
+        qmlapp/repos/transactionjsonmapper.h
+        qmlapp/repos/transactionjsonmapper.cpp
+        qmlapp/repos/settingsrepositoryimpl.h
+        qmlapp/repos/settingsrepositoryimpl.cpp
 
-    app/presenters/timescalebuttonpresenter.h
-    app/presenters/timescalebuttonpresenter.cpp
-    app/presenters/timelinetablemodel.cpp
-    app/presenters/timelinetablemodel.h
-    app/presenters/addtransactionbuttonpresenter.h
-    app/presenters/addtransactionbuttonpresenter.cpp
-    app/presenters/transactionlistmodel.h
-    app/presenters/transactionlistmodel.cpp
+        qmlapp/presenters/timescalebuttonpresenter.h
+        qmlapp/presenters/timescalebuttonpresenter.cpp
+        qmlapp/presenters/timelinetablemodel.cpp
+        qmlapp/presenters/timelinetablemodel.h
+        qmlapp/presenters/addtransactionbuttonpresenter.h
+        qmlapp/presenters/addtransactionbuttonpresenter.cpp
+        qmlapp/presenters/transactionlistmodel.h
+        qmlapp/presenters/transactionlistmodel.cpp
 
     )
 

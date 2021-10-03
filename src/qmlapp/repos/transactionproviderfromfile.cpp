@@ -3,7 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <app/repos/transactionjsonmapper.h>
+#include <qmlapp/repos/transactionjsonmapper.h>
 
 
 TransactionProviderFromFile::TransactionProviderFromFile(const QString &filePath)

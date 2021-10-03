@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <domain/repos/itransactionrepo.h>
-#include <app/repos/itransactionprovider.h>
+#include <qmlapp/repos/itransactionprovider.h>
 
 class IDateColumnAdapter;
 

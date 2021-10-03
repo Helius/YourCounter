@@ -1,7 +1,7 @@
 #include <QtTest>
-#include "../src/app/repos/idatecolumnadapter.h"
-#include "../src/app/repos/itransactionprovider.h"
-#include "../src/app/repos/transactionrepo.h"
+#include "../src/qmlapp/repos/idatecolumnadapter.h"
+#include "../src/qmlapp/repos/itransactionprovider.h"
+#include "../src/qmlapp/repos/transactionrepo.h"
 #include "AutoTest.h"
 
 class MockDateColumnAdapter

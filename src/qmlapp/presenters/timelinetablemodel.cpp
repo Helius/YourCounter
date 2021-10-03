@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include <domain/repos/itransactionrepo.h>
-#include <app/repos/idatecolumnadapter.h>
+#include <qmlapp/repos/idatecolumnadapter.h>
 
 
 TimeLineTableModel::TimeLineTableModel(ITransactionRepoPtr repo, std::shared_ptr<IDateColumnAdapter> dateAdapter)

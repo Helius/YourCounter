@@ -2,20 +2,20 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <app/Theme.h>
+#include <qmlapp/Theme.h>
 
-#include <app/repos/transactionrepo.h>
-#include <app/repos/datecolumnadapter.h>
-#include <app/repos/transactionproviderfromfile.h>
+#include <qmlapp/repos/transactionrepo.h>
+#include <qmlapp/repos/datecolumnadapter.h>
+#include <qmlapp/repos/transactionproviderfromfile.h>
 
-#include <app/presenters/timescalebuttonpresenter.h>
-#include <app/presenters/timelinetablemodel.h>
+#include <qmlapp/presenters/timescalebuttonpresenter.h>
+#include <qmlapp/presenters/timelinetablemodel.h>
 
 #include <qmlinjector/qmlinjector.h>
 #include <qmlinjector/iqmlobjectcreator.h>
 #include <qmlinjector/qmlinjectorbuilder.h>
-#include <app/presenters/addtransactionbuttonpresenter.h>
-#include <app/presenters/transactionlistmodel.h>
+#include <qmlapp/presenters/addtransactionbuttonpresenter.h>
+#include <qmlapp/presenters/transactionlistmodel.h>
 
 int main(int argc, char *argv[])
 {
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextObject(builder.build());
 
-    const QUrl url(QStringLiteral("qrc:/src/app/qml/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

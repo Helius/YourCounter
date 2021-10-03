@@ -36,7 +36,7 @@ jobs:
         host: 'linux'
         target: 'desktop'
         arch: 'gcc_64'
-        #dir: '${{ github.workspace }}/app'
+        #dir: '${{ github.workspace }}/qmlapp'
         install-deps: 'true'
         tools-only: 'false'
         aqtversion: '==1.2.5'

@@ -1,4 +1,8 @@
 {
+    "predictions": [
+        {"category": "Английский", "amount":-5000.0 , "when": "2021-11-15T15:46:29", "comment": ""},
+        {"category": "Английский", "amount":-5000.0 , "when": "2021-12-15T15:46:29", "comment": ""}
+    ],
     "transactions": [
         {"category": "Английский", "amount":-5000.0 , "when": "2021-01-15T15:46:29", "comment": ""},
         {"category": "Английский", "amount":-5000.0 , "when": "2021-02-15T15:46:29", "comment": ""},
@@ -19,7 +23,7 @@
         {"category": "Художка", "amount":-1500 , "when": "2021-03-03T15:46:29", "comment": ""},
         {"category": "Художка", "amount":-1500 , "when": "2021-04-03T15:46:29", "comment": ""},
         {"category": "Художка", "amount":-1500 , "when": "2021-05-03T15:46:29", "comment": ""},
-        
+
         {"category": "Школа", "amount":-300 , "when": "2021-02-04T15:46:29", "comment": ""},
         {"category": "Школа", "amount":-1340 , "when": "2021-03-02T15:46:29", "comment": ""},
         {"category": "Школа", "amount":-1000 , "when": "2021-04-01T15:46:29", "comment": ""},

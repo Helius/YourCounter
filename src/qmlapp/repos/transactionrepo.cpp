@@ -6,8 +6,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <domain/entities/transaction.h>
-#include <app/repos/idatecolumnadapter.h>
-#include <app/repos/transactionjsonmapper.h>
+#include <qmlapp/repos/idatecolumnadapter.h>
+#include <qmlapp/repos/transactionjsonmapper.h>
 
 using namespace TransactionJsonMapper;
 

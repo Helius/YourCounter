@@ -10,7 +10,7 @@ public:
     bool hasColumnAmount(int ) override { return true; }
     float columnAmountOverAll(int ) override { return 0.0; }
     float calcAmount(int , int ) override { return 0.0; }
-    const std::vector<QString> &getCategories() override {
+    const Categories &getCategories() override {
         static Categories t {
             {"cat1"},
             {"cat2"},
@@ -23,7 +23,7 @@ public:
     };
     float max() override { return 0; }
     float min() override { return 0; }
-    const Transactions & transactions() override { return m_transactions; }
+    const Transactions & getTransactions() override { return m_transactions; }
     Transactions m_transactions;
 private:
 };
@@ -76,8 +76,8 @@ void test_AddTransactionUseCase::test_check_amount()
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(repo->transactions().size());
-    QCOMPARE(repo->transactions().front(), t1);
+    QVERIFY(repo->getTransactions().size());
+    QCOMPARE(repo->getTransactions().front(), t1);
 
     spyInvalid.clear();
     spyAdded.clear();
@@ -103,7 +103,7 @@ void test_AddTransactionUseCase::test_empty_category()
     QList<QVariant> arguments = spyInvalid.takeFirst();
     QVERIFY(arguments.at(0).toInt() == static_cast<int>(AddNewTransactionUseCase::InvalidReason::EmptyCategory));
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(repo->transactions().empty());
+    QVERIFY(repo->getTransactions().empty());
 
     spyInvalid.clear();
     spyAdded.clear();
@@ -117,8 +117,8 @@ void test_AddTransactionUseCase::test_empty_category()
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(!repo->transactions().empty());
-    QCOMPARE(repo->transactions().front(), t);
+    QVERIFY(!repo->getTransactions().empty());
+    QCOMPARE(repo->getTransactions().front(), t);
 
     spyInvalid.clear();
     spyAdded.clear();
@@ -152,8 +152,8 @@ void test_AddTransactionUseCase::test_new_category()
     QCOMPARE(spyAdded.count(), 1);
     QCOMPARE(spyInvalid.count(), 0);
     QCOMPARE(spyAsk.count(), 0);
-    QVERIFY(!repo->transactions().empty());
-    QCOMPARE(repo->transactions().front(), t);
+    QVERIFY(!repo->getTransactions().empty());
+    QCOMPARE(repo->getTransactions().front(), t);
 }
 
 DECLARE_TEST(test_AddTransactionUseCase)
