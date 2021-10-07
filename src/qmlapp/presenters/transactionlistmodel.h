@@ -3,7 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
-#include <domain/repos/itransactionrepo.h>
+#include <repos/itransactionrepo.h>
 
 class TransactionListModel : public QAbstractListModel
 {

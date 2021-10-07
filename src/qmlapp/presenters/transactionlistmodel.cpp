@@ -22,7 +22,7 @@ QVariant TransactionListModel::data(const QModelIndex &index, int role) const
     if(static_cast<size_t>(row) >= m_repo->getTransactions().size()) return QVariant();
     switch (role) {
     case Category:
-        return m_repo->getTransactions().at(row).category;
+        return m_repo->getTransactions().at(row).category.name;
     case Amount:
         return m_repo->getTransactions().at(row).amount;
     case Who:

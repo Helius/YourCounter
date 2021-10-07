@@ -32,7 +32,7 @@ AddTransactionButtonPresenter::AddTransactionButtonPresenter(
 
 void AddTransactionButtonPresenter::add(bool allowNewCategory)
 {
-    Transaction t(m_category, m_amount.toFloat(), QDateTime::currentDateTime(), m_coment);
+    Transaction t({"", ""}, m_amount.toFloat(), QDateTime::currentDateTime(), m_coment);
     m_usecase->addTransaction(t, allowNewCategory);
 }
 

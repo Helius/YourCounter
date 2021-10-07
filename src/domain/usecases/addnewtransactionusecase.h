@@ -2,8 +2,8 @@
 #define ADDNEWTRANSACTIONUSECASE_H
 
 #include <QObject>
-#include <domain/entities/transaction.h>
-#include <domain/repos/itransactionrepo.h>
+#include <entities/transaction.h>
+#include "../repos/itransactionrepo.h"
 
 
 class AddNewTransactionUseCase : public QObject
@@ -26,7 +26,7 @@ signals:
     void transactionAdded();
 
 private:
-    bool checkCategoryExist(const QString &category);
+    bool checkCategoryExist(const Category &category);
 
 private:
     ITransactionRepoPtr m_repo;

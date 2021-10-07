@@ -2,10 +2,10 @@
 #define ADDTRANSACTIONBUTTONPRESENTER_H
 
 #include <QObject>
-#include <domain/repos/itransactionrepo.h>
+#include <repos/itransactionrepo.h>
 #include <QDateTime>
 #include <QRegularExpressionValidator>
-#include <domain/usecases/addnewtransactionusecase.h>
+#include <usecases/addnewtransactionusecase.h>
 
 class AddTransactionButtonPresenter:
     public QObject

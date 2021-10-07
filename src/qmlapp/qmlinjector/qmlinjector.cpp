@@ -1,5 +1,4 @@
 #include "qmlinjector.h"
-#include <qmlapp/presenters/timescalebuttonpresenter.h>
 #include <QTimer>
 #include <QQmlEngine>
 #include <QQmlContext>

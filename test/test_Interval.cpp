@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "../src/domain/entities/interval.h"
+#include <entities/interval.h>
 #include "AutoTest.h"
 
 class test_Interval : public QObject

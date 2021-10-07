@@ -2,7 +2,7 @@
 #define TIMELINETABLEMODEL_H
 
 #include <QAbstractListModel>
-#include <domain/repos/itransactionrepo.h>
+#include <repos/itransactionrepo.h>
 
 class IDateColumnAdapter;
 

@@ -2,7 +2,7 @@
 #define TIMESCALEBUTTONPRESENTER_H
 
 #include <QObject>
-#include <qmlapp/repos/idatecolumnadapter.h>
+#include <repos/idatecolumnadapter.h>
 
 class TimeScaleBarVM {
 

@@ -1,7 +1,7 @@
 #include <QtTest>
-#include "../src/qmlapp/repos/idatecolumnadapter.h"
-#include "../src/qmlapp/repos/itransactionprovider.h"
-#include "../src/qmlapp/repos/transactionrepo.h"
+#include <repos/idatecolumnadapter.h>
+#include <itransactionprovider.h>
+#include <transactionrepo.h>
 #include "AutoTest.h"
 
 class MockDateColumnAdapter
@@ -28,14 +28,14 @@ public:
     void setTransactions(Transactions transactions)
     {
         m_transactions = std::move(transactions);
-        loadTransactions();
+        loadData();
     }
-    void loadTransactions() override;
+    void loadData() override;
 private:
     Transactions m_transactions;
 };
 
-void MockTransactionProvider::loadTransactions()
+void MockTransactionProvider::loadData()
 {
     emit transactionReady(m_transactions);
 }

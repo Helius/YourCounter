@@ -1,21 +1,21 @@
-#include <di.hpp>
+#include <../di.hpp>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <qmlapp/Theme.h>
 
-#include <qmlapp/repos/transactionrepo.h>
-#include <qmlapp/repos/datecolumnadapter.h>
-#include <qmlapp/repos/transactionproviderfromfile.h>
+#include <transactionrepo.h>
+#include "repos/datecolumnadapter.h"
+#include <transactionproviderfromfile.h>
 
-#include <qmlapp/presenters/timescalebuttonpresenter.h>
-#include <qmlapp/presenters/timelinetablemodel.h>
+#include "presenters/timescalebuttonpresenter.h"
+#include "presenters/timelinetablemodel.h"
 
-#include <qmlinjector/qmlinjector.h>
-#include <qmlinjector/iqmlobjectcreator.h>
-#include <qmlinjector/qmlinjectorbuilder.h>
-#include <qmlapp/presenters/addtransactionbuttonpresenter.h>
-#include <qmlapp/presenters/transactionlistmodel.h>
+#include "qmlinjector/qmlinjector.h"
+#include "qmlinjector/iqmlobjectcreator.h"
+#include "qmlinjector/qmlinjectorbuilder.h"
+#include "presenters/addtransactionbuttonpresenter.h"
+#include "presenters/transactionlistmodel.h"
+#include <firebaseRtDbAPI.h>
 
 int main(int argc, char *argv[])
 {
@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
                                              (QQmlEngine *, QJSEngine *) -> QObject * {
         return injector.create<std::unique_ptr<TimeLineTableModel>>().release();
     });
-
 
     engine.rootContext()->setContextObject(builder.build());
 

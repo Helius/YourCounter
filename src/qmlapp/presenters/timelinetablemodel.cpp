@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <algorithm>
 
-#include <domain/repos/itransactionrepo.h>
-#include <qmlapp/repos/idatecolumnadapter.h>
+#include <repos/itransactionrepo.h>
+#include <repos/idatecolumnadapter.h>
 
 
 TimeLineTableModel::TimeLineTableModel(ITransactionRepoPtr repo, std::shared_ptr<IDateColumnAdapter> dateAdapter)
@@ -22,11 +22,11 @@ TimeLineTableModel::TimeLineTableModel(ITransactionRepoPtr repo, std::shared_ptr
     });
 }
 
-int TimeLineTableModel::getColumnWidth(int column)
+int TimeLineTableModel::getColumnWidth(int )
 {
-    if(m_dateAdapter->isCurrent(column))
+//    if(m_dateAdapter->isCurrent(column))
         return -1;
-    return m_repo->hasColumnAmount(column) ? -1 : 0;
+//    return m_repo->hasColumnAmount(column) ? -1 : 0;
 }
 
 int TimeLineTableModel::rowCount(const QModelIndex & ) const
@@ -50,14 +50,14 @@ QVariant TimeLineTableModel::data(const QModelIndex & ind, int role) const
 
     switch (role) {
     case Roles::Color: {
-        float amount = m_repo->calcAmount(row, col);
+        float amount = 0;//m_repo->calcAmount(row, col);
         QColor spend(0xff, 0, 0);
         QColor earn(0, 0xff, 0);
         auto & resultColor = amount > 0 ? earn : spend;
 
-        resultColor.setAlpha(amount > 0
-                                 ? std::min(static_cast<int>(10+(100 * amount)/m_repo->max()), 100)
-                                 : std::min(static_cast<int>(10+(100 * amount)/m_repo->min()), 100));
+//        resultColor.setAlpha(amount > 0
+//                                 ? std::min(static_cast<int>(10+(100 * amount)/m_repo->max()), 100)
+//                                 : std::min(static_cast<int>(10+(100 * amount)/m_repo->min()), 100));
         if(amount == 0) {
             resultColor.setAlpha(0);
         }
@@ -87,7 +87,7 @@ QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation
     if(orientation == Qt::Orientation::Vertical)
     {
         if(section < static_cast<int>(m_repo->getCategories().size())) {
-            return m_repo->getCategories()[section];
+            return m_repo->getCategories()[section].name;
         }
     }
     else
@@ -97,9 +97,9 @@ QVariant TimeLineTableModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-QString TimeLineTableModel::calcAmount(int row, int col) const
+QString TimeLineTableModel::calcAmount(int , int ) const
 {
-    float amount = m_repo->calcAmount(row, col);
+    float amount = 0;//m_repo->calcAmount(row, col);
 
     if(abs(amount) > 0.01) {
         return QString::number(amount);

@@ -1,6 +1,6 @@
 #include <QtTest>
-#include "../src/domain/usecases/addnewtransactionusecase.h"
-#include <src/domain/repos/itransactionrepo.h>
+#include <usecases/addnewtransactionusecase.h>
+#include <repos/itransactionrepo.h>
 #include "AutoTest.h"
 
 class MockTransactionRepo

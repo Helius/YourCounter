@@ -57,6 +57,14 @@
         {"category": "Интернет", "amount":-570 , "when": "2021-09-22T15:46:29", "comment": ""},
         {"category": "Сигналка", "amount":-90 , "when": "2021-09-22T15:46:29", "comment": ""},
         {"category": "Интернет", "amount":-550 , "when": "2021-09-23T20:06:00", "comment": "Yota modev"},
-        {"category": "Бенз", "amount":-2000 , "when": "2021-09-24T10:06:00", "comment": ""}
+        {"category": "Бенз", "amount":-2000 , "when": "2021-09-24T10:06:00", "comment": ""},
+        {"category": "Телефон", "amount":-300 , "when": "2021-10-01T10:06:00", "comment": "Кате"},
+        {"category": "Телефон", "amount":-300 , "when": "2021-10-01T10:06:00", "comment": "Ане"},
+        {"category": "Телефон", "amount":-150 , "when": "2021-10-05T10:06:00", "comment": "Мне"},
+        {"category": "Продукты", "amount":-1002 , "when": "2021-10-02T10:06:00", "comment": ""},
+        {"category": "Игрушки", "amount":-675 , "when": "2021-10-02T10:06:00", "comment": "Артмания"},
+        {"category": "Школа", "amount":-357 , "when": "2021-10-02T10:06:00", "comment": "чешки"},
+        {"category": "Продукты", "amount":-2442 , "when": "2021-10-04T10:06:00", "comment": ""},
+        {"category": "Продукты", "amount":-328 , "when": "2021-10-04T10:06:00", "comment": ""}
     ]
 }

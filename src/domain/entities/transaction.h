@@ -4,22 +4,17 @@
 #include <QString>
 #include <QDateTime>
 #include "interval.h"
+#include "Category.h"
 
-struct Transaction {
-    Transaction() = delete;
-    Transaction(QString category, float amount, QDateTime when, QString who = QString(), QString coment = QString())
-        : category(category)
-        , amount(amount)
-        , when(when)
-        , who(who)
-        , coment(coment)
-    {}
+class Transaction {
 
-    QString category;
+public:
+    QString id;
     float amount;
     QDateTime when;
+    QString categoryId;
     QString who;
-    QString coment;
+    QString comment;
 
     bool insideInterval(const Interval & interval) const
     {
@@ -27,21 +22,36 @@ struct Transaction {
     }
 
     bool operator==(const Transaction & other) const {
-        return category == other.category
-               && amount == other.amount
-               && when == other.when
-               && coment == other.coment
-               && who == other.who;
+        return id == other.id;
     }
 
-    QString toString() const {
-        return QString("%1 %2 %3 %4 %5").arg(category).arg(who).arg(amount).arg(when.toString()).arg(coment);
-
+    Transaction() = delete;
+    Transaction(const QString & id, float amount, const QDateTime & when, const QString & categoryId, const QString & who = QString(), const QString & comment = QString())
+            : id(id)
+            , amount(amount)
+            , when(when)
+            , categoryId(categoryId)
+            , who(who)
+            , comment(comment)
+    {
+        Q_ASSERT(!id.isEmpty());
+        Q_ASSERT(!categoryId.isEmpty());
+        Q_ASSERT(abs(amount) > 0.001);
     }
+
+//    Transaction(float amount, const QDateTime & when, const QString & categoryId, const QString & who = QString(), const QString & comment = QString())
+//            : amount(amount)
+//            , when(when)
+//            , categoryId(categoryId)
+//            , who(who)
+//            , comment(comment)
+//    {
+//        Q_ASSERT(!categoryId.isEmpty());
+//        Q_ASSERT(abs(amount) > 0.001);
+//    }
+
 };
 
-using Category = QString;
-using Categories = std::vector<QString>;
 using Transactions = std::vector<Transaction>;
 
 #endif // TRANSACTION_H
