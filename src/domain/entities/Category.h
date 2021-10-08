@@ -4,9 +4,9 @@
 
 struct Category {
     Category() = delete;
-    Category(const QString name, const QString id)
-    : name(name)
-    , id(id)
+    Category(QString name, QString id)
+    : name(std::move(name))
+    , id(std::move(id))
     {};
     QString name;
     QString id;

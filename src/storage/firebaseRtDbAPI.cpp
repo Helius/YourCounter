@@ -11,11 +11,11 @@ FirebaseRtDbAPI::FirebaseRtDbAPI(QNetworkAccessManager *nam, const QString &dbUr
     Q_ASSERT(m_nam);
 }
 
-QFuture<QJsonObject> FirebaseRtDbAPI::getObject(const QString & path)
+FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::getObject(const QString & path)
 {
     QUrl url;
     url.setUrl(m_dbUrl);
-    url.setPath(path);
+    url.setPath(path + ".json");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -25,6 +25,38 @@ QFuture<QJsonObject> FirebaseRtDbAPI::getObject(const QString & path)
             .then([reply]{
                 auto data = reply->readAll();
                 qDebug() << "got smth from network:" << data;
+                reply->deleteLater();
+                return data;
+            }).then([](const QByteArray & data){
+                qDebug() << "try to parse:" << data;
+                return QJsonDocument::fromJson(data).object();
+            }).onFailed([](QNetworkReply::NetworkError error) {
+                qWarning() << "error happened:" << error;
+                return QJsonObject();
+            }).onFailed([] {
+                // handle any other error
+                qDebug() << "terrible error happened";
+                return QJsonObject();
+            });;
+
+    return future;
+}
+
+FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::addObject(const QString &root, const QJsonObject &object) {
+    QUrl url;
+    url.setUrl(m_dbUrl);
+    url.setPath(root  + ".json");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QByteArray data = QJsonDocument(object).toJson();
+    QNetworkReply * reply = m_nam->post(request, data);
+
+    QFuture<QJsonObject> future = QtFuture::connect(reply, &QNetworkReply::finished)
+            .then([reply]{
+                auto data = reply->readAll();
+                qDebug() << "got smth from network:" << data;
+                reply->deleteLater();
                 return data;
             }).then([](const QByteArray & data){
                 qDebug() << "try to parse:" << data;
@@ -41,32 +73,33 @@ QFuture<QJsonObject> FirebaseRtDbAPI::getObject(const QString & path)
     return future;
 }
 
-QFuture<QString> FirebaseRtDbAPI::addObject(const QString &root, const QJsonObject &object) {
+FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::updateObjectByID(const QString & root, const QString & id, const QJsonObject &patch) {
     QUrl url;
     url.setUrl(m_dbUrl);
-    url.setPath(root);
+    url.setPath(root + "/" + id + ".json");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QByteArray data = QJsonDocument(object).toJson();
-    QNetworkReply * reply = m_nam->post(request, data);
+    QByteArray data = QJsonDocument(patch).toJson();
+    QNetworkReply * reply = m_nam->put(request, data);
 
-    QFuture<QString> future = QtFuture::connect(reply, &QNetworkReply::finished)
-            .then([reply]{
+    QFuture<QJsonObject> future = QtFuture::connect(reply, &QNetworkReply::finished)
+            .then([reply] {
                 auto data = reply->readAll();
                 qDebug() << "got smth from network:" << data;
+                reply->deleteLater();
                 return data;
-            }).then([](const QByteArray & data){
-        qDebug() << "try to parse:" << data;
-        return QString(data);
-    }).onFailed([](QNetworkReply::NetworkError error) {
-        qDebug() << "error happened:" << error;
-        return QString();
-    }).onFailed([] {
-        // handle any other error
-        qDebug() << "terrible error happened";
-        return QString();
-    });;
+            }).then([](const QByteArray &data) {
+                return QJsonDocument::fromJson(data).object();
+                qDebug() << "try to parse:" << data;
+            }).onFailed([](QNetworkReply::NetworkError error) {
+                qDebug() << "error happened:" << error;
+                return QJsonObject();
+            }).onFailed([] {
+                // handle any other error
+                qDebug() << "terrible error happened";
+                return QJsonObject();
+            });;
 
     return future;
 }

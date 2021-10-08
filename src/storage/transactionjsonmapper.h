@@ -8,10 +8,12 @@
 
 namespace TransactionJsonMapper
 {
-    Transactions parseTransaction(const QJsonObject & transactions);
+    Transactions parseTransactions(const QJsonObject & transactions);
     Categories parseCategories(const QJsonObject & transactions);
+    Groups parseGroups(const QJsonObject & groups);
     Transaction fromJson(const QString & id, const QJsonObject & object);
     QJsonObject toJson(const CategoryRequest & request);
     QJsonObject toJson(const TransactionRequest & request);
+    QJsonObject toJson(const GroupRequest &request);
 }
 

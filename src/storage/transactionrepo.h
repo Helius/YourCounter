@@ -3,6 +3,7 @@
 #include <QObject>
 #include <repos/itransactionrepo.h>
 #include "firebaseRtDbAPI.h"
+#include <QFuture>
 
 class IDateColumnAdapter;
 
@@ -15,9 +16,13 @@ public:
     const Transactions & getTransactions() override;
     const Transactions & getPredictions() override;
     const Categories & getCategories() override;
-    void addTransaction(const TransactionRequest & t) override;
-    void addCategory(const CategoryRequest & categoryRequest) override;
-
+    const Groups & getGroups() override;
+    void addTransaction(const TransactionRequest & tr) override;
+    void addPrediction(const TransactionRequest &tr) override;
+    void addCategory(const CategoryRequest & cr) override;
+    void addGroup(const GroupRequest & gr) override;
+    void setTransactionCategory(const Transaction & t, const Category & c) override;
+    void setCategoryGroup(const Category & c, const Group & g) override;
 private:
     void init();
 
@@ -26,6 +31,9 @@ private:
     Transactions m_transactions;
     Categories m_categories;
     Transactions m_predictions;
-
-    void emitIfReady();
+    Groups m_groups;
+    QFuture<void> m_loadTransactions;
+    QFuture<void> m_loadCategories;
+    QFuture<void> m_loadPredictions;
+    QFuture<void> m_loadGroups;
 };

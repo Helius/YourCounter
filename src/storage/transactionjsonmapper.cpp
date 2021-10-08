@@ -1,3 +1,5 @@
+#include <entities/Group.h>
+#include <entities/GroupRequest.h>
 #include "transactionjsonmapper.h"
 
 namespace TransactionJsonMapper {
@@ -11,10 +13,18 @@ namespace TransactionJsonMapper {
         return Transaction(id, amount, when, categoryId, who, comment);
     }
 
-    Transactions parseTransaction(const QJsonObject &transactions) {
+    Transactions parseTransactions(const QJsonObject &transactions) {
         Transactions result;
         for (auto it = transactions.constBegin(); it != transactions.constEnd(); ++it) {
             result.push_back(fromJson(it.key(), it.value().toObject()));
+        }
+        return result;
+    }
+
+    Groups parseGroups(const QJsonObject & groups) {
+        Groups result;
+        for(auto it = groups.constBegin(); it != groups.constEnd(); ++it) {
+            result.push_back(Group(it.key(), it.value().toObject().value("name").toString()));
         }
         return result;
     }
@@ -29,6 +39,10 @@ namespace TransactionJsonMapper {
     }
 
     QJsonObject toJson(const CategoryRequest &request) {
+        return {{"name", request.name}};
+    }
+
+    QJsonObject toJson(const GroupRequest &request) {
         return {{"name", request.name}};
     }
 

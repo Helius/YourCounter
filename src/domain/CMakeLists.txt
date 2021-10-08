@@ -21,7 +21,7 @@ add_library(domain
         repos/itransactionrepo.h
         repos/itransactionrepo.cpp
         repos/idatecolumnadapter.h
-        entities/CategoryRequest.h entities/TransactionRequest.h)
+        entities/CategoryRequest.h entities/TransactionRequest.h entities/Group.h entities/GroupRequest.h)
 
 target_include_directories(domain
         INTERFACE
