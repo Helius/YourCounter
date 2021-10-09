@@ -14,14 +14,13 @@ add_library(storage)
 target_sources(
         storage
         PRIVATE
-        itransactionprovider.cpp
-        itransactionprovider.h
         transactionjsonmapper.cpp
         transactionjsonmapper.h
         transactionrepo.cpp
         transactionrepo.h
         firebaseRtDbAPI.cpp
         firebaseRtDbAPI.h
+        IFirebaseRtDbApi.h
 )
 
 target_include_directories(storage
@@ -36,10 +35,12 @@ target_link_libraries(
 
 
 enable_testing(true)
-add_executable(
-        storage_test
-        test/test_transactionrepo.cpp
-)
-add_test(NAME storage_test COMMAND storage_test)
-target_link_libraries(storage_test storage Qt::Test)
+
+add_executable(test_storage test/test_transactionrepo.cpp)
+add_test(NAME test_storage COMMAND test_storage)
+target_link_libraries(test_storage storage domain Qt::Test)
+
+add_executable(test_mapper test/test_transactionjsonmapper.cpp)
+add_test(NAME test_mapper COMMAND test_mapper)
+target_link_libraries(test_mapper storage domain Qt::Test)
 

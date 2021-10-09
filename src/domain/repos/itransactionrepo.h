@@ -26,6 +26,7 @@ public:
     virtual void addGroup(const GroupRequest & gr) = 0;
     virtual void setTransactionCategory(const Transaction & t, const Category & c) = 0;
     virtual void setCategoryGroup(const Category & c, const Group & g) = 0;
+    virtual void updateTransaction(const Transaction & t) = 0;
 
 signals:
     void transactionsChanged();
