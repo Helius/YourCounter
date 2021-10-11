@@ -14,13 +14,17 @@ add_library(storage)
 target_sources(
         storage
         PRIVATE
-        transactionjsonmapper.cpp
-        transactionjsonmapper.h
         transactionrepo.cpp
         transactionrepo.h
         firebaseRtDbAPI.cpp
         firebaseRtDbAPI.h
         IFirebaseRtDbApi.h
+        jsonMappers/transactionjsonmapper.cpp
+        jsonMappers/transactionjsonmapper.h
+        jsonMappers/categoryMappers.cpp
+        jsonMappers/categoryMappers.h
+        jsonMappers/groupMappers.cpp
+        jsonMappers/groupMappers.h
 )
 
 target_include_directories(storage
@@ -44,3 +48,10 @@ add_executable(test_mapper test/test_transactionjsonmapper.cpp)
 add_test(NAME test_mapper COMMAND test_mapper)
 target_link_libraries(test_mapper storage domain Qt::Test)
 
+add_executable(test_category test/test_categoryjsonmappers.cpp)
+add_test(NAME test_category COMMAND test_category)
+target_link_libraries(test_category storage domain Qt::Test)
+
+add_executable(test_group test/test_groupjsonmappers.cpp)
+add_test(NAME test_group COMMAND test_group)
+target_link_libraries(test_group storage domain Qt::Test)

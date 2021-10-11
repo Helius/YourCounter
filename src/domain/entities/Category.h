@@ -4,18 +4,20 @@
 
 struct Category {
     Category() = delete;
-    Category(QString name, QString id)
-    : name(std::move(name))
-    , id(std::move(id))
+    Category(const QString & name, const QString & id, const QString & groupId)
+    : id(id)
+    , name(name)
+    , groupId(groupId)
     {};
-    QString name;
     QString id;
+    QString name;
+    QString groupId;
     bool operator==(const Category & other) const {
         return id == other.id;
     }
 
     bool isValid() const {
-        return !name.isEmpty();
+        return !name.isEmpty() && !id.isEmpty();
     }
 };
 

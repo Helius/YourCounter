@@ -16,23 +16,26 @@ public:
     TransactionRepo() = delete;
     ~TransactionRepo() override;
 
+    void init() override;
     const Transactions & getTransactions() override;
     const Transactions & getPredictions() override;
     const Categories & getCategories() override;
     const Groups & getGroups() override;
-    void addTransaction(const TransactionRequest & tr) override;
-    void addPrediction(const TransactionRequest &tr) override;
-    void addCategory(const CategoryRequest & cr) override;
-    void addGroup(const GroupRequest & gr) override;
-    void setTransactionCategory(const Transaction & t, const Category & c) override;
-    void setCategoryGroup(const Category & c, const Group & g) override;
-    void updateTransaction(const Transaction & t) override;
+
+    void addTransaction(const TransactionRequest & ) override;
+    void addPrediction(const TransactionRequest &) override;
+    void addCategory(const CategoryRequest & ) override;
+    void addGroup(const GroupRequest & ) override;
+
+    void updateTransaction(const Transaction & ) override;
+    void updatePrediction(const Transaction & ) override;
+    void updateCategory(const Category & ) override;
+    void updateGroup(const Group & ) override;
 
     static QSharedPointer<ITransactionRepo> getInstance(IFirebaseRtDbAPIUnq api);
 
 private:
     explicit TransactionRepo(IFirebaseRtDbAPIUnq api);
-    void init();
 
 private:
     IFirebaseRtDbAPIUnq m_api;

@@ -4,8 +4,8 @@
 
 struct GroupRequest {
     GroupRequest() = delete;
-    explicit GroupRequest(QString name)
-    : name(std::move(name))
+    explicit GroupRequest(QString groupName)
+    : name(std::move(groupName))
     {
         Q_ASSERT(!name.isEmpty());
     }

@@ -16,17 +16,21 @@ class ITransactionRepo : public QObject
 public:
     using QObject::QObject;
     ~ITransactionRepo() = default;
+    virtual void init() = 0;
     virtual const Transactions & getTransactions() = 0;
     virtual const Transactions & getPredictions() = 0;
     virtual const Categories & getCategories() = 0;
     virtual const Groups & getGroups() = 0;
+
     virtual void addTransaction(const TransactionRequest & tr) = 0;
     virtual void addPrediction(const TransactionRequest & tr) = 0;
     virtual void addCategory(const CategoryRequest & cr) = 0;
     virtual void addGroup(const GroupRequest & gr) = 0;
-    virtual void setTransactionCategory(const Transaction & t, const Category & c) = 0;
-    virtual void setCategoryGroup(const Category & c, const Group & g) = 0;
+
     virtual void updateTransaction(const Transaction & t) = 0;
+    virtual void updatePrediction(const Transaction & tr) = 0;
+    virtual void updateCategory(const Category & t) = 0;
+    virtual void updateGroup(const Group & t) = 0;
 
 signals:
     void transactionsChanged();

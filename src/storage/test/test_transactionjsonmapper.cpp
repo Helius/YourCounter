@@ -1,5 +1,5 @@
 #include <QtTest/QtTest>
-#include <transactionjsonmapper.h>
+#include <jsonMappers/transactionjsonmapper.h>
 #include <entities/transaction.h>
 
 class TestTransactionJsonMapper: public QObject

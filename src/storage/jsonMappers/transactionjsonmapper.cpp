@@ -2,6 +2,8 @@
 #include <entities/GroupRequest.h>
 #include "transactionjsonmapper.h"
 
+#include <QJsonDocument>
+
 namespace {
     QLatin1String idKey("id");
     QLatin1String amountKey("amount");
@@ -13,7 +15,7 @@ namespace {
 
 namespace TransactionJsonMapper {
 
-    Transaction fromJson(const QString &id, const QJsonObject &obj) {
+    Transaction transactionFromJson(const QString & id, const QJsonObject &obj) {
         float amount = obj.value(amountKey).toDouble(0);
         QDateTime when = QDateTime::fromSecsSinceEpoch(obj.value(whenKey).toInteger());
         QString who = obj.value(whoKey).toString();
@@ -25,34 +27,9 @@ namespace TransactionJsonMapper {
     Transactions parseTransactions(const QJsonObject &transactions) {
         Transactions result;
         for (auto it = transactions.constBegin(); it != transactions.constEnd(); ++it) {
-            result.push_back(fromJson(it.key(), it.value().toObject()));
+            result.push_back(transactionFromJson(it.key(), it.value().toObject()));
         }
         return result;
-    }
-
-    Groups parseGroups(const QJsonObject & groups) {
-        Groups result;
-        for(auto it = groups.constBegin(); it != groups.constEnd(); ++it) {
-            result.push_back(Group(it.key(), it.value().toObject().value("name").toString()));
-        }
-        return result;
-    }
-
-    Categories parseCategories(const QJsonObject &categories) {
-
-        Categories result;
-        for (auto it = categories.constBegin(); it != categories.constEnd(); ++it) {
-            result.push_back(Category(it.key(), it.value().toObject().value("name").toString()));
-        }
-        return result;
-    }
-
-    QJsonObject toJson(const CategoryRequest &request) {
-        return {{"name", request.name}};
-    }
-
-    QJsonObject toJson(const GroupRequest &request) {
-        return {{"name", request.name}};
     }
 
     QJsonObject toJson(const TransactionRequest &request) {

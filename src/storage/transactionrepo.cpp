@@ -5,7 +5,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <entities/transaction.h>
-#include "transactionjsonmapper.h"
+#include "jsonMappers/transactionjsonmapper.h"
+#include "jsonMappers/categoryMappers.h"
+#include "jsonMappers/groupMappers.h"
 #include <QTimer>
 
 namespace {
@@ -13,23 +15,40 @@ namespace {
     QLatin1String categoriesEndPoint("/categories");
     QLatin1String groupsEndPoint("/groups");
     QLatin1String predictionsEndPoint("/predictions");
+
+    template<typename T>
+    QJsonObject updateObject(std::vector<T> container, const T & t)
+    {
+        using namespace TransactionJsonMapper;
+        using namespace CategoryMappers;
+        using namespace GroupMappers;
+
+        QJsonObject patch;
+        for(const auto & orig: container)
+        {
+            if (orig.id == t.id) {
+                patch = diff(t, orig);
+            }
+        }
+        return patch;
+    }
 }
 
 using namespace TransactionJsonMapper;
+using namespace CategoryMappers;
+using namespace GroupMappers;
 
 TransactionRepo::TransactionRepo(IFirebaseRtDbAPIUnq api)
         : ITransactionRepo()
         , m_api(std::move(api))
 {
-    qWarning() << "CTOR";
     Q_ASSERT(m_api);
-    QTimer::singleShot(0, this, &TransactionRepo::init);
 }
 
 void TransactionRepo::addTransaction(const TransactionRequest &tr)
 {
     m_api->addObject(transactionsEndPoint, toJson(tr))
-            .then(this, [this, self=sharedFromThis()](QJsonObject obj) {
+            .then(this, [this, self=sharedFromThis()](const QJsonObject& obj) {
                 Q_ASSERT(self);
                 auto t = parseTransactions(obj);
                 Q_ASSERT(t.size() == 1);
@@ -43,7 +62,7 @@ void TransactionRepo::addTransaction(const TransactionRequest &tr)
 void TransactionRepo::addPrediction(const TransactionRequest &tr)
 {
     m_api->addObject(predictionsEndPoint, toJson(tr))
-            .then(this, [this, self=sharedFromThis()](QJsonObject obj) {
+            .then(this, [this, self=sharedFromThis()](const QJsonObject& obj) {
                 Q_ASSERT(self);
                 auto t = parseTransactions(obj);
                 Q_ASSERT(t.size() == 1);
@@ -57,7 +76,7 @@ void TransactionRepo::addPrediction(const TransactionRequest &tr)
 void TransactionRepo::addCategory(const CategoryRequest & cr)
 {
     m_api->addObject(categoriesEndPoint, toJson(cr))
-            .then(this, [this, self=sharedFromThis()](QJsonObject obj) {
+            .then(this, [this, self=sharedFromThis()](const QJsonObject& obj) {
                 Q_ASSERT(self);
                 auto t = parseCategories(obj);
                 Q_ASSERT(t.size() == 1);
@@ -68,18 +87,17 @@ void TransactionRepo::addCategory(const CategoryRequest & cr)
             });
 }
 
-void TransactionRepo::addGroup(const GroupRequest &gr)
-{
+void TransactionRepo::addGroup(const GroupRequest &gr) {
     m_api->addObject(groupsEndPoint, toJson(gr))
-    .then(this, [this, self=sharedFromThis()](QJsonObject obj) {
-        Q_ASSERT(self);
-        auto t = parseGroups(obj);
-        Q_ASSERT(t.size() == 1);
-        if (!t.empty()) {
-            m_groups.push_back(t.front());
-        }
-        emit categoriesChanged();
-    });
+            .then(this, [this, self = sharedFromThis()](const QJsonObject &obj) {
+                Q_ASSERT(self);
+                auto t = parseGroups(obj);
+                Q_ASSERT(t.size() == 1);
+                if (!t.empty()) {
+                    m_groups.push_back(t.front());
+                }
+                emit categoriesChanged();
+            });
 }
 
 const Transactions &TransactionRepo::getTransactions()
@@ -104,7 +122,6 @@ const Groups &TransactionRepo::getGroups()
 
 void TransactionRepo::init()
 {
-
     m_transactions.clear();
     m_categories.clear();
     m_predictions.clear();
@@ -143,25 +160,35 @@ void TransactionRepo::init()
             });
 }
 
-void TransactionRepo::setTransactionCategory(const Transaction &t, const Category &c) {
-    auto updateFuture = m_api->updateObjectByID(
-            transactionsEndPoint, t.id, {{"category", c.id}});
-}
-
-void TransactionRepo::setCategoryGroup(const Category &c, const Group &g) {
-    auto updateFuture = m_api->updateObjectByID(
-            categoriesEndPoint, c.id, {{"group", g.id}});
-}
-
 void TransactionRepo::updateTransaction(const Transaction & t)
 {
-    QJsonObject patch;
-    for(const auto & orig: m_transactions) {
-        if(orig.id == t.id) {
-            patch = diff(t, orig);
-        }
-    }
-    auto updateFuture = m_api->updateObjectByID(transactionsEndPoint, t.id, patch);
+    QJsonObject patch = updateObject<Transaction>(m_transactions, t);
+    Q_ASSERT(!patch.isEmpty());
+    auto updateFuture = m_api->updateObjectByID(transactionsEndPoint, t.id, patch)
+            .then(this, [this, self=sharedFromThis()](const QJsonObject &){
+                emit transactionsChanged();
+            });
+}
+
+void TransactionRepo::updateGroup(const Group & g) {
+    QJsonObject patch = updateObject<Group>(m_groups, g);
+    auto updateFuture = m_api->updateObjectByID(
+            groupsEndPoint, g.id, patch);
+}
+
+void TransactionRepo::updateCategory(const Category & c) {
+    QJsonObject patch = updateObject<Category>(m_categories, c);
+    auto updateFuture = m_api->updateObjectByID(
+            categoriesEndPoint, c.id, patch);
+}
+
+void TransactionRepo::updatePrediction(const Transaction & t) {
+    QJsonObject patch = updateObject<Transaction>(m_predictions, t);
+    Q_ASSERT(!patch.isEmpty());
+    auto updateFuture = m_api->updateObjectByID(predictionsEndPoint, t.id, patch)
+            .then(this, [this, self=sharedFromThis()](const QJsonObject &){
+                emit predictionsChanged();
+            });
 }
 
 TransactionRepo::~TransactionRepo() {
@@ -172,7 +199,6 @@ TransactionRepo::~TransactionRepo() {
 }
 
 QSharedPointer<ITransactionRepo> TransactionRepo::getInstance(IFirebaseRtDbAPIUnq api) {
-//    auto * repo = new TransactionRepo(std::move(api));
     QSharedPointer<TransactionRepo> repo( new TransactionRepo(std::move(api)));
     return repo->gePtr();
 }
@@ -180,3 +206,4 @@ QSharedPointer<ITransactionRepo> TransactionRepo::getInstance(IFirebaseRtDbAPIUn
 QSharedPointer<ITransactionRepo> TransactionRepo::gePtr() {
     return sharedFromThis();
 }
+
