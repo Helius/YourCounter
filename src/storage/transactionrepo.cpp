@@ -32,6 +32,15 @@ namespace {
         }
         return patch;
     }
+
+    template<typename T>
+    size_t idToIndex(const T & t, const QString & id)
+    {
+        return std::distance(find_if(t.begin(), t.end(), [id](const auto & v){
+            return id == v.id;
+        }), t.cbegin());
+    }
+
 }
 
 using namespace TransactionJsonMapper;
@@ -54,8 +63,8 @@ void TransactionRepo::addTransaction(const TransactionRequest &tr)
                 Q_ASSERT(t.size() == 1);
                 if (!t.empty()) {
                     m_transactions.push_back(t.front());
+                    emit transactionsChanged(m_transactions.size()-1);
                 }
-                emit transactionsChanged();
             });
 }
 
@@ -69,7 +78,7 @@ void TransactionRepo::addPrediction(const TransactionRequest &tr)
                 if (!t.empty()) {
                     m_predictions.push_back(t.front());
                 }
-                emit predictionsChanged();
+                emit predictionsChanged(m_predictions.size()-1);
             });
 }
 
@@ -83,7 +92,7 @@ void TransactionRepo::addCategory(const CategoryRequest & cr)
                 if (!t.empty()) {
                     m_categories.push_back(t.front());
                 }
-                emit categoriesChanged();
+                emit categoriesChanged(m_categories.size()-1);
             });
 }
 
@@ -96,7 +105,7 @@ void TransactionRepo::addGroup(const GroupRequest &gr) {
                 if (!t.empty()) {
                     m_groups.push_back(t.front());
                 }
-                emit categoriesChanged();
+                emit categoriesChanged(m_groups.size()-1);
             });
 }
 
@@ -120,8 +129,7 @@ const Groups &TransactionRepo::getGroups()
     return m_groups;
 }
 
-void TransactionRepo::init()
-{
+void TransactionRepo::init() {
     m_transactions.clear();
     m_categories.clear();
     m_predictions.clear();
@@ -132,7 +140,7 @@ void TransactionRepo::init()
             .then(this, [this, self=sharedFromThis()](Transactions transactions){
                 Q_ASSERT(self);
                 m_transactions.swap(transactions);
-                emit transactionsChanged();
+                emit transactionsChanged(-1);
             });
 
     m_loadCategories = m_api->getObject(categoriesEndPoint)
@@ -140,7 +148,7 @@ void TransactionRepo::init()
             .then(this, [this, self=sharedFromThis()](Categories categories){
                 Q_ASSERT(self);
                 m_categories.swap(categories);
-                emit categoriesChanged();
+                emit categoriesChanged(-1);
             });
 
     m_loadPredictions = m_api->getObject(predictionsEndPoint)
@@ -148,7 +156,7 @@ void TransactionRepo::init()
             .then(this, [this, self=sharedFromThis()](Transactions transactions){
                 Q_ASSERT(self);
                 m_predictions.swap(transactions);
-                emit predictionsChanged();
+                emit predictionsChanged(-1);
             });
 
     m_loadGroups = m_api->getObject(groupsEndPoint)
@@ -156,17 +164,32 @@ void TransactionRepo::init()
             .then(this, [this, self=sharedFromThis()](Groups groups){
                 Q_ASSERT(self);
                 m_groups.swap(groups);
-                emit groupsChanged();
+                emit groupsChanged(-1);
             });
 }
 
-void TransactionRepo::updateTransaction(const Transaction & t)
-{
+void TransactionRepo::updateTransaction(const Transaction & t) {
     QJsonObject patch = updateObject<Transaction>(m_transactions, t);
     Q_ASSERT(!patch.isEmpty());
     auto updateFuture = m_api->updateObjectByID(transactionsEndPoint, t.id, patch)
+            .then(this, [this, self=sharedFromThis(), id = t.id](const QJsonObject & o) {
+                Transaction ut = transactionFromJson(id, o);
+                size_t ind = idToIndex(m_transactions, id);
+                if (ind < m_transactions.size()) {
+                    m_transactions[ind] = ut;
+                    emit transactionsChanged(ind);
+                } else {
+                    Q_ASSERT(false && "can't find updated transactions by id");
+                }
+            });
+}
+
+void TransactionRepo::updatePrediction(const Transaction & t) {
+    QJsonObject patch = updateObject<Transaction>(m_predictions, t);
+    Q_ASSERT(!patch.isEmpty());
+    auto updateFuture = m_api->updateObjectByID(predictionsEndPoint, t.id, patch)
             .then(this, [this, self=sharedFromThis()](const QJsonObject &){
-                emit transactionsChanged();
+                emit predictionsChanged(123);
             });
 }
 
@@ -180,15 +203,6 @@ void TransactionRepo::updateCategory(const Category & c) {
     QJsonObject patch = updateObject<Category>(m_categories, c);
     auto updateFuture = m_api->updateObjectByID(
             categoriesEndPoint, c.id, patch);
-}
-
-void TransactionRepo::updatePrediction(const Transaction & t) {
-    QJsonObject patch = updateObject<Transaction>(m_predictions, t);
-    Q_ASSERT(!patch.isEmpty());
-    auto updateFuture = m_api->updateObjectByID(predictionsEndPoint, t.id, patch)
-            .then(this, [this, self=sharedFromThis()](const QJsonObject &){
-                emit predictionsChanged();
-            });
 }
 
 TransactionRepo::~TransactionRepo() {

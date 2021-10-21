@@ -35,6 +35,7 @@ public:
         Q_ASSERT(abs(this->amount) > 0.001);
     }
     Transaction(const Transaction & other) = default;
+    Transaction & operator=(const Transaction &) = default;
 
 };
 

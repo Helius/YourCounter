@@ -9,6 +9,7 @@
 #include <entities/Group.h>
 #include <entities/GroupRequest.h>
 
+
 class ITransactionRepo : public QObject
 {
     Q_OBJECT
@@ -16,6 +17,7 @@ class ITransactionRepo : public QObject
 public:
     using QObject::QObject;
     ~ITransactionRepo() = default;
+
     virtual void init() = 0;
     virtual const Transactions & getTransactions() = 0;
     virtual const Transactions & getPredictions() = 0;
@@ -33,10 +35,10 @@ public:
     virtual void updateGroup(const Group & t) = 0;
 
 signals:
-    void transactionsChanged();
-    void categoriesChanged();
-    void groupsChanged();
-    void predictionsChanged();
+    void transactionsChanged(size_t);
+    void categoriesChanged(size_t);
+    void groupsChanged(size_t);
+    void predictionsChanged(size_t);
 };
 
 using ITransactionRepoPtr = std::shared_ptr<ITransactionRepo>;

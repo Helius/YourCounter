@@ -6,6 +6,57 @@
 #include <QFuture>
 
 
+class IRepoObserver : public QObject {
+    Q_OBJECT
+signals:
+    void dataChanged(int index);
+};
+
+template <typename Entity>
+class ICRUDMethods : public IRepoObserver
+{
+public:
+    virtual void create(const Entity & t) = 0;
+    virtual void remove(const Entity & t) = 0;
+    virtual void update(const Entity & t) = 0;
+    virtual const std::vector<Entity> & data() = 0;
+
+};
+
+template <typename T>
+struct IJsonMapper {
+    virtual T fromJson(const QJsonObject & json) = 0;
+    virtual QJsonObject toJson(const T & t) = 0;
+    virtual QJsonObject patch(const T & from, const T & to) = 0;
+    virtual ~IJsonMapper() = default;
+};
+
+template<typename Entity>
+class CrudRepository : public ICRUDMethods<Entity>
+{
+public:
+    CrudRepository() = delete;
+    CrudRepository(const QString & entryPoint, std::unique_ptr<IJsonMapper<Entity>> mapper)
+            : m_entryPoint(entryPoint)
+            , m_mapper(std::move(mapper))
+    {}
+
+    void create(const Entity & e) override {
+        m_mapper->toJson(e);
+        m_data.push_back(e);
+        emit IRepoObserver::dataChanged(m_data.size()-1);
+    }
+
+    void remove(const Entity & ) override {};
+    void update(const Entity & ) override {};
+
+    const std::vector<Entity> & data() override { return m_data; }
+
+    std::vector<Entity> m_data;
+    QString m_entryPoint;
+    std::unique_ptr<IJsonMapper<Entity>> m_mapper;
+};
+
 class TransactionRepo
     : public ITransactionRepo
     , public QEnableSharedFromThis<ITransactionRepo>

@@ -87,6 +87,7 @@ private slots:
     void testInitLoad();
     void testAddTransactions();
     void testUpdateObject();
+    void testRepo();
 };
 
 void TestTransactionRepo::testInitLoad() {
@@ -147,25 +148,71 @@ void TestTransactionRepo::testUpdateObject() {
 
     transactionsSpy.wait(100);
     QCOMPARE(transactionsSpy.count(), 1);
-    const auto & transactions = repo->getTransactions();
-    QCOMPARE(transactions.size(), 2);
+//    const auto & transactions = repo->getTransactions();
+//    QCOMPARE(transactions.size(), 2);
+//    transactionsSpy.clear();
+//
+//    Transaction newT (transactions[1]);
+//    QCOMPARE(newT, transactions[1]);
+//    QCOMPARE(newT.id, "tid2");
+//    newT.amount = -15;
+//    newT.categoryId = "newCat";
+//    repo->updateTransaction(newT);
+//    transactionsSpy.wait(100);
+//    QCOMPARE(transactionsSpy.count(), 1);
+//    QCOMPARE(transactions.size(), 2);
+//
+//    QCOMPARE(transactions[0].id, "tid1");
+//
+//    QCOMPARE(transactions[1].id, "tid2");
+//    QCOMPARE(transactions[1].amount, -15);
+//    QCOMPARE(transactions[1].categoryId, "newCat");
+
+}
+
+struct Entity {
+    Entity() = delete;
+    Entity(int id, int value) : id(id), value(value) {};
+    int id;
+    int value;
+    bool operator==(const Entity & other) const {
+        return id == other.id && value == other.value;
+    }
+};
+
+class EntityMapper : public IJsonMapper<Entity> {
+    Entity fromJson(const QJsonObject & json) override
+    {
+        return Entity(json.value("id").toInt(), json.value("value").toInt());
+    }
+    QJsonObject toJson(const Entity & e) override
+    {
+        return {{"id", e.id}, {"value", e.value}};
+    }
+    QJsonObject patch(const Entity & , const Entity & to) override
+    {
+        return {{"value", to.value}};
+    }
+};
+
+void TestTransactionRepo::testRepo()
+{
+    std::unique_ptr<ICRUDMethods<Entity>> repo = std::make_unique<CrudRepository<Entity>>("/repo", std::make_unique<EntityMapper>());
+    QSignalSpy transactionsSpy(repo.get(), &IRepoObserver::dataChanged);
+    QCOMPARE(repo->data().size(), 0);
+    repo->create({1, 11});
+    QCOMPARE(repo->data().size(), 1);
+    QCOMPARE(transactionsSpy.count(), 1);
+    QCOMPARE(transactionsSpy.takeFirst().at(0).toInt(), 0);
     transactionsSpy.clear();
 
-    Transaction newT (transactions[1]);
-    QCOMPARE(newT, transactions[1]);
-    QCOMPARE(newT.id, "tid2");
-    newT.amount = -15;
-    newT.categoryId = "newCat";
-    repo->updateTransaction(newT);
-    transactionsSpy.wait(100);
+    repo->create({2, 22});
+    QCOMPARE(repo->data().size(), 2);
     QCOMPARE(transactionsSpy.count(), 1);
-    QCOMPARE(transactions.size(), 2);
+    QCOMPARE(transactionsSpy.takeFirst().at(0).toInt(), 1);
 
-    QCOMPARE(transactions[0].id, "tid1");
-
-    QCOMPARE(transactions[1].id, "tid2");
-    QCOMPARE(transactions[1].amount, -15);
-    QCOMPARE(transactions[1].categoryId, "newCat");
+    QCOMPARE(Entity(1, 11), repo->data().front());
+    QCOMPARE(Entity(2, 22), repo->data().back());
 
 }
 
