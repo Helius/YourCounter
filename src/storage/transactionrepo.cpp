@@ -5,47 +5,45 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <entities/transaction.h>
-#include "jsonMappers/transactionjsonmapper.h"
-#include "jsonMappers/categoryMappers.h"
-#include "jsonMappers/groupMappers.h"
+#include "jsonMappers/TransactionMapper.h"
+#include "jsonMappers/CategoryMapper.h"
+#include "jsonMappers/GroupMappers.h"
 #include <QTimer>
 
 namespace {
-    QLatin1String transactionsEndPoint("/transactions");
-    QLatin1String categoriesEndPoint("/categories");
-    QLatin1String groupsEndPoint("/groups");
-    QLatin1String predictionsEndPoint("/predictions");
+//    QLatin1String transactionsEndPoint("/transactions");
+//    QLatin1String categoriesEndPoint("/categories");
+//    QLatin1String groupsEndPoint("/groups");
+//    QLatin1String predictionsEndPoint("/predictions");
 
-    template<typename T>
-    QJsonObject updateObject(std::vector<T> container, const T & t)
-    {
-        using namespace TransactionJsonMapper;
-        using namespace CategoryMappers;
-        using namespace GroupMappers;
-
-        QJsonObject patch;
-        for(const auto & orig: container)
-        {
-            if (orig.id == t.id) {
-                patch = diff(t, orig);
-            }
-        }
-        return patch;
-    }
-
-    template<typename T>
-    size_t idToIndex(const T & t, const QString & id)
-    {
-        return std::distance(find_if(t.begin(), t.end(), [id](const auto & v){
-            return id == v.id;
-        }), t.cbegin());
-    }
+//    template<typename T>
+//    QJsonObject updateObject(std::vector<T> container, const T & t)
+//    {
+//        using namespace TransactionJsonMapper;
+//        using namespace CategoryMappers;
+//
+//        QJsonObject patch;
+//        for(const auto & orig: container)
+//        {
+//            if (orig.id == t.id) {
+//                patch = diff(t, orig);
+//            }
+//        }
+//        return patch;
+//    }
+//
+//    template<typename T>
+//    size_t idToIndex(const T & t, const QString & id)
+//    {
+//        return std::distance(find_if(t.begin(), t.end(), [id](const auto & v){
+//            return id == v.id;
+//        }), t.cbegin());
+//    }
 
 }
-
+/*
 using namespace TransactionJsonMapper;
 using namespace CategoryMappers;
-using namespace GroupMappers;
 
 TransactionRepo::TransactionRepo(IFirebaseRtDbAPIUnq api)
         : ITransactionRepo()
@@ -221,3 +219,4 @@ QSharedPointer<ITransactionRepo> TransactionRepo::gePtr() {
     return sharedFromThis();
 }
 
+*/

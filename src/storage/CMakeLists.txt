@@ -9,7 +9,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQUIRED)
 
-add_library(storage)
+add_library(storage jsonMappers/IJsonMapper.h)
 
 target_sources(
         storage
@@ -19,12 +19,12 @@ target_sources(
         firebaseRtDbAPI.cpp
         firebaseRtDbAPI.h
         IFirebaseRtDbApi.h
-        jsonMappers/transactionjsonmapper.cpp
-        jsonMappers/transactionjsonmapper.h
-        jsonMappers/categoryMappers.cpp
-        jsonMappers/categoryMappers.h
-        jsonMappers/groupMappers.cpp
-        jsonMappers/groupMappers.h
+        jsonMappers/TransactionMapper.cpp
+        jsonMappers/TransactionMapper.h
+        jsonMappers/CategoryMapper.cpp
+        jsonMappers/CategoryMapper.h
+        jsonMappers/GroupMappers.cpp
+        jsonMappers/GroupMappers.h
 )
 
 target_include_directories(storage
@@ -44,14 +44,14 @@ add_executable(test_storage test/test_transactionrepo.cpp)
 add_test(NAME test_storage COMMAND test_storage)
 target_link_libraries(test_storage storage domain Qt::Test)
 
-add_executable(test_mapper test/test_transactionjsonmapper.cpp)
-add_test(NAME test_mapper COMMAND test_mapper)
-target_link_libraries(test_mapper storage domain Qt::Test)
+add_executable(test_transaction_mapper test/test_TransactionMapper.cpp)
+add_test(NAME test_transaction_mapper COMMAND test_transaction_mapper)
+target_link_libraries(test_transaction_mapper storage domain Qt::Test)
 
-add_executable(test_category test/test_categoryjsonmappers.cpp)
-add_test(NAME test_category COMMAND test_category)
-target_link_libraries(test_category storage domain Qt::Test)
+add_executable(test_category_mapper test/test_CategoryMapper.cpp)
+add_test(NAME test_category_mapper COMMAND test_category_mapper)
+target_link_libraries(test_category_mapper storage domain Qt::Test)
 
-add_executable(test_group test/test_groupjsonmappers.cpp)
-add_test(NAME test_group COMMAND test_group)
-target_link_libraries(test_group storage domain Qt::Test)
+add_executable(test_group_mapper test/test_GroupMapper.cpp)
+add_test(NAME test_group_mapper COMMAND test_group_mapper)
+target_link_libraries(test_group_mapper storage domain Qt::Test)

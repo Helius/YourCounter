@@ -4,6 +4,7 @@
 #include <repos/itransactionrepo.h>
 #include "firebaseRtDbAPI.h"
 #include <QFuture>
+#include "jsonMappers/IJsonMapper.h"
 
 
 class IRepoObserver : public QObject {
@@ -20,15 +21,6 @@ public:
     virtual void remove(const Entity & t) = 0;
     virtual void update(const Entity & t) = 0;
     virtual const std::vector<Entity> & data() = 0;
-
-};
-
-template <typename T>
-struct IJsonMapper {
-    virtual T fromJson(const QJsonObject & json) = 0;
-    virtual QJsonObject toJson(const T & t) = 0;
-    virtual QJsonObject patch(const T & from, const T & to) = 0;
-    virtual ~IJsonMapper() = default;
 };
 
 template<typename Entity>
@@ -56,11 +48,10 @@ public:
     QString m_entryPoint;
     std::unique_ptr<IJsonMapper<Entity>> m_mapper;
 };
-
+/*
 class TransactionRepo
     : public ITransactionRepo
     , public QEnableSharedFromThis<ITransactionRepo>
-
 {
 Q_OBJECT
 public:
@@ -101,3 +92,4 @@ private:
 
     QSharedPointer<ITransactionRepo> gePtr();
 };
+*/

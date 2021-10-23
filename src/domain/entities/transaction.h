@@ -17,8 +17,13 @@ public:
     QString who;
     QString comment;
 
-    bool operator==(const Transaction & other) const {
-        return id == other.id;
+    bool operator==(const Transaction &other) const {
+        return id == other.id &&
+               qFuzzyCompare(amount, other.amount) &&
+               when == other.when &&
+               categoryId == other.categoryId &&
+               who == other.who &&
+               comment == other.comment;
     }
 
     Transaction() = delete;

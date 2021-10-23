@@ -1,5 +1,5 @@
 #include <QtTest/QtTest>
-#include <jsonMappers/categoryMappers.h>
+#include <jsonMappers/CategoryMapper.h>
 
 class TestCategoryJsonMapper : public QObject {
 Q_OBJECT
@@ -7,7 +7,6 @@ private slots:
 
     void TestToJson();
     void TestFromJson();
-    void TestParseCategories();
     void TestEmptyDiff();
     void TestNameDiff();
     void TestGroupIdDiff();
@@ -16,33 +15,31 @@ private slots:
 
 private:
     const Category orig{"name1", "id1", "groupId1"};
-    const CategoryRequest origReq{"name1", "groupId1"};
+    CategoryMapper m;
 };
-
-using namespace CategoryMappers;
 
 void TestCategoryJsonMapper::TestEmptyDiff() {
     Category newc(orig);
-    QVERIFY(diff(orig, newc).isEmpty());
+    QVERIFY(m.diff(orig, newc).isEmpty());
 }
 
 void TestCategoryJsonMapper::TestNameDiff() {
     Category newc(orig);
     newc.name = "newname";
-    QCOMPARE(diff(newc, orig), QJsonObject({{"name", "newname"}}));
+    QCOMPARE(m.diff(orig, newc), QJsonObject({{"name", "newname"}}));
 }
 
 void TestCategoryJsonMapper::TestGroupIdDiff() {
     Category newc(orig);
     newc.groupId = "newgroup";
-    QCOMPARE(diff(newc, orig), QJsonObject({{"groupId", "newgroup"}}));
+    QCOMPARE(m.diff(orig, newc), QJsonObject({{"groupId", "newgroup"}}));
 }
 
 void TestCategoryJsonMapper::TestNameAndGroupDiff() {
     Category newc(orig);
     newc.name = "newname";
     newc.groupId = "newgroup";
-    QCOMPARE(diff(newc, orig),
+    QCOMPARE(m.diff(orig, newc),
              QJsonObject({
                                  {"groupId", "newgroup"},
                                  {"name",    "newname"}
@@ -50,7 +47,7 @@ void TestCategoryJsonMapper::TestNameAndGroupDiff() {
 }
 
 void TestCategoryJsonMapper::TestToJson() {
-    QCOMPARE(toJson(origReq),
+    QCOMPARE(m.toJson(orig),
              QJsonObject({
                                  {"name",    "name1"},
                                  {"groupId", "groupId1"}
@@ -58,7 +55,7 @@ void TestCategoryJsonMapper::TestToJson() {
 }
 
 void TestCategoryJsonMapper::TestFromJson() {
-    auto cat = categoryFromJson("id1", QJsonObject{
+    auto cat = m.fromJson("id1", QJsonObject{
             {"name",    "name1"},
             {"groupId", "groupId1"}
     });
@@ -68,33 +65,15 @@ void TestCategoryJsonMapper::TestFromJson() {
     QVERIFY(cat == orig);
 }
 
-void TestCategoryJsonMapper::TestParseCategories() {
-    const auto cat1 = QJsonObject{
-            {"name",    "name1"},
-            {"groupId", "groupId1"}
-    };
-    const auto cat2 = QJsonObject{
-            {"name",    "name2"},
-            {"groupId", "groupId2"}
-    };
-    auto catsJson = QJsonObject({
-        {"id1", cat1},
-        {"id2", cat2}
-    });
-    Categories cats = parseCategories(catsJson);
-    QCOMPARE(cats.size(), 2);
-    QCOMPARE(cats.front().id, "id1");
-}
-
 void TestCategoryJsonMapper::TestPatch() {
     Category cat(orig);
-    patch(cat, QJsonObject());
+    m.patch(cat, QJsonObject());
     QCOMPARE(cat.name, orig.name);
     QCOMPARE(cat.groupId, orig.groupId);
-    patch(cat, {{"name", "new_name"}});
+    m.patch(cat, {{"name", "new_name"}});
     QCOMPARE(cat.name, "new_name");
     QCOMPARE(cat.groupId, orig.groupId);
-    patch(cat, {{"groupId", "new_groupId"}});
+    m.patch(cat, {{"groupId", "new_groupId"}});
     QCOMPARE(cat.name, "new_name");
     QCOMPARE(cat.groupId, "new_groupId");
 }
@@ -102,4 +81,4 @@ void TestCategoryJsonMapper::TestPatch() {
 
 QTEST_MAIN(TestCategoryJsonMapper)
 
-#include "test_categoryjsonmappers.moc"
+#include "test_CategoryMapper.moc"
