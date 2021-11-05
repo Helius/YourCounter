@@ -4,19 +4,16 @@
 #include <utility>
 
 struct Group {
-    Group() = delete;
-    Group(QString id, QString name)
-    : id(std::move(id))
-    , name(std::move(name))
-    {
-        Q_ASSERT(!this->name.isEmpty());
-    }
-    QString id;
-    QString name;
+  QString id;
+  QString name;
 
-    bool operator==(const Group & other) const {
-        return id == other.id;
-    }
+  Group() = delete;
+  Group(QString id, QString name) : id(std::move(id)), name(std::move(name)) {
+    Q_ASSERT(!this->name.isEmpty());
+  }
+
+  bool operator==(const Group &other) const { return id == other.id; }
+  operator bool() const { return !id.isEmpty() && !name.isEmpty(); }
 };
 
 using Groups = std::vector<Group>;

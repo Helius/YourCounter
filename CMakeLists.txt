@@ -16,6 +16,5 @@ enable_testing()
 
 add_subdirectory(src/domain)
 add_subdirectory(src/storage)
-#add_subdirectory(src/qmlapp)
-#add_subdirectory(test)
-
+add_subdirectory(src/settings)
+add_subdirectory(src/qmlapp)

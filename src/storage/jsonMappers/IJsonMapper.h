@@ -8,3 +8,4 @@ struct IJsonMapper {
     virtual QJsonObject diff(const T & from, const T & to) = 0;
     virtual ~IJsonMapper() = default;
 };
+

@@ -12,35 +12,34 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQU
 add_library(storage jsonMappers/IJsonMapper.h)
 
 target_sources(
-        storage
-        PRIVATE
-        transactionrepo.cpp
-        transactionrepo.h
-        firebaseRtDbAPI.cpp
-        firebaseRtDbAPI.h
-        IFirebaseRtDbApi.h
-        jsonMappers/TransactionMapper.cpp
-        jsonMappers/TransactionMapper.h
-        jsonMappers/CategoryMapper.cpp
-        jsonMappers/CategoryMapper.h
-        jsonMappers/GroupMappers.cpp
-        jsonMappers/GroupMappers.h
+	    storage
+		PRIVATE
+		CrudRepoImpl.h
+		firebaseRtDbAPI.cpp
+		firebaseRtDbAPI.h
+		IFirebaseRtDbApi.h
+		jsonMappers/TransactionMapper.cpp
+		jsonMappers/TransactionMapper.h
+		jsonMappers/CategoryMapper.cpp
+		jsonMappers/CategoryMapper.h
+		jsonMappers/GroupMappers.cpp
+		jsonMappers/GroupMappers.h
 )
 
 target_include_directories(storage
-        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
-        )
+	    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+		)
 
 target_link_libraries(
-        storage
-        PRIVATE domain
-        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
+	    storage
+		PRIVATE domain
+		PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 )
 
 
 enable_testing(true)
 
-add_executable(test_storage test/test_transactionrepo.cpp)
+add_executable(test_storage test/test_CrudRepo.cpp)
 add_test(NAME test_storage COMMAND test_storage)
 target_link_libraries(test_storage storage domain Qt::Test)
 

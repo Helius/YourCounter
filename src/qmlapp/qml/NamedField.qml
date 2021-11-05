@@ -7,7 +7,7 @@ RowLayout {
     property alias edit: edit
     signal newText(var text)
 
-    Layout.preferredWidth: 100
+    Layout.preferredWidth: 300
     spacing: 10
     Text {
         id: text
@@ -21,6 +21,7 @@ RowLayout {
         id: edit
         height: 60
         font.pointSize: 12
+        Layout.fillWidth: true
         color: "white"
         onTextEdited: {
             newText(edit.text)

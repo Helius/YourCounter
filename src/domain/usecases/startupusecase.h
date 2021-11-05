@@ -1,24 +1,41 @@
-#ifndef STARTUPUSECASE_H
-#define STARTUPUSECASE_H
+#pragma once
 
 #include <QObject>
+#include <QProperty>
+#include <repos/IEntityRepo.h>
+#include <repos/ISettingsRepo.h>
 
 class StartupUseCase
-    : public QObject
-{
+    : public QObject {
     Q_OBJECT
 
 public:
-    StartupUseCase();
+    enum class State {
+        Loading = 0,
+        NeedDbUrl,
+        Error,
+        Finished
+    };
+
+public:
+    StartupUseCase() = delete;
+    StartupUseCase(ISettingsRepoPtr settings, IEntityRepoPtr repo);
+    void setDbUrl(const QString& url);
+
+    QProperty<State> stateProperty;
 
 public slots:
     void start();
+    const QStringList& getErrors() const;
 
-signals:
-    QString getSavedDbUrl();
+private:
+    void checkReadyness();
+    void setError(const QString&);
 
-    void letUserChooseDb();
-    void showDbData();
+private:
+    ISettingsRepoPtr m_settings;
+    IEntityRepoPtr m_repo;
+    QStringList m_errors;
 };
 
-#endif // STARTUPUSECASE_H
+using StartupUseCaseUnq = std::unique_ptr<StartupUseCase>;

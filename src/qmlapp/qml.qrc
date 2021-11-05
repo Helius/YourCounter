@@ -9,5 +9,7 @@
         <file>qml/AddTransactionPopup.qml</file>
         <file>qml/AddTransactionView.qml</file>
         <file>qml/NamedField.qml</file>
+        <file>qml/StartUpScreen.qml</file>
+        <file>qml/icons/settings_white_24dp.svg</file>
     </qresource>
 </RCC>
