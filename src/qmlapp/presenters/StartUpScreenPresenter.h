@@ -4,8 +4,6 @@
 #include <QStringList>
 #include <usecases/startupusecase.h>
 
-// TODO: не утечет?
-
 class StartUpScreenPresenter : public QObject {
 
     Q_OBJECT
@@ -18,14 +16,12 @@ class StartUpScreenPresenter : public QObject {
     Q_PROPERTY(QString StateShowDbUrlInput MEMBER m_stateShowDbUrlInput CONSTANT FINAL)
 
 public:
-    StartUpScreenPresenter() = delete;
-    StartUpScreenPresenter(StartupUseCaseUnq usecase);
-    ~StartUpScreenPresenter();
+    explicit StartUpScreenPresenter(StartupUseCaseUnq usecase);
 
 public:
     QString state() const;
-
     const QStringList& errors() const;
+    Q_INVOKABLE void setDbUrl(const QString& url);
 
 signals:
     void startUpFinished();
@@ -38,3 +34,5 @@ private:
     const QString m_stateLoading { "stateLoading" };
     const QString m_stateShowDbUrlInput { "stateShowDbUrlInput" };
 };
+
+using StartUpScreenPresenterUnq = std::unique_ptr<StartUpScreenPresenter>;

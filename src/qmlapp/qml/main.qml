@@ -20,7 +20,9 @@ ApplicationWindow {
     //            Action { text: qsTr("&Quit") }
     //        }
     //    }
-    visibility: "Maximized"
+    width: 1000
+    height: 1000
+    //visibility: "Maximized"
     visible: true
     title: qsTr("Your Counter")
     Material.theme: Material.Dark
@@ -160,27 +162,49 @@ ApplicationWindow {
     //            mainStack.push(mainComponent)
     //        }
     //    }
-    StackView {
-        id: mainStack
-
+    RowLayout {
         anchors.fill: parent
+        spacing: 8
+        anchors.margins: 8
 
-        initialItem: StartUpScreen {}
+        // navbar
+        Rectangle {
+            border.width: 1
+            border.color: "gray"
+            color: "transparent"
+
+            Layout.preferredWidth: image.width
+            Layout.preferredHeight: parent.height
+
+            Image {
+                id: image
+                anchors.top: parent.top
+                width: 36
+                height: width
+                sourceSize {
+                    width: 36
+                    height: width
+                }
+                source: "qrc:/qml/icons/settings_white_24dp.svg"
+            }
+        }
+
+        // screen stack
+        StackView {
+            Rectangle {
+                anchors.fill: parent
+                border.width: 1
+                border.color: "gray"
+                color: "transparent"
+            }
+            id: mainStack
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            initialItem: StartUpScreen {
+                onStartUpFinished: {
+                    console.log("helius: open main screen");
+                }
+            }
+        }
     }
-
-    //    header: Rectangle {
-    //        color: Material.backgroundDimColor
-    //        height: 48 //buttonRow.height
-    //        width: parent.width
-
-    //            HeaderButtonRow {
-    //                id: buttonRow
-    //                width: parent.width
-    //            }
-    //    }
-
-    //    footer: Rectangle {
-    //        color: Material.backgroundDimColor
-    //        height: 10
-    //    }
 }

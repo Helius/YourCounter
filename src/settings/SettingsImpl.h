@@ -1,21 +1,21 @@
 #pragma once
 
 #include <QSettings>
-#include <repos/ISettingsRepo.h>
+#include <repos/INetworkSettingsRepo.h>
 
-class SettingsRepoImpl
-    : public ISettingsRepo {
+class NetworkSettingsRepoImpl
+    : public INetworkSettingsRepo {
 
-    SettingsRepoImpl() = default;
+public:
+    NetworkSettingsRepoImpl() = default;
+    ~NetworkSettingsRepoImpl() = default;
 
     // ISettingsRepo interface
 public:
     QString getDbUrl() override;
     QString getAccessToken() override;
-    QString getOwnerName() override;
     void setDbUrl(const QString&) override;
     void setAccessToken(const QString&) override;
-    void setOwnerName(const QString&) override;
 
 private:
     QSettings m_settings;

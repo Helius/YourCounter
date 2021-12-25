@@ -2,12 +2,11 @@
 #include <QDebug>
 
 StartUpScreenPresenter::StartUpScreenPresenter(StartupUseCaseUnq usecase)
-    : m_usecase(std::move(usecase))
+    : QObject()
+    , m_usecase(std::move(usecase))
 {
     Q_ASSERT(m_usecase);
-    qDebug() << "StartUpScreenPresenter::ctor";
-    //TODO: bullshit, have to update to Qt6.2
-    static auto m_notifierHolder = m_usecase->stateProperty.subscribe([this]() {
+    static auto m_notifierHolder = m_usecase->stateProperty.addNotifier([this]() {
         StartupUseCase::State state = m_usecase->stateProperty.value();
         if (state == StartupUseCase::State::Finished) {
             emit startUpFinished();
@@ -16,11 +15,6 @@ StartUpScreenPresenter::StartUpScreenPresenter(StartupUseCaseUnq usecase)
         }
     });
     m_usecase->start();
-}
-
-StartUpScreenPresenter::~StartUpScreenPresenter()
-{
-    qDebug() << "~StartUpScreenPresenter::dtor";
 }
 
 QString StartUpScreenPresenter::state() const
@@ -41,4 +35,9 @@ QString StartUpScreenPresenter::state() const
 const QStringList& StartUpScreenPresenter::errors() const
 {
     return m_usecase->getErrors();
+}
+
+void StartUpScreenPresenter::setDbUrl(const QString& url)
+{
+    m_usecase->setDbUrl(url);
 }

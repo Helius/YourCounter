@@ -18,6 +18,8 @@ target_sources(
 		firebaseRtDbAPI.cpp
 		firebaseRtDbAPI.h
 		IFirebaseRtDbApi.h
+		EntityRepoImpl.h
+		EntityRepoImpl.cpp
 		jsonMappers/TransactionMapper.cpp
 		jsonMappers/TransactionMapper.h
 		jsonMappers/CategoryMapper.cpp
@@ -33,6 +35,7 @@ target_include_directories(storage
 target_link_libraries(
 	    storage
 		PRIVATE domain
+		PRIVATE settings
 		PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 )
 

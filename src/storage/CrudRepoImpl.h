@@ -13,7 +13,10 @@ class CrudRepository : public ICRUDRepo<Entity> {
 public:
     using IJsonMapperPtr = std::shared_ptr<IJsonMapper<Entity>>;
     CrudRepository() = delete;
-    CrudRepository(const QString& entryPoint, IFirebaseRtDbAPIPtr api,
+    ~CrudRepository() = default;
+
+    CrudRepository(const QString& entryPoint,
+        IFirebaseRtDbAPIPtr api,
         IJsonMapperPtr mapper)
         : m_entryPoint(entryPoint)
         , m_api(api)
@@ -86,6 +89,7 @@ public:
 
     void fetchAll() override
     {
+        m_fetched = false;
         const auto size = m_data.size();
         if (size != 0) {
             m_data.clear();

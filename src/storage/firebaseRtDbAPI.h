@@ -1,8 +1,10 @@
 #pragma once
 
 #include "IFirebaseRtDbApi.h"
+#include <repos/INetworkSettingsRepo.h>
 
 class QNetworkAccessManager;
+using QNetworkAccessManagerPtr = std::shared_ptr<QNetworkAccessManager>;
 class QNetworkReply;
 
 class FirebaseRtDbAPI : public IFirebaseRtDbApi {
@@ -11,7 +13,7 @@ public:
     using JsonFuture = QFuture<QJsonObject>;
 
     FirebaseRtDbAPI() = delete;
-    FirebaseRtDbAPI(QNetworkAccessManager* nam, const QString& dbUrl, const QString& accessToken);
+    FirebaseRtDbAPI(QNetworkAccessManagerPtr nam, INetworkSettingsRepoPtr settings);
     JsonFuture getObject(const QString& path) override;
     JsonFuture addObject(const QString& root, const QJsonObject& object) override;
     JsonFuture updateObject(const QString& root, const QString& id, const QJsonObject& patch) override;
@@ -21,7 +23,6 @@ private:
     QJsonObject handler(QNetworkReply* reply);
 
 private:
-    QNetworkAccessManager* m_nam = nullptr;
-    QString m_dbUrl;
-    QString m_token;
+    QNetworkAccessManagerPtr m_nam;
+    INetworkSettingsRepoPtr m_settings;
 };

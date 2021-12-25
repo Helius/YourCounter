@@ -3,10 +3,11 @@
 #include <QObject>
 #include <QProperty>
 #include <repos/IEntityRepo.h>
-#include <repos/ISettingsRepo.h>
+#include <repos/INetworkSettingsRepo.h>
 
 class StartupUseCase
     : public QObject {
+
     Q_OBJECT
 
 public:
@@ -19,7 +20,7 @@ public:
 
 public:
     StartupUseCase() = delete;
-    StartupUseCase(ISettingsRepoPtr settings, IEntityRepoPtr repo);
+    StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo);
     void setDbUrl(const QString& url);
 
     QProperty<State> stateProperty;
@@ -33,9 +34,10 @@ private:
     void setError(const QString&);
 
 private:
-    ISettingsRepoPtr m_settings;
+    INetworkSettingsRepoPtr m_settings;
     IEntityRepoPtr m_repo;
     QStringList m_errors;
+    //    RepoObserverPtr m_observer;
 };
 
 using StartupUseCaseUnq = std::unique_ptr<StartupUseCase>;

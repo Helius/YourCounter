@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools Test REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Quick LinguistTools Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQUIRED)
 
 add_library(domain
@@ -22,7 +22,7 @@ add_library(domain
 		repos/ICRUDRepo.cpp
 		repos/IEntityRepo.h
 		repos/idatecolumnadapter.h
-		repos/ISettingsRepo.h
+		repos/INetworkSettingsRepo.h
 		entities/CategoryRequest.h
 		entities/TransactionRequest.h
 		entities/Group.h

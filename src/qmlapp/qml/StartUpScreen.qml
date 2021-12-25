@@ -2,80 +2,98 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import injector
+import presenters
 
 import "Controls"
 
 QmlInjector {
     id: root
+
+    signal startUpFinished();
+
     sourceComponent: Item {
         anchors.fill: parent
 
-                property StartUpScreenPresenter $presenter
-                state: $presenter.state
-        states: [
-            State {
-                name: StartUpScreenPresenter.StateLoading
-                PropertyChanges {
-                    target: indicator
-                    running: true
-                }
-                PropertyChanges {
-                    target: urlFeild
-                    visible: false
-                }
-            },
-            State {
-                name: StartUpScreenPresenter.StateShowDbUrlInput
-                PropertyChanges {
-                    target: indicator
-                    running: false
-                }
-                PropertyChanges {
-                    target: urlFeild
-                    visible: true
-                }
+        property StartUpScreenPresenter $presenter
+        property string st: $presenter.state
+
+        Connections {
+            target: $presenter
+            function onStartUpFinished() {
+                parent.startUpFinished();
             }
-        ]
+        }
 
         RowLayout {
             anchors.fill: parent
 
-            Image {
-                width: 36
-                height: width
-                sourceSize {
-                    width: 36
-                    height: width
-                }
-                source: "qrc:/qml/icons/settings_white_24dp.svg"
-            }
-
             ColumnLayout {
                 Layout.fillWidth: true
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    BusyIndicator {
-                        id: indicator
-                        anchors.centerIn: parent
-                        width: 60
-                        height: 60
-                    }
-                }
-                RowLayout {
-                    id: urlFeild
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: 1000
+                Layout.preferredHeight: parent.height
 
-                    NamedField {
-                        id: url
+                StackLayout {
+                    id: stackLayout
+                    Layout.preferredWidth: parent.width
+                    Layout.preferredHeight: parent.height
+
+                    currentIndex: {
+                        if(st === $presenter.StateError)
+                            return 1;
+                        if(st === $presenter.StateShowDbUrlInput)
+                            return 2;
+                        return 0;
+                    }
+                    onCurrentIndexChanged: {
+                        console.log("helius: currentIndex", currentIndex)
+                    }
+
+                    // 0: loading
+                    Item {
                         Layout.fillWidth: true
-                        name: "Enter DB URL please"
+                        Layout.fillHeight: true
+                        BusyIndicator {
+                            id: indicator
+                            anchors.centerIn: parent
+                            width: 60
+                            height: 60
+                            running: true
+                        }
                     }
 
-                    Button {
-                        text: "Save"
-                        enabled: !!url.edit.text
+                    // 1: retry
+                    Item {
+                        Layout.preferredWidth: implicitWidth
+                        Layout.preferredHeight: implicitHeight
+                        Button {
+                            id: retryButton
+                            anchors.centerIn: parent
+                            text: "Try again"
+                        }
+                    }
+
+                    // 2: enter DB url
+                    Item {
+                        Layout.preferredWidth: parent.width
+                        Layout.fillHeight: true
+                        RowLayout {
+                            id: urlFeild
+                            anchors.centerIn: parent
+                            Layout.preferredWidth: parent.width
+
+                            NamedField {
+                                id: url
+                                Layout.fillWidth: true
+                                name: "Enter DB URL please"
+                            }
+
+                            Button {
+                                text: "Save"
+                                enabled: !!url.edit.text
+                                onClicked: {
+                                    $presenter.setDbUrl(url.edit.text);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -83,6 +101,7 @@ QmlInjector {
                     id: errorsView
                     Layout.fillWidth: true
                     height: 100
+                    Layout.alignment: Qt.AlignBottom
                     model: $presenter.errors
                     delegate: Text {
                         text: modelData

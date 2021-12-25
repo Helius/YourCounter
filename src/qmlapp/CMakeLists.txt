@@ -44,5 +44,6 @@ target_compile_definitions(YourCounter
 target_link_libraries(YourCounter
 	    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 		domain
+		settings
 		storage
 		)

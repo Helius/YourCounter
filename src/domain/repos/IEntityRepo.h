@@ -13,10 +13,12 @@ using ITransactionRepoUnq = std::unique_ptr<ITransactionRepo>;
 using ICategoryRepoUnq = std::unique_ptr<ICategoryRepo>;
 using IGroupRepoUnq = std::unique_ptr<IGroupRepo>;
 
-struct IEntityRepo {
-    ITransactionRepoUnq transactions;
-    ICategoryRepoUnq categories;
-    IGroupRepoUnq groups;
+class IEntityRepo {
+public:
+    virtual ITransactionRepoUnq& transactions() = 0;
+    virtual ICategoryRepoUnq& categories() = 0;
+    virtual IGroupRepoUnq& groups() = 0;
+    virtual ~IEntityRepo() = default;
 };
 
 using IEntityRepoPtr = std::shared_ptr<IEntityRepo>;

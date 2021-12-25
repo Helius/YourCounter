@@ -119,6 +119,7 @@ private:
 
 void TestTransactionRepo::testCRUD()
 {
+
     // test add
 
     auto api = std::make_shared<MockApi>();
@@ -129,6 +130,7 @@ void TestTransactionRepo::testCRUD()
 
     QSignalSpy dataChangedSpy(repo.get(), &IRepoObserver::dataChanged);
     QSignalSpy onErrorSpy(repo.get(), &IRepoObserver::onError);
+
     api->response = {
         { "name", "id0" }
     };
