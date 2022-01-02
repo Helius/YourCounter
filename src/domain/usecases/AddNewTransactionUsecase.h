@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include <entities/transaction.h>
+#include <entities/Transaction.h>
 #include <repos/IEntityRepo.h>
 
 class AddNewTransactionUseCase : public QObject {
@@ -10,11 +10,12 @@ public:
     enum class InvalidReason : int {
         ZerroAmount = 0,
         EmptyCategory,
+        CategoryNotFound,
     };
 
     explicit AddNewTransactionUseCase(IEntityRepoPtr repo);
 
-    void addTransaction(const Transaction& t, bool allowNewCategory = false);
+    void addTransaction(const Transaction& t);
 
 signals:
     void transactionInvalid(const InvalidReason& r);
@@ -22,7 +23,7 @@ signals:
     void transactionAdded();
 
 private:
-    bool checkCategoryExist(const Category& category);
+    bool checkCategoryExist(const QString& category);
 
 private:
     IEntityRepoPtr m_repo;

@@ -5,7 +5,7 @@
 #include <QRegularExpressionValidator>
 #include <usecases/AddNewTransactionUsecase.h>
 
-class AddTransactionButtonPresenter : public QObject {
+class AddTransactionPresenter : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString category MEMBER m_category NOTIFY categoryChanged FINAL)
@@ -17,9 +17,9 @@ class AddTransactionButtonPresenter : public QObject {
     Q_PROPERTY(QRegularExpressionValidator* amountValidator MEMBER m_amountValidator CONSTANT FINAL)
 
 public:
-    AddTransactionButtonPresenter(AddNewTransactionUseCaseUnq usecase);
+    AddTransactionPresenter(AddNewTransactionUseCaseUnq usecase);
 
-    Q_INVOKABLE void add(bool allowNewCategory = false);
+    Q_INVOKABLE void add();
 
 signals:
     void categoryChanged();
@@ -40,4 +40,4 @@ private:
     QRegularExpressionValidator* m_amountValidator;
 };
 
-using AddTransactionButtonPresenterUnq = std::unique_ptr<AddTransactionButtonPresenter>;
+using AddTransactionButtonPresenterUnq = std::unique_ptr<AddTransactionPresenter>;

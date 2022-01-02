@@ -2,7 +2,7 @@
 #include <jsonMappers/GroupMappers.h>
 
 class TestGroupJsonMapper : public QObject {
-Q_OBJECT
+    Q_OBJECT
 private slots:
 
     void TestToJson();
@@ -12,51 +12,53 @@ private slots:
     void TestPatch();
 
 private:
-    const Group orig{"id1", "name1"};
-//    const GroupRequest origReq{"name2"};
+    const Group orig { "id1", "name1" };
 };
 
-
-void TestGroupJsonMapper::TestToJson() {
+void TestGroupJsonMapper::TestToJson()
+{
     GroupMapper m;
     QCOMPARE(m.toJson(orig),
-             QJsonObject({
-                 {"name",    "name1"},
-                 }));
+        QJsonObject({
+            { "name", "name1" },
+        }));
 }
 
-void TestGroupJsonMapper::TestFromJson() {
+void TestGroupJsonMapper::TestFromJson()
+{
     GroupMapper m;
-    auto g = m.fromJson("id1", QJsonObject{
-            {"name",    "name1"},
-    });
+    auto g = m.fromJson("id1", QJsonObject {
+                                   { "name", "name1" },
+                               });
     QCOMPARE(g.id, orig.id);
     QCOMPARE(g.name, orig.name);
     QVERIFY(g == orig);
 }
 
-void TestGroupJsonMapper::TestEmptyDiff() {
+void TestGroupJsonMapper::TestEmptyDiff()
+{
     Group newg(orig);
     GroupMapper m;
     QVERIFY(m.diff(orig, newg).isEmpty());
 }
 
-void TestGroupJsonMapper::TestNameDiff() {
+void TestGroupJsonMapper::TestNameDiff()
+{
     Group newg(orig);
     GroupMapper m;
     newg.name = "new_name";
-    QCOMPARE(m.diff(orig, newg), QJsonObject({{"name", "new_name"}}));
+    QCOMPARE(m.diff(orig, newg), QJsonObject({ { "name", "new_name" } }));
 }
 
-void TestGroupJsonMapper::TestPatch() {
+void TestGroupJsonMapper::TestPatch()
+{
     GroupMapper m;
     Group g(orig);
     m.patch(g, QJsonObject());
     QCOMPARE(g.name, orig.name);
-    m.patch(g, {{"name", "new_name"}});
+    m.patch(g, { { "name", "new_name" } });
     QCOMPARE(g.name, "new_name");
 }
-
 
 QTEST_MAIN(TestGroupJsonMapper)
 #include "test_GroupMapper.moc"

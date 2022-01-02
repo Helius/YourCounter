@@ -11,5 +11,7 @@
         <file>qml/NamedField.qml</file>
         <file>qml/StartUpScreen.qml</file>
         <file>qml/icons/settings_white_24dp.svg</file>
+        <file>qml/TransactionScreen.qml</file>
+        <file>qml/CategoryList.qml</file>
     </qresource>
 </RCC>

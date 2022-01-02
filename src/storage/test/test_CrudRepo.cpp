@@ -1,19 +1,11 @@
 #include <CrudRepoImpl.h>
 #include <QtTest/QtTest>
-#include <entities/transaction.h>
+#include <entities/Transaction.h>
 #include <jsonMappers/CategoryMapper.h>
 #include <jsonMappers/GroupMappers.h>
 #include <jsonMappers/TransactionMapper.h>
 
 namespace {
-TransactionRequest t1 { 100, QDateTime::currentDateTime(), "catId1", "who1", "comment1" };
-TransactionRequest t2 { -100, QDateTime::currentDateTime(), "catId2", "who2", "comment2" };
-TransactionRequest t3 { -200, QDateTime::currentDateTime(), "catId3", "who3", "comment3" };
-
-TransactionRequest p1 { -50, QDateTime::currentDateTime(), "catId3", "who3", "comment3" };
-
-CategoryRequest c1 { "categoryName", QString() };
-GroupRequest g1 { "groupName" };
 
 QLatin1String Path("/path");
 }

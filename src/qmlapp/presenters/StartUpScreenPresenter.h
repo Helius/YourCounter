@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QStringList>
-#include <usecases/startupusecase.h>
+#include <usecases/StartUpUsecase.h>
 
 class StartUpScreenPresenter : public QObject {
 

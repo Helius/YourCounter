@@ -191,18 +191,13 @@ ApplicationWindow {
 
         // screen stack
         StackView {
-            Rectangle {
-                anchors.fill: parent
-                border.width: 1
-                border.color: "gray"
-                color: "transparent"
-            }
             id: mainStack
             Layout.fillHeight: true
             Layout.fillWidth: true
             initialItem: StartUpScreen {
                 onStartUpFinished: {
                     console.log("helius: open main screen");
+                    mainStack.push("qrc:/qml/TransactionScreen.qml")
                 }
             }
         }

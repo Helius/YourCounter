@@ -10,7 +10,7 @@ QmlInjector {
     id: root
     signal closePopup
     sourceComponent: ColumnLayout {
-        property AddTransactionButtonPresenter $presenter
+        property AddTransactionPresenter $presenter
         property Item injector
 
         Connections {

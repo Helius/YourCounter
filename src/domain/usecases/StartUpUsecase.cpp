@@ -1,4 +1,4 @@
-#include "startupusecase.h"
+#include "StartUpUsecase.h"
 
 StartupUseCase::StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo)
     : QObject()

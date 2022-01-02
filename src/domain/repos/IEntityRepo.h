@@ -3,7 +3,7 @@
 #include "ICRUDRepo.h"
 #include <entities/Category.h>
 #include <entities/Group.h>
-#include <entities/transaction.h>
+#include <entities/Transaction.h>
 
 using ITransactionRepo = ICRUDRepo<Transaction>;
 using ICategoryRepo = ICRUDRepo<Category>;

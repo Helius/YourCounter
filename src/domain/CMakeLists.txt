@@ -9,24 +9,26 @@ find_package(QT NAMES Qt6 COMPONENTS Core Quick LinguistTools Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQUIRED)
 
 add_library(domain
-	    entities/transaction.h
-		entities/interval.h
+	    entities/Transaction.h
 		entities/Category.h
+		entities/Group.h
+		entities/interval.h
 
-		usecases/startupusecase.h
-		usecases/startupusecase.cpp
-#		usecases/addnewtransactionusecase.h
-#		usecases/addnewtransactionusecase.cpp
+		usecases/StartUpUsecase.h
+		usecases/StartUpUsecase.cpp
+		usecases/AddNewTransactionUsecase.h
+		usecases/AddNewTransactionUsecase.cpp
+		usecases/AddNewGroupUsecase.h
+		usecases/AddNewGroupUsecase.cpp
+		usecases/AddNewCategoryUsecase.h
+		usecases/AddNewCategoryUsecase.cpp
 
-        repos/ICRUDRepo.h
+		repos/ICRUDRepo.h
 		repos/ICRUDRepo.cpp
 		repos/IEntityRepo.h
 		repos/idatecolumnadapter.h
 		repos/INetworkSettingsRepo.h
-		entities/CategoryRequest.h
-		entities/TransactionRequest.h
-		entities/Group.h
-		entities/GroupRequest.h)
+		)
 
 target_include_directories(domain
 	    INTERFACE

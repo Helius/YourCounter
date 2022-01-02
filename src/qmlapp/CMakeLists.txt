@@ -26,11 +26,13 @@ set(SRC
 #		presenters/timescalebuttonpresenter.cpp
 #		presenters/timelinetablemodel.cpp
 #		presenters/timelinetablemodel.h
-#		presenters/addtransactionbuttonpresenter.h
-#		presenters/addtransactionbuttonpresenter.cpp
-#		presenters/transactionlistmodel.h
-#		presenters/transactionlistmodel.cpp
-        )
+        presenters/AddTransactionPresenter.h
+		presenters/AddTransactionPresenter.cpp
+		presenters/TransactionListModel.h
+		presenters/TransactionListModel.cpp
+		presenters/CategoryListModel.h
+		presenters/CategoryListModel.cpp
+		)
 
 
 add_executable(YourCounter

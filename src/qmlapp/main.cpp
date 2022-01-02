@@ -4,25 +4,27 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "repos/datecolumnadapter.h"
-//#include <transactionproviderfromfile.h>
-//#include <transactionrepo.h>
-
-//#include "presenters/timelinetablemodel.h"
-//#include "presenters/timescalebuttonpresenter.h"
-
-//#include "presenters/addtransactionbuttonpresenter.h"
-//#include "presenters/transactionlistmodel.h"
-#include "presenters/StartUpScreenPresenter.h"
 #include "qmlinjector/iqmlobjectcreator.h"
 #include "qmlinjector/qmlinjector.h"
 #include "qmlinjector/qmlinjectorbuilder.h"
+
+#include "repos/datecolumnadapter.h"
+#include <repos/INetworkSettingsRepo.h>
+
+//#include "presenters/timelinetablemodel.h"
+//#include "presenters/timescalebuttonpresenter.h"
+#include <usecases/AddNewTransactionUsecase.h>
+#include <usecases/StartUpUsecase.h>
+
+#include "presenters/AddTransactionPresenter.h"
+#include "presenters/CategoryListModel.h"
+#include "presenters/StartUpScreenPresenter.h"
+#include "presenters/TransactionListModel.h"
+
 #include <EntityRepoImpl.h>
 #include <firebaseRtDbAPI.h>
-#include <usecases/startupusecase.h>
 
 #include <SettingsImpl.h>
-#include <repos/INetworkSettingsRepo.h>
 
 int main(int argc, char* argv[])
 {
@@ -41,15 +43,12 @@ int main(int argc, char* argv[])
     QmlInjectorBuilder builder;
 
     const auto injector = di::make_injector(
-        //        di::bind<IDateColumnAdapter>.to<DateColumnAdapter>(),
-        //        di::bind<QString>.to("/home/eugene/project/YourCounter/test/testdata/transactions.json"),
         di::bind<QNetworkAccessManager>.to(std::make_shared<QNetworkAccessManager>()),
         di::bind<INetworkSettingsRepo>.to<NetworkSettingsRepoImpl>(),
         di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
-        di::bind<StartupUseCase>.to<StartupUseCase>()
-        //di::bind<StartUpScreenPresenter>.to<StartUpScreenPresenter>()
-    );
+        di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
+        di::bind<StartupUseCase>.to<StartupUseCase>());
 
     //    builder.add<TimeScaleButtonPresenter>([&injector](const QVariant&) -> std::unique_ptr<TimeScaleButtonPresenter> {
     //        return injector.create<std::unique_ptr<TimeScaleButtonPresenter>>();
@@ -57,24 +56,18 @@ int main(int argc, char* argv[])
     //    builder.add<TimeLineTableModel>([&injector](const QVariant&) -> std::unique_ptr<TimeLineTableModel> {
     //        return injector.create<std::unique_ptr<TimeLineTableModel>>();
     //    });
-    //    builder.add<AddTransactionButtonPresenter>([&injector](const QVariant&) -> AddTransactionButtonPresenterUnq {
-    //        return injector.create<AddTransactionButtonPresenterUnq>();
-    //    });
-    //    builder.add<TransactionSortedListModel>([&injector](const QVariant&) -> TransactionSortedListModelUnq {
-    //        return injector.create<TransactionSortedListModelUnq>();
-    //    });
-
-    //    builder.add<StartUpScreenPresenter>([&injector](const QVariant&) -> StartUpScreenPresenterUnq {
-    //        qDebug() << "try to inject StartUpPresenter";
-    //        auto result = injector.create<StartUpScreenPresenter*>();
-    //        //        qDebug() << "finally we created" << !!result;
-    //        return std::unique_ptr<StartUpScreenPresenter>(result);
-    //    });
-
-    //    auto usecase = injector.create<StartupUseCaseUnq>();
 
     builder.add<StartUpScreenPresenter>([&injector](const QVariant&) -> StartUpScreenPresenterUnq {
         return injector.create<StartUpScreenPresenterUnq>();
+    });
+    builder.add<TransactionSortedListModel>([&injector](const QVariant&) -> TransactionSortedListModelUnq {
+        return injector.create<TransactionSortedListModelUnq>();
+    });
+    builder.add<CategoryListModel>([&injector](const QVariant&) -> CategoryListModelUnq {
+        return injector.create<CategoryListModelUnq>();
+    });
+    builder.add<AddTransactionPresenter>([&injector](const QVariant&) -> AddTransactionButtonPresenterUnq {
+        return injector.create<AddTransactionButtonPresenterUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");
