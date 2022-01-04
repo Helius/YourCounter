@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IFirebaseRtDbApi.h"
-//#include <repos/ICRUDRepo.h>
 #include <repos/IEntityRepo.h>
 
 class EntityRepoImpl : public IEntityRepo {

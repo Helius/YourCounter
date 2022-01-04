@@ -16,6 +16,11 @@ void AddNewGroupUseCase::addGroup(Group g)
         return;
     }
 
+    if (!checkNameUnique(g.name)) {
+        emit groupInvalid(InvalidReason::NameAlreadyExist);
+        return;
+    }
+
     g.name = g.name.toLower();
 
     //TODO: get future and wait

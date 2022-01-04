@@ -12,7 +12,7 @@ private slots:
     void TestPatch();
 
 private:
-    const Group orig { "id1", "name1" };
+    const Group orig = Group::createFromValue("id1", "name1");
 };
 
 void TestGroupJsonMapper::TestToJson()

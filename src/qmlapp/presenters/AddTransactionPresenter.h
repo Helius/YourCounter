@@ -40,4 +40,4 @@ private:
     QRegularExpressionValidator* m_amountValidator;
 };
 
-using AddTransactionButtonPresenterUnq = std::unique_ptr<AddTransactionPresenter>;
+using AddTransactionPresenterUnq = std::unique_ptr<AddTransactionPresenter>;

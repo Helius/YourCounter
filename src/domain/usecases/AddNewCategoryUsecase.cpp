@@ -16,6 +16,11 @@ void AddNewCategoryUseCase::addCategory(Category c)
         return;
     }
 
+    if (!checkNameUnique(c.name)) {
+        emit categoryInvalid(InvalidReason::NameAlreadyExist);
+        return;
+    }
+
     if (!checkGroupExist(c.groupId)) {
         emit categoryInvalid(InvalidReason::GroupNotFound);
         return;

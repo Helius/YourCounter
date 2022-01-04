@@ -13,6 +13,7 @@ class AddNewCategoryUseCase
 public:
     enum class InvalidReason : int {
         EmptyName = 0,
+        NameAlreadyExist,
         GroupNotFound,
     };
 

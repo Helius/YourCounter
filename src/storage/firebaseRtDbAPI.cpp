@@ -92,7 +92,7 @@ QJsonObject FirebaseRtDbAPI::handler(QNetworkReply* reply)
     auto err = reply->error();
     reply->deleteLater();
 
-    if (err || !errorStr.isEmpty()) {
+    if (err != QNetworkReply::NoError) {
         qWarning() << "NetworkError: " << err << errorStr;
         return QJsonObject();
     }

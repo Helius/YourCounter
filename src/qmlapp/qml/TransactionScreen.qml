@@ -8,60 +8,126 @@ import presenters
 
 QmlInjector {
     id: root
-    sourceComponent:
-        ListView {
-
-        AddTransactionPopup {
-            id: addTransactionPopup
-            width: 400
-            height: 400
-            modal: true
-            focus: true
-            anchors.centerIn: parent
-            closePolicy: Popup.CloseOnEscape
-        }
-
-
-        RoundButton {
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-            text: "Add"
-            onClicked: {
-                addTransactionPopup.open();
-            }
-        }
+    sourceComponent: RowLayout {
 
         anchors.fill: parent
         property TransactionSortedListModel $transactionModel
-        model: $transactionModel
-        delegate: Item {
-            width: 200
-            height: col.height
-            Column {
-                id: col
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    leftMargin: 10
-                    rightMargin: 10
+        property GroupListModel $groupModel
+
+        // group list
+        ListView {
+            model: $groupModel
+            Rectangle {
+                anchors.fill: parent
+                border.width: 1
+                border.color: "green"
+                color: "transparent"
+            }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 300
+            delegate: GroupCategoryDelegate {
+                groupId: model.groupId
+                groupName: model.groupName
+            }
+
+            AddNewGroupPopup {
+                id: newGroupPopup
+                width: 400
+                height: 400
+                modal: true
+                focus: true
+                anchors.centerIn: parent
+                closePolicy: Popup.CloseOnEscape
+            }
+            //TODO: create new one
+            AddNewCategoryPopup {
+                id: newCategoryPopup
+                width: 400
+                height: 400
+                modal: true
+                focus: true
+                anchors.centerIn: parent
+                closePolicy: Popup.CloseOnEscape
+            }
+
+            RowLayout {
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                RoundButton {
+                    text: "Add Group"
+                    onClicked: {
+                        newGroupPopup.open()
+                    }
                 }
-                RowLayout {
-                    width: parent.width
+                RoundButton {
+                    text: "Add Category"
+                    onClicked: {
+                        newCategoryPopup.open()
+                    }
+                }
+            }
+        }
+
+        // transaction list
+        ListView {
+            Rectangle {
+                anchors.fill: parent
+                border.width: 1
+                border.color: "red"
+                color: "transparent"
+            }
+            model: $transactionModel
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            delegate: Item {
+                width: 200
+                height: col.height
+                Column {
+                    id: col
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: 10
+                        rightMargin: 10
+                    }
+                    RowLayout {
+                        width: parent.width
+                        Text {
+                            Layout.fillWidth: true
+                            text: model.category
+                            color: "white"
+                            font.pointSize: 12
+                        }
+                        AmountCell {
+                            amount: model.amount
+                            background: Material.backgroundDimColor
+                        }
+                    }
                     Text {
-                        Layout.fillWidth: true
-                        text: model.category
-                        color: "white"
-                        font.pointSize: 12
-                    }
-                    AmountCell {
-                        amount: model.amount
-                        background: Material.backgroundDimColor
+                        text: model.date + " by " + model.who
+                        font.pointSize: 8
+                        font.weight: Font.Light
                     }
                 }
-                Text {
-                    text: model.date + " by " + model.who
-                    font.pointSize: 8
-                    font.weight: Font.Light
+            }
+
+            AddTransactionPopup {
+                id: addTransactionPopup
+                width: 400
+                height: 400
+                modal: true
+                focus: true
+                anchors.centerIn: parent
+                closePolicy: Popup.CloseOnEscape
+            }
+
+            RoundButton {
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                text: "Add transaction"
+                onClicked: {
+                    addTransactionPopup.open()
                 }
             }
         }

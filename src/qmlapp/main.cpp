@@ -16,6 +16,8 @@
 #include <usecases/AddNewTransactionUsecase.h>
 #include <usecases/StartUpUsecase.h>
 
+#include "presenters/AddCategoryPresenter.h"
+#include "presenters/AddGroupPresenter.h"
 #include "presenters/AddTransactionPresenter.h"
 #include "presenters/CategoryListModel.h"
 #include "presenters/StartUpScreenPresenter.h"
@@ -48,6 +50,7 @@ int main(int argc, char* argv[])
         di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
+        di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
         di::bind<StartupUseCase>.to<StartupUseCase>());
 
     //    builder.add<TimeScaleButtonPresenter>([&injector](const QVariant&) -> std::unique_ptr<TimeScaleButtonPresenter> {
@@ -63,11 +66,23 @@ int main(int argc, char* argv[])
     builder.add<TransactionSortedListModel>([&injector](const QVariant&) -> TransactionSortedListModelUnq {
         return injector.create<TransactionSortedListModelUnq>();
     });
-    builder.add<CategoryListModel>([&injector](const QVariant&) -> CategoryListModelUnq {
-        return injector.create<CategoryListModelUnq>();
+    builder.add<GroupListModel>([&injector](const QVariant&) -> GroupListModelUnq {
+        return injector.create<GroupListModelUnq>();
     });
-    builder.add<AddTransactionPresenter>([&injector](const QVariant&) -> AddTransactionButtonPresenterUnq {
-        return injector.create<AddTransactionButtonPresenterUnq>();
+    builder.add<CategorySortedListModel>([&injector](const QVariant& arg) -> CategorySortedListModelUnq {
+        auto model = injector.create<CategorySortedListModelUnq>();
+        //todo: probably bullshit
+        model->setGroupId(arg.toString());
+        return model;
+    });
+    builder.add<AddTransactionPresenter>([&injector](const QVariant&) -> AddTransactionPresenterUnq {
+        return injector.create<AddTransactionPresenterUnq>();
+    });
+    builder.add<AddCategoryPresenter>([&injector](const QVariant&) -> AddCategoryPresenterUnq {
+        return injector.create<AddCategoryPresenterUnq>();
+    });
+    builder.add<AddGroupPresenter>([&injector](const QVariant&) -> AddGroupPresenterUnq {
+        return injector.create<AddGroupPresenterUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");

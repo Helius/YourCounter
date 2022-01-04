@@ -4,43 +4,67 @@
 #include <QSortFilterProxyModel>
 #include <repos/IEntityRepo.h>
 
-class CategoryListModel : public QAbstractListModel {
+class GroupListModel
+    : public QAbstractListModel {
     Q_OBJECT
+
 public:
     enum Roles {
-        Name,
-        GroupName,
+        GroupName = 0,
+        GroupId
     };
-    Q_ENUM(Roles);
 
-    CategoryListModel(IEntityRepoPtr repo);
-
-private:
-    IEntityRepoPtr m_repo;
+    GroupListModel(IEntityRepoPtr repo);
 
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex& parent) const;
     QVariant data(const QModelIndex& index, int role) const;
     QHash<int, QByteArray> roleNames() const;
+
+private:
+    IEntityRepoPtr m_repo;
 };
 
-using CategoryListModelUnq = std::unique_ptr<CategoryListModel>;
+using GroupListModelUnq = std::unique_ptr<GroupListModel>;
 
-//class TransactionSortedListModel
-//    : public QSortFilterProxyModel
-//{
-//    Q_OBJECT
+class CategoryListModel
+    : public QAbstractListModel {
+    Q_OBJECT
+public:
+    enum Roles {
+        Name,
+        GroupId,
+    };
+    Q_ENUM(Roles);
 
-//public:
-//    TransactionSortedListModel(IEntityRepoPtr repo);
+    CategoryListModel(IEntityRepoPtr repo, QObject* parent = nullptr);
 
-//    // QSortFilterProxyModel interface
-//protected:
-//    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    // QAbstractItemModel interface
+public:
+    int rowCount(const QModelIndex& parent) const;
+    QVariant data(const QModelIndex& index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
 
-//private:
-//    TransactionListModel * m_sourceModel;
-//};
+private:
+    IEntityRepoPtr m_repo;
+};
+//using CategoryListModelUnq = std::unique_ptr<CategoryListModel>;
 
-//using TransactionSortedListModelUnq = std::unique_ptr<TransactionSortedListModel>;
+class CategorySortedListModel : public QSortFilterProxyModel {
+    Q_OBJECT
+
+public:
+    CategorySortedListModel(IEntityRepoPtr m_repo);
+    void setGroupId(const QString& groupId);
+
+    // QSortFilterProxyModel interface
+protected:
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+
+private:
+    CategoryListModel* m_sourceModel;
+    QString m_groupId;
+};
+
+using CategorySortedListModelUnq = std::unique_ptr<CategorySortedListModel>;

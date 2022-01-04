@@ -28,6 +28,10 @@ set(SRC
 #		presenters/timelinetablemodel.h
         presenters/AddTransactionPresenter.h
 		presenters/AddTransactionPresenter.cpp
+		presenters/AddGroupPresenter.h
+		presenters/AddGroupPresenter.cpp
+		presenters/AddCategoryPresenter.h
+		presenters/AddCategoryPresenter.cpp
 		presenters/TransactionListModel.h
 		presenters/TransactionListModel.cpp
 		presenters/CategoryListModel.h

@@ -16,7 +16,7 @@ class QmlObjectCreator
 public:
     QmlObjectCreator(Creators&& creators, QObject* parent = nullptr);
 
-    std::unique_ptr<QObject> createObject(QString className);
+    std::unique_ptr<QObject> createObject(QString className, QVariant context = QVariant());
 
 private:
     Creators m_creators;

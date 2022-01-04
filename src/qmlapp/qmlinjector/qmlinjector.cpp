@@ -33,6 +33,11 @@ void QmlInjector::sourceComponent(QQmlComponent* sourceComponent)
     });
 }
 
+QQuickItem* QmlInjector::view() const
+{
+    return m_view;
+}
+
 void QmlInjector::loadComponent()
 {
     if (m_sourceComponent == nullptr)
@@ -60,7 +65,7 @@ void QmlInjector::loadComponent()
                 if (p.name()[0] == '$') {
                     QString typeName = p.typeName();
                     if (p.isWritable()) {
-                        QObject* value = creator->createObject(typeName.remove('*')).release();
+                        QObject* value = creator->createObject(typeName.remove('*'), m_context).release();
                         value->setParent(this);
                         QVariant val = QVariant::fromValue(value);
                         obj->setProperty(p.name(), val);
@@ -71,10 +76,11 @@ void QmlInjector::loadComponent()
         } else {
             qWarning() << "Can't find meta info";
         }
-        auto view = static_cast<QQuickItem*>(obj);
-        if (!view)
+        m_view = static_cast<QQuickItem*>(obj);
+        emit viewChanged();
+        if (!m_view)
             return;
-        view->setParentItem(this);
+        m_view->setParentItem(this);
         m_sourceComponent->completeCreate();
     } else {
         qWarning() << "Can't create component";

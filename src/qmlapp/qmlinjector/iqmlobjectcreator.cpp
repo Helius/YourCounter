@@ -6,10 +6,10 @@ QmlObjectCreator::QmlObjectCreator(Creators&& creators, QObject* parent)
 {
 }
 
-std::unique_ptr<QObject> QmlObjectCreator::createObject(QString className)
+std::unique_ptr<QObject> QmlObjectCreator::createObject(QString className, QVariant context)
 {
     if (m_creators.contains(className)) {
-        return m_creators[className](QVariant());
+        return m_creators[className](context);
     } else {
         qCritical() << "No creator not found for " << className;
     }
