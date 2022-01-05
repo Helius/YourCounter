@@ -48,7 +48,11 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     case CategoryName:
         return getCategoryName(transaction.categoryId);
     case Amount:
-        return QString::number(transaction.amount / 100) + "." + QString::number(abs(transaction.amount) % 100);
+        //TODO: amount viewModel
+        return QString("%1,%2")
+            .arg(transaction.amount / 100, 0, 10)
+            .arg(abs(transaction.amount % 100), 2, 10, QLatin1Char('0'));
+
     case Who:
         return transaction.who;
     case Date:

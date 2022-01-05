@@ -14,7 +14,7 @@ Rectangle {
     Text {
         id: lable
         anchors.fill: parent
-        horizontalAlignment: Text.AlignHCenter
+        horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
         color: "white"
         font.pointSize: 12

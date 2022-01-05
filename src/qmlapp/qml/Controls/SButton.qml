@@ -20,7 +20,7 @@ Rectangle {
 
     Text {
         id: label
-        height: parent.height || 0
+        height: parent ? parent.height : 0
         anchors.leftMargin: 5
         anchors.left: parent ? parent.left : undefined
         color: "white"

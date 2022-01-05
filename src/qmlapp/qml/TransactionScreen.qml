@@ -50,8 +50,8 @@ QmlInjector {
             }
 
             RowLayout {
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
+                anchors.bottom: parent ? parent.bottom : undefined
+                anchors.right: parent ? parent.right : undefined
                 RoundButton {
                     text: "Add Group"
                     onClicked: {
@@ -135,7 +135,7 @@ QmlInjector {
 
             RoundButton {
                 anchors.bottom: parent ? parent.bottom : undefined
-                anchors.right: parent.right
+                anchors.right: parent ? parent.right: undefined
                 text: "Add transaction"
                 onClicked: {
                     addTransactionPopup.open()

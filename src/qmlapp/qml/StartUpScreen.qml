@@ -43,9 +43,6 @@ QmlInjector {
                             return 2;
                         return 0;
                     }
-                    onCurrentIndexChanged: {
-                        console.log("helius: currentIndex", currentIndex)
-                    }
 
                     // 0: loading
                     Item {

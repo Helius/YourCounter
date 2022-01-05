@@ -21,7 +21,6 @@ QmlInjector {
             id: field
             name: "Category"
             onNewText: text => {
-                console.log("helius: category is", text);
                 $suggestModel.setFilterFixedString(text);
             }
             Keys.onReturnPressed: {

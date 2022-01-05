@@ -40,7 +40,6 @@ QmlInjector {
             Layout.preferredWidth: implicitWidth
             Layout.preferredHeight: implicitHeight
             onSetCategoryId: id => {
-                console.log("helius: categoryId is:", id);
                 $presenter.categoryId = id;
             }
         }
@@ -49,7 +48,6 @@ QmlInjector {
             Layout.preferredWidth: 300
             Layout.preferredHeight: 180
             onClicked: date => {
-                console.log("helius: date is:", date);
                 $presenter.when = date;
             }
         }

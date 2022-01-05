@@ -196,7 +196,6 @@ ApplicationWindow {
             Layout.fillWidth: true
             initialItem: StartUpScreen {
                 onStartUpFinished: {
-                    console.log("helius: open main screen");
                     mainStack.push("qrc:/qml/TransactionScreen.qml")
                 }
             }
