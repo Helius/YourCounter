@@ -15,9 +15,6 @@ QmlInjector {
 
         Connections {
             target: $presenter
-            function onAskAboutNewCategory() {
-                dialog.open()
-            }
             function onClosePopup() {
                 injector.closePopup()
             }
@@ -38,13 +35,22 @@ QmlInjector {
                 value: amount.edit.text
             }
         }
-        NamedField {
-            id: cat
-            name: "Caterogy"
-            Binding {
-                target: $presenter
-                property: "category"
-                value: cat.edit.text
+        CategorySuggester {
+            id: categorySuggester
+            Layout.preferredWidth: implicitWidth
+            Layout.preferredHeight: implicitHeight
+            onSetCategoryId: id => {
+                console.log("helius: categoryId is:", id);
+                $presenter.categoryId = id;
+            }
+        }
+        DatePicker {
+            id: datePicker
+            Layout.preferredWidth: 300
+            Layout.preferredHeight: 180
+            onClicked: date => {
+                console.log("helius: date is:", date);
+                $presenter.when = date;
             }
         }
         NamedField {
@@ -75,19 +81,6 @@ QmlInjector {
         }
         Keys.onReturnPressed: {
             $presenter.add()
-        }
-
-        Dialog {
-            id: dialog
-            title: "Add new category: " + $presenter.category
-            standardButtons: Dialog.Ok | Dialog.Cancel
-            modal: true
-            onAccepted: {
-                $presenter.add(true)
-            }
-            onRejected: {
-                console.log("Cancel clicked")
-            }
         }
     }
 }

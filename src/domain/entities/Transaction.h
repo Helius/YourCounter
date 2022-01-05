@@ -71,7 +71,6 @@ private:
         , who(who)
         , comment(comment)
     {
-        Q_ASSERT(!this->categoryId.isEmpty());
         Q_ASSERT(amount != 0);
     }
 };

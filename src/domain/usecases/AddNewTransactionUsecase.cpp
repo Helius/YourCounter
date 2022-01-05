@@ -26,7 +26,21 @@ void AddNewTransactionUseCase::addTransaction(const Transaction& t)
         return;
     }
 
-    //TODO: get future and wait
+    if (!t.when.isValid()) {
+        emit transactionInvalid(InvalidReason::DateInvalid);
+        return;
+    }
+
+    if (t.when.date().daysTo(QDate::currentDate()) > 30) {
+        emit transactionInvalid(InvalidReason::DateFarInThePast);
+        return;
+    }
+
+    if (QDate::currentDate().daysTo(t.when.date()) > 360) {
+        emit transactionInvalid(InvalidReason::DateFarInTheFuture);
+        return;
+    }
+
     m_repo->transactions()->create(t);
     emit transactionAdded();
 }

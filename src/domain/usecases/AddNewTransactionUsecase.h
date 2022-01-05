@@ -11,6 +11,9 @@ public:
         ZerroAmount = 0,
         EmptyCategory,
         CategoryNotFound,
+        DateFarInThePast,
+        DateFarInTheFuture,
+        DateInvalid
     };
 
     explicit AddNewTransactionUseCase(IEntityRepoPtr repo);

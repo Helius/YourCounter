@@ -75,6 +75,9 @@ int main(int argc, char* argv[])
         model->setGroupId(arg.toString());
         return model;
     });
+    builder.add<CategorySuggestModel>([&injector](const QVariant&) -> CategorySuggestModelUnq {
+        return injector.create<CategorySuggestModelUnq>();
+    });
     builder.add<AddTransactionPresenter>([&injector](const QVariant&) -> AddTransactionPresenterUnq {
         return injector.create<AddTransactionPresenterUnq>();
     });

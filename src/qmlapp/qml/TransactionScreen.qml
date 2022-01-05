@@ -20,7 +20,7 @@ QmlInjector {
             Rectangle {
                 anchors.fill: parent
                 border.width: 1
-                border.color: "green"
+                border.color: "gray"
                 color: "transparent"
             }
             Layout.fillHeight: true
@@ -50,8 +50,8 @@ QmlInjector {
             }
 
             RowLayout {
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
                 RoundButton {
                     text: "Add Group"
                     onClicked: {
@@ -72,16 +72,18 @@ QmlInjector {
             Rectangle {
                 anchors.fill: parent
                 border.width: 1
-                border.color: "red"
+                border.color: "gray"
                 color: "transparent"
             }
             model: $transactionModel
             Layout.fillHeight: true
             Layout.fillWidth: true
+            spacing: 4
 
             delegate: Item {
-                width: 200
-                height: col.height
+                width: ListView.view.width
+                height: col.implicitHeight
+
                 Column {
                     id: col
                     anchors {
@@ -92,21 +94,31 @@ QmlInjector {
                     }
                     RowLayout {
                         width: parent.width
+                        spacing: 10
                         Text {
-                            Layout.fillWidth: true
-                            text: model.category
+                            text: model.categoryName
                             color: "white"
                             font.pointSize: 12
                         }
+                        Text {
+                            Layout.fillWidth: true
+                            visible: text
+                            text: model.comment
+                            font.pointSize: 10
+                            font.weight: Font.Light
+                            color: "white"
+                        }
                         AmountCell {
+                            Layout.alignment: Qt.AlignRight
                             amount: model.amount
-                            background: Material.backgroundDimColor
+                            background: "transparent"
                         }
                     }
                     Text {
                         text: model.date + " by " + model.who
-                        font.pointSize: 8
+                        font.pointSize: 10
                         font.weight: Font.Light
+                        color: "gray"
                     }
                 }
             }
@@ -114,7 +126,7 @@ QmlInjector {
             AddTransactionPopup {
                 id: addTransactionPopup
                 width: 400
-                height: 400
+                height: 600
                 modal: true
                 focus: true
                 anchors.centerIn: parent
@@ -122,7 +134,7 @@ QmlInjector {
             }
 
             RoundButton {
-                anchors.bottom: parent.bottom
+                anchors.bottom: parent ? parent.bottom : undefined
                 anchors.right: parent.right
                 text: "Add transaction"
                 onClicked: {

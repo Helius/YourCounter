@@ -38,5 +38,8 @@ QmlInjector {
                 $presenter.add()
             }
         }
+        Keys.onReturnPressed: {
+            $presenter.add()
+        }
     }
 }

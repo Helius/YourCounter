@@ -29,7 +29,7 @@ Item {
                 color: "transparent"
                 Text {
                     id: group
-                    anchors.left: parent.left
+                    anchors.left: parent ? parent.left : undefined
                     anchors.leftMargin: 10
                     text: injector.groupName
                     font.bold: true

@@ -33,6 +33,7 @@ class CategoryListModel
     Q_OBJECT
 public:
     enum Roles {
+        CategoryId,
         Name,
         GroupId,
     };
@@ -68,3 +69,14 @@ private:
 };
 
 using CategorySortedListModelUnq = std::unique_ptr<CategorySortedListModel>;
+
+class CategorySuggestModel : public QSortFilterProxyModel {
+    Q_OBJECT
+
+public:
+    CategorySuggestModel(IEntityRepoPtr m_repo);
+
+private:
+    CategoryListModel* m_sourceModel;
+};
+using CategorySuggestModelUnq = std::unique_ptr<CategorySuggestModel>;

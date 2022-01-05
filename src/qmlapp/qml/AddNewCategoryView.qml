@@ -32,8 +32,9 @@ QmlInjector {
             }
         }
         ListView {
-            width: parent.width
-            height: 100
+            Layout.fillWidth: true
+            Layout.preferredHeight: 200
+            interactive: true
             model: $groupModel
             delegate: Rectangle {
                 id: groupDelegate
@@ -63,6 +64,9 @@ QmlInjector {
             onClicked: {
                 $presenter.add()
             }
+        }
+        Keys.onReturnPressed: {
+            $presenter.add()
         }
     }
 }

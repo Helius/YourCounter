@@ -8,7 +8,7 @@
 class AddTransactionPresenter : public QObject {
     Q_OBJECT
 
-    Q_PROPERTY(QString category MEMBER m_category NOTIFY categoryChanged FINAL)
+    Q_PROPERTY(QString categoryId MEMBER m_categoryId NOTIFY categoryIdChanged FINAL)
     Q_PROPERTY(QDateTime when MEMBER m_when NOTIFY whenChanged FINAL)
     Q_PROPERTY(QString who MEMBER m_who NOTIFY whoChanged FINAL)
     Q_PROPERTY(QString amount MEMBER m_amount NOTIFY amountChanged FINAL)
@@ -22,17 +22,16 @@ public:
     Q_INVOKABLE void add();
 
 signals:
-    void categoryChanged();
+    void categoryIdChanged();
     void whenChanged();
     void whoChanged();
     void amountChanged();
     void comentChanged();
-    void askAboutNewCategory();
     void closePopup();
 
 private:
     AddNewTransactionUseCaseUnq m_usecase;
-    QString m_category;
+    QString m_categoryId;
     QDateTime m_when;
     QString m_who;
     QString m_amount;

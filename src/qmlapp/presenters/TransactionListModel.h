@@ -9,15 +9,19 @@ class TransactionListModel : public QAbstractListModel {
     Q_OBJECT
 public:
     enum Roles {
-        Category,
+        CategoryName,
         Amount,
         Date,
         Who,
-        RawDate
+        RawDate,
+        Comment
     };
     Q_ENUM(Roles);
 
     TransactionListModel(IEntityRepoPtr repo, QObject* parent);
+
+private:
+    QString getCategoryName(const QString& id) const;
 
 private:
     IEntityRepoPtr m_repo;

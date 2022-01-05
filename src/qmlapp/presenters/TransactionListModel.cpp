@@ -4,13 +4,32 @@ TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
     : QAbstractListModel(parent)
     , m_repo(repo)
 {
-    Q_ASSERT(repo);
+    Q_ASSERT(m_repo);
 
-    // TODO: connect to changes of transactions, categories, groups
+    using UpdateMode = IRepoObserver::UpdateMode;
+    connect(m_repo->transactions().get(), &IRepoObserver::dataChanged, this,
+        [this](UpdateMode mode, size_t startIndex, size_t size) {
+            switch (mode) {
+            case UpdateMode::Changed:
+                break;
+            case UpdateMode::Inserted:
+                break;
+            case UpdateMode::Removed:
+                break;
+            }
+            beginResetModel();
+            qDebug() << "categories changed" << mode << startIndex << size;
+            endResetModel();
+        });
+}
 
-    //    connect(repo.get(), IEntityRepo::, this, [this](){
-    //        emit layoutChanged();
-    //    });
+QString TransactionListModel::getCategoryName(const QString& id) const
+{
+    const auto& categories = m_repo->categories()->data();
+    const auto it = std::find_if(categories.cbegin(), categories.cend(), [id](const auto& c) {
+        return c.id == id;
+    });
+    return it == categories.cend() ? "Category not found" : it->name;
 }
 
 int TransactionListModel::rowCount(const QModelIndex&) const
@@ -26,16 +45,18 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     auto transaction = m_repo->transactions()->data().at(row);
 
     switch (role) {
-    case Category:
-        return transaction.categoryId;
+    case CategoryName:
+        return getCategoryName(transaction.categoryId);
     case Amount:
-        return QVariant::fromValue(transaction.amount);
+        return QString::number(transaction.amount / 100) + "." + QString::number(abs(transaction.amount) % 100);
     case Who:
         return transaction.who;
     case Date:
         return transaction.when.toString();
     case RawDate:
         return transaction.when;
+    case Comment:
+        return transaction.comment;
     }
     return QVariant();
 }
@@ -43,10 +64,11 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
 QHash<int, QByteArray> TransactionListModel::roleNames() const
 {
     return {
-        { Roles::Category, "category" },
+        { Roles::CategoryName, "categoryName" },
         { Roles::Amount, "amount" },
         { Roles::Date, "date" },
         { Roles::Who, "who" },
+        { Roles::Comment, "comment" },
     };
 }
 
@@ -55,6 +77,8 @@ TransactionSortedListModel::TransactionSortedListModel(IEntityRepoPtr repo)
     , m_sourceModel(new TransactionListModel(repo, this))
 {
     setSourceModel(m_sourceModel);
+    setDynamicSortFilter(true);
+    sort(0);
 }
 
 bool TransactionSortedListModel::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const

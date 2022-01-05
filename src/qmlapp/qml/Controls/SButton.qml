@@ -20,9 +20,9 @@ Rectangle {
 
     Text {
         id: label
-        height: parent.height
+        height: parent.height || 0
         anchors.leftMargin: 5
-        anchors.left: parent.left
+        anchors.left: parent ? parent.left : undefined
         color: "white"
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter

@@ -12,11 +12,12 @@
         <file>qml/StartUpScreen.qml</file>
         <file>qml/icons/settings_white_24dp.svg</file>
         <file>qml/TransactionScreen.qml</file>
-        <file>qml/CategoryList.qml</file>
         <file>qml/AddNewGroupView.qml</file>
         <file>qml/AddNewGroupPopup.qml</file>
-        <file>qml/GroupCategoryDelegate.qml</file>
         <file>qml/AddNewCategoryView.qml</file>
         <file>qml/AddNewCategoryPopup.qml</file>
+        <file>qml/CategorySuggester.qml</file>
+        <file>qml/GroupCategoryDelegate.qml</file>
+        <file>qml/DatePicker.qml</file>
     </qresource>
 </RCC>
