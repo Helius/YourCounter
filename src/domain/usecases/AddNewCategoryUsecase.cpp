@@ -28,7 +28,6 @@ void AddNewCategoryUseCase::addCategory(Category c)
 
     c.name = c.name.toLower();
 
-    //TODO: get future and wait
     m_repo->categories()->create(c);
     emit categoryAdded();
 }

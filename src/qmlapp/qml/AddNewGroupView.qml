@@ -12,9 +12,13 @@ QmlInjector {
     sourceComponent: ColumnLayout {
 
         property AddGroupPresenter $presenter
+        property Item injector
 
-        function onClosePopup() {
-            parent.closePopup();
+        Connections {
+            target: $presenter
+            function onClosePopup() {
+                injector.closePopup()
+            }
         }
 
         NamedField {

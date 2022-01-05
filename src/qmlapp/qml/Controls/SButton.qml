@@ -35,9 +35,6 @@ Rectangle {
         onClicked: {
             root.clicked();
         }
-        onPressedChanged: {
-            console.log("helius: pressed", pressed)
-        }
 
     }
     HoverHandler {

@@ -75,7 +75,7 @@ CategoryListModel::CategoryListModel(IEntityRepoPtr repo, QObject* parent)
 
 int CategoryListModel::rowCount(const QModelIndex&) const
 {
-    return m_repo->transactions()->data().size();
+    return m_repo->categories()->data().size();
 }
 
 QVariant CategoryListModel::data(const QModelIndex& index, int role) const

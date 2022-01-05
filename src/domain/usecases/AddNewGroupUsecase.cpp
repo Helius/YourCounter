@@ -23,7 +23,6 @@ void AddNewGroupUseCase::addGroup(Group g)
 
     g.name = g.name.toLower();
 
-    //TODO: get future and wait
     m_groups->create(g);
     emit groupAdded();
 }

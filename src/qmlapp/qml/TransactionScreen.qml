@@ -39,7 +39,6 @@ QmlInjector {
                 anchors.centerIn: parent
                 closePolicy: Popup.CloseOnEscape
             }
-            //TODO: create new one
             AddNewCategoryPopup {
                 id: newCategoryPopup
                 width: 400
