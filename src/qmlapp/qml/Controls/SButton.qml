@@ -11,24 +11,36 @@ Rectangle {
     signal clicked();
 
     implicitHeight: 30
-    implicitWidth: 70
+    implicitWidth: label.width + 10
 
-    color: selected ? Material.highlightedButtonColor : Material.dialogColor
+    color: (hh.hovered && !mouseArea.pressed) ? "gray"
+                      :  ((selected || mouseArea.pressed) ? Material.highlightedButtonColor : Material.dialogColor)
 
     radius: 5
 
     Text {
         id: label
-        anchors.fill: parent
+        height: parent.height
+        anchors.leftMargin: 5
+        anchors.left: parent.left
         color: "white"
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.bold: selected
     }
+
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         onClicked: {
             root.clicked();
         }
+        onPressedChanged: {
+            console.log("helius: pressed", pressed)
+        }
+
+    }
+    HoverHandler {
+        id: hh
     }
 }
