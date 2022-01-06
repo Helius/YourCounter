@@ -29,6 +29,7 @@ add_library(domain
 		repos/IEntityRepo.h
 		repos/idatecolumnadapter.h
 		repos/INetworkSettingsRepo.h
+		repos/IPredictionRepo.h
 		)
 
 target_include_directories(domain
