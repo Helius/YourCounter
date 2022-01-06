@@ -15,12 +15,14 @@
 //#include "presenters/timelinetablemodel.h"
 //#include "presenters/timescalebuttonpresenter.h"
 #include <usecases/AddNewTransactionUsecase.h>
+#include <usecases/CurrentBalanceCalculateUsecase.h>
 #include <usecases/StartUpUsecase.h>
 
 #include "presenters/AddCategoryPresenter.h"
 #include "presenters/AddGroupPresenter.h"
 #include "presenters/AddTransactionPresenter.h"
 #include "presenters/CategoryListModel.h"
+#include "presenters/CurentBalancePresenter.h"
 #include "presenters/StartUpScreenPresenter.h"
 #include "presenters/TransactionListModel.h"
 
@@ -54,7 +56,8 @@ int main(int argc, char* argv[])
         di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
         di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
-        di::bind<StartupUseCase>.to<StartupUseCase>());
+        di::bind<StartupUseCase>.to<StartupUseCase>(),
+        di::bind<CurrentBalanceCalculateUsecase>.to<CurrentBalanceCalculateUsecase>());
 
     //    builder.add<TimeScaleButtonPresenter>([&injector](const QVariant&) -> std::unique_ptr<TimeScaleButtonPresenter> {
     //        return injector.create<std::unique_ptr<TimeScaleButtonPresenter>>();
@@ -89,6 +92,9 @@ int main(int argc, char* argv[])
     });
     builder.add<AddGroupPresenter>([&injector](const QVariant&) -> AddGroupPresenterUnq {
         return injector.create<AddGroupPresenterUnq>();
+    });
+    builder.add<CurentBalancePresenter>([&injector](const QVariant&) -> CurentBalancePresenterUnq {
+        return injector.create<CurentBalancePresenterUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");

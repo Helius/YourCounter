@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import "Controls"
@@ -80,6 +80,22 @@ QmlInjector {
             Layout.fillWidth: true
             spacing: 4
 
+            headerPositioning: ListView.OverlayHeader
+            header: QmlInjector {
+                height: 40
+                sourceComponent: Text {
+                    property CurentBalancePresenter $presenter
+                    anchors {
+                        left: parent.left
+                        leftMargin: 10
+                        top: parent.top
+                        topMargin: 10
+                    }
+                    font.pointSize: 14
+                    color: "white"
+                    text: "Current balance: " + $presenter.currentBalance
+                }
+            }
             delegate: Item {
                 width: ListView.view.width
                 height: col.implicitHeight
@@ -135,7 +151,7 @@ QmlInjector {
 
             RoundButton {
                 anchors.bottom: parent ? parent.bottom : undefined
-                anchors.right: parent ? parent.right: undefined
+                anchors.right: parent ? parent.right : undefined
                 text: "Add transaction"
                 onClicked: {
                     addTransactionPopup.open()

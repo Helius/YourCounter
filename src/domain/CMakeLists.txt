@@ -23,6 +23,8 @@ add_library(domain
 		usecases/AddNewGroupUsecase.cpp
 		usecases/AddNewCategoryUsecase.h
 		usecases/AddNewCategoryUsecase.cpp
+		usecases/CurrentBalanceCalculateUsecase.h
+		usecases/CurrentBalanceCalculateUsecase.cpp
 
 		repos/ICRUDRepo.h
 		repos/ICRUDRepo.cpp

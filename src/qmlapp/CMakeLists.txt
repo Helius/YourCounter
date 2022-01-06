@@ -36,6 +36,8 @@ set(SRC
 		presenters/TransactionListModel.cpp
 		presenters/CategoryListModel.h
 		presenters/CategoryListModel.cpp
+		presenters/CurentBalancePresenter.h
+		presenters/CurentBalancePresenter.cpp
 		)
 
 
