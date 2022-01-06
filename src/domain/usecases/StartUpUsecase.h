@@ -4,6 +4,7 @@
 #include <QProperty>
 #include <repos/IEntityRepo.h>
 #include <repos/INetworkSettingsRepo.h>
+#include <repos/IPredictionRepo.h>
 
 class StartupUseCase
     : public QObject {
@@ -20,7 +21,7 @@ public:
 
 public:
     StartupUseCase() = delete;
-    StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo);
+    StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo, IPredictionRepoPtr predictions);
     void setDbUrl(const QString& url);
 
     QProperty<State> stateProperty;
@@ -36,8 +37,8 @@ private:
 private:
     INetworkSettingsRepoPtr m_settings;
     IEntityRepoPtr m_repo;
+    IPredictionRepoPtr m_predictions;
     QStringList m_errors;
-    //    RepoObserverPtr m_observer;
 };
 
 using StartupUseCaseUnq = std::unique_ptr<StartupUseCase>;

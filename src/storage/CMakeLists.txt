@@ -20,6 +20,8 @@ target_sources(
 		IFirebaseRtDbApi.h
 		EntityRepoImpl.h
 		EntityRepoImpl.cpp
+		PredictionRepoimpl.h
+		PredictionRepoimpl.cpp
 		jsonMappers/TransactionMapper.cpp
 		jsonMappers/TransactionMapper.h
 		jsonMappers/CategoryMapper.cpp
