@@ -9,20 +9,8 @@ import "Controls"
 
 ApplicationWindow {
 
-    //    menuBar: MenuBar {
-    //        Menu {
-    //            title: qsTr("Menu")
-    //            Action { text: qsTr("&New...") }
-    //            Action { text: qsTr("&Open...") }
-    //            Action { text: qsTr("&Save") }
-    //            Action { text: qsTr("Save &As...") }
-    //            MenuSeparator { }
-    //            Action { text: qsTr("&Quit") }
-    //        }
-    //    }
     width: 1000
     height: 1000
-    //visibility: "Maximized"
     visible: true
     title: qsTr("Your Counter")
     Material.theme: Material.Dark

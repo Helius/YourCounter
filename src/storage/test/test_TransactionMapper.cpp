@@ -3,9 +3,10 @@
 #include <jsonMappers/TransactionMapper.h>
 
 class TestTransactionJsonMapper : public QObject {
-    Q_OBJECT
-private slots:
 
+    Q_OBJECT
+
+private slots:
     void TestEmptyDiff();
     void TestAmountDiff();
     void TestWhenDiff();
@@ -17,7 +18,8 @@ private slots:
     void TestToJson();
 
 private:
-    Transaction origT = Transaction::createFromValue("id",
+    Transaction origT = Transaction::createFromValue(
+        "id",
         100,
         QDateTime::currentDateTime(),
         "catId",
@@ -104,6 +106,7 @@ void TestTransactionJsonMapper::TestFromJson()
 void TestTransactionJsonMapper::TestToJson()
 {
     auto t = m.fromJson(origT.id, m.toJson(origT));
+    QCOMPARE(t.id, origT.id);
     QCOMPARE(t.categoryId, origT.categoryId);
     QCOMPARE(t.amount, origT.amount);
     QCOMPARE(t.when, origT.when);
