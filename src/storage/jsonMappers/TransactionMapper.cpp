@@ -1,7 +1,4 @@
 #include "TransactionMapper.h"
-#include <entities/Group.h>
-
-#include <QJsonDocument>
 
 namespace {
 QLatin1String amountKey("amount");
@@ -13,7 +10,7 @@ QLatin1String commentKey("comment");
 
 Transaction TransactionMapper::fromJson(const QString& id, const QJsonObject& json)
 {
-    float amount = json.value(amountKey).toDouble(0);
+    float amount = json.value(amountKey).toInt(0);
     QDateTime when = QDateTime::fromMSecsSinceEpoch(json.value(whenKey).toInteger());
     QString who = json.value(whoKey).toString();
     QString categoryId = json.value(categoryIdKey).toString();
@@ -25,7 +22,7 @@ QJsonObject TransactionMapper::toJson(const Transaction& t)
 {
     return {
         { categoryIdKey, t.categoryId },
-        { amountKey, static_cast<qint64>(t.amount) },
+        { amountKey, static_cast<int>(t.amount) },
         { whenKey, t.when.toMSecsSinceEpoch() },
         { whoKey, t.who },
         { commentKey, t.comment }
@@ -35,8 +32,8 @@ QJsonObject TransactionMapper::toJson(const Transaction& t)
 void TransactionMapper::patch(Transaction& t, const QJsonObject& json)
 {
     t.categoryId = json.contains(categoryIdKey) ? json.value(categoryIdKey).toString() : t.categoryId;
-    t.amount = json.contains(amountKey) ? json.value(amountKey).toDouble() : t.amount;
-    t.when = json.contains(whenKey) ? QDateTime::fromMSecsSinceEpoch(json.value(whenKey).toInt()) : t.when;
+    t.amount = json.contains(amountKey) ? json.value(amountKey).toInt() : t.amount;
+    t.when = json.contains(whenKey) ? QDateTime::fromMSecsSinceEpoch(json.value(whenKey).toInteger()) : t.when;
     t.who = json.contains(whoKey) ? json.value(whoKey).toString() : t.who;
     t.comment = json.contains(commentKey) ? json.value(commentKey).toString() : t.comment;
 }
@@ -45,7 +42,7 @@ QJsonObject TransactionMapper::diff(const Transaction& from, const Transaction& 
 {
     QJsonObject result;
     if (to.amount != from.amount) {
-        result.insert(amountKey, static_cast<qint64>(to.amount));
+        result.insert(amountKey, static_cast<int>(to.amount));
     }
     if (to.categoryId != from.categoryId) {
         result.insert(categoryIdKey, to.categoryId);

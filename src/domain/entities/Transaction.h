@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Category.h"
-#include "interval.h"
 #include <QDateTime>
 #include <QString>
-#include <utility>
 
 class Transaction {
 

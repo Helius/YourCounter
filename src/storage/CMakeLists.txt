@@ -26,6 +26,8 @@ target_sources(
 		jsonMappers/CategoryMapper.h
 		jsonMappers/GroupMappers.cpp
 		jsonMappers/GroupMappers.h
+		jsonMappers/PredictionMapper.h
+		jsonMappers/PredictionMapper.cpp
 )
 
 target_include_directories(storage
@@ -57,3 +59,7 @@ target_link_libraries(test_category_mapper storage domain Qt::Test)
 add_executable(test_group_mapper test/test_GroupMapper.cpp)
 add_test(NAME test_group_mapper COMMAND test_group_mapper)
 target_link_libraries(test_group_mapper storage domain Qt::Test)
+
+add_executable(test_prediction_mapper test/test_PredictionMapper.cpp)
+add_test(NAME test_prediction_mapper COMMAND test_prediction_mapper)
+target_link_libraries(test_prediction_mapper storage domain Qt::Test)

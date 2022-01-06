@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QString>
-#include <utility>
 
 struct Group {
     QString id;

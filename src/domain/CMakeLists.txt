@@ -12,6 +12,7 @@ add_library(domain
 	    entities/Transaction.h
 		entities/Category.h
 		entities/Group.h
+		entities/Prediction.h
 		entities/interval.h
 
 		usecases/StartUpUsecase.h
