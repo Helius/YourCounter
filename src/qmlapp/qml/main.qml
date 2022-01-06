@@ -156,25 +156,9 @@ ApplicationWindow {
         anchors.margins: 8
 
         // navbar
-        Rectangle {
-            border.width: 1
-            border.color: "gray"
-            color: "transparent"
-
-            Layout.preferredWidth: image.width
+        NavigationBar {
             Layout.preferredHeight: parent.height
-
-            Image {
-                id: image
-                anchors.top: parent.top
-                width: 36
-                height: width
-                sourceSize {
-                    width: 36
-                    height: width
-                }
-                source: "qrc:/qml/icons/settings_white_24dp.svg"
-            }
+            Layout.preferredWidth: 44
         }
 
         // screen stack

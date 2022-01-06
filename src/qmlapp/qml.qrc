@@ -8,7 +8,6 @@
         <file>qml/Controls/HeaderButtonRow.qml</file>
         <file>qml/AddTransactionPopup.qml</file>
         <file>qml/AddTransactionView.qml</file>
-        <file>qml/NamedField.qml</file>
         <file>qml/StartUpScreen.qml</file>
         <file>qml/icons/settings_white_24dp.svg</file>
         <file>qml/TransactionScreen.qml</file>
@@ -18,6 +17,10 @@
         <file>qml/AddNewCategoryPopup.qml</file>
         <file>qml/CategorySuggester.qml</file>
         <file>qml/GroupCategoryDelegate.qml</file>
-        <file>qml/DatePicker.qml</file>
+        <file>qml/NavigationBar.qml</file>
+        <file>qml/icons/align_horizontal_left_white_24dp.svg</file>
+        <file>qml/icons/add_shopping_cart_white_24dp.svg</file>
+        <file>qml/Controls/DatePicker.qml</file>
+        <file>qml/Controls/NamedField.qml</file>
     </qresource>
 </RCC>
