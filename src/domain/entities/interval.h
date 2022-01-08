@@ -1,29 +1,30 @@
-#ifndef INTERVAL_H
-#define INTERVAL_H
+#pragma once
 
-#include <QDateTime>
+#include <QDate>
 
 class Interval {
-
 public:
-    Interval() = default;
-    Interval(QDateTime start, size_t days)
-        : start(start)
-        , days(days)
-    {}
-
-    bool contains(const QDateTime & dateTime) const
+    enum Scale {
+        Day,
+        Week,
+        Month
+    };
+    Interval(QDate from, Scale scale, uint number)
     {
-        return (dateTime >= start) && (dateTime < start.addDays(days));
+        if (scale == Month) {
+            start = number == 0 ? from : QDate(from.year(), from.month(), 1).addMonths(number);
+            end = QDate(from.year(), from.month(), 1).addMonths(1 + number);
+        } else if (scale == Week) {
+            start = number == 0 ? from : from.addDays(8 - from.dayOfWeek() + 7 * (number - 1));
+            end = number == 0 ? from.addDays(8 - from.dayOfWeek()) : start.addDays(7);
+        }
+    }
+    bool inside(QDate date) const
+    {
+        return ((date >= start) && (date < end));
     }
 
-    bool isEmpty() const { return !start.isValid() || days == 0; }
-
 private:
-    QDateTime start;
-    size_t days;
+    QDate start;
+    QDate end;
 };
-
-
-
-#endif // INTERVAL_H

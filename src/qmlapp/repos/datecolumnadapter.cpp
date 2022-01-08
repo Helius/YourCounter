@@ -1,9 +1,6 @@
 #include "datecolumnadapter.h"
+#include <entities/interval.h>
 #include <QDateTime>
-
-DateColumnAdapter::DateColumnAdapter()
-//    : IDateColumnAdapter(parent)
-{}
 
 bool DateColumnAdapter::isCurrent(int column)
 {
@@ -78,4 +75,24 @@ int DateColumnAdapter::columnCount()
         return 365;
     }
     return 0;
+}
+
+bool DateColumnAdapter::insideFromNow(int column, QDate date)
+{
+    //TODO: move scale to entity
+    Interval::Scale s;
+    switch (m_scale) {
+    case TimeScale::Month:
+        s = Interval::Month;
+        break;
+    case TimeScale::Week:
+        s = Interval::Week;
+        break;
+    case TimeScale::Day:
+        s = Interval::Day;
+        break;
+    }
+
+    Interval i(QDate::currentDate(), s, column);
+    return i.inside(date);
 }

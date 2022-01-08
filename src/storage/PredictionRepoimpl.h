@@ -4,7 +4,7 @@
 #include "IFirebaseRtDbApi.h"
 #include <entities/Prediction.h>
 
-class PredictionRepoImpl : public CrudRepository<Prediction> {
+class PredictionRepoImpl : public CrudRepository<PredictionTemplate> {
 public:
     PredictionRepoImpl(const IFirebaseRtDbAPIPtr& api);
 };

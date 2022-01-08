@@ -25,6 +25,8 @@ add_library(domain
 		usecases/AddNewCategoryUsecase.cpp
 		usecases/CurrentBalanceCalculateUsecase.h
 		usecases/CurrentBalanceCalculateUsecase.cpp
+		usecases/CalcPredictionSumInInterval.h
+		usecases/CalcPredictionSumInInterval.cpp
 
 		repos/ICRUDRepo.h
 		repos/ICRUDRepo.cpp
@@ -45,3 +47,13 @@ target_link_libraries(
 	    domain
 		PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 )
+
+enable_testing(true)
+
+add_executable(test_prediction entities/test/test_Prediction.cpp)
+add_test(NAME test_prediction COMMAND test_prediction)
+target_link_libraries(test_prediction Qt::Test)
+
+add_executable(test_interval entities/test/test_Interval.cpp)
+add_test(NAME test_interval COMMAND test_interval)
+target_link_libraries(test_interval Qt::Test)
