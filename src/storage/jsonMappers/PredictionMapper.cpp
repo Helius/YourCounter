@@ -11,7 +11,7 @@ QLatin1String cumulativeKey("cumulative");
 QLatin1String dateToStringFormat("yyyyMMdd");
 }
 
-Prediction PredictionMapper::fromJson(const QString& id, const QJsonObject& json)
+PredictionTemplate PredictionMapper::fromJson(const QString& id, const QJsonObject& json)
 {
     float amount = json.value(amountKey).toInt(0);
     QDate start = QDate::fromString(json.value(startKey).toString(), dateToStringFormat);
@@ -19,7 +19,7 @@ Prediction PredictionMapper::fromJson(const QString& id, const QJsonObject& json
     int monthMask = json.value(monthMaskKey).toInt(0);
     bool cumulative = json.value(cumulativeKey).toBool(false);
     QString comment = json.value(commentKey).toString();
-    return Prediction::createFromValue(
+    return PredictionTemplate::createFromValue(
         id,
         categoryId,
         start,
@@ -29,7 +29,7 @@ Prediction PredictionMapper::fromJson(const QString& id, const QJsonObject& json
         comment);
 }
 
-QJsonObject PredictionMapper::toJson(const Prediction& p)
+QJsonObject PredictionMapper::toJson(const PredictionTemplate& p)
 {
     return {
         { categoryIdKey, p.categoryId },
@@ -41,7 +41,7 @@ QJsonObject PredictionMapper::toJson(const Prediction& p)
     };
 }
 
-void PredictionMapper::patch(Prediction& p, const QJsonObject& json)
+void PredictionMapper::patch(PredictionTemplate& p, const QJsonObject& json)
 {
     p.categoryId = json.contains(categoryIdKey) ? json.value(categoryIdKey).toString() : p.categoryId;
     p.start = json.contains(startKey) ? QDate::fromString(json.value(startKey).toString(), dateToStringFormat) : p.start;
@@ -51,7 +51,7 @@ void PredictionMapper::patch(Prediction& p, const QJsonObject& json)
     p.comment = json.contains(commentKey) ? json.value(commentKey).toString() : p.comment;
 }
 
-QJsonObject PredictionMapper::diff(const Prediction& from, const Prediction& to)
+QJsonObject PredictionMapper::diff(const PredictionTemplate& from, const PredictionTemplate& to)
 {
     QJsonObject result;
 

@@ -86,9 +86,9 @@ QmlInjector {
                 sourceComponent: Text {
                     property CurentBalancePresenter $presenter
                     anchors {
-                        left: parent.left
+                        left: parent ? parent.left : undefined
                         leftMargin: 10
-                        top: parent.top
+                        top: parent ? parent.top : undefined
                         topMargin: 10
                     }
                     font.pointSize: 14

@@ -19,7 +19,7 @@ private slots:
     void TestToJson();
 
 private:
-    Prediction orig = Prediction::createFromValue(
+    PredictionTemplate orig = PredictionTemplate::createFromValue(
         "id",
         "catId",
         QDate::currentDate(),
@@ -32,13 +32,13 @@ private:
 
 void TestPredictionJsonMapper::TestEmptyDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     QVERIFY(m.diff(orig, p).isEmpty());
 }
 
 void TestPredictionJsonMapper::TestCategoryIdDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.categoryId = "123";
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "categoryId", "123" } }));
@@ -46,7 +46,7 @@ void TestPredictionJsonMapper::TestCategoryIdDiff()
 
 void TestPredictionJsonMapper::TestAmountDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.amount = 200;
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "amount", 200 } }));
@@ -54,7 +54,7 @@ void TestPredictionJsonMapper::TestAmountDiff()
 
 void TestPredictionJsonMapper::TestStartDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.start.setDate(2020, 2, 3);
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "start", "20200203" } }));
@@ -62,7 +62,7 @@ void TestPredictionJsonMapper::TestStartDiff()
 
 void TestPredictionJsonMapper::TestMonthMaskDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.monthMask = 7;
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "monthMask", 7 } }));
@@ -70,7 +70,7 @@ void TestPredictionJsonMapper::TestMonthMaskDiff()
 
 void TestPredictionJsonMapper::TestCumulativeDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.cumulative = true;
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "cumulative", true } }));
@@ -78,7 +78,7 @@ void TestPredictionJsonMapper::TestCumulativeDiff()
 
 void TestPredictionJsonMapper::TestCommentDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.comment = "text";
     auto patch = m.diff(orig, p);
     QCOMPARE(patch, QJsonObject({ { "comment", "text" } }));
@@ -86,7 +86,7 @@ void TestPredictionJsonMapper::TestCommentDiff()
 
 void TestPredictionJsonMapper::TestMultipleFieldDiff()
 {
-    Prediction p(orig);
+    PredictionTemplate p(orig);
     p.categoryId = "123";
     p.amount = 50;
     p.start.setDate(2020, 4, 5);
@@ -105,7 +105,7 @@ void TestPredictionJsonMapper::TestFromJson()
         { "comment", "comment1" },
         { "cumulative", true }
     };
-    Prediction p = m.fromJson("id1", json);
+    PredictionTemplate p = m.fromJson("id1", json);
     QCOMPARE(p.categoryId, "catId1");
     QCOMPARE(p.amount, -11);
     QCOMPARE(p.start, date);

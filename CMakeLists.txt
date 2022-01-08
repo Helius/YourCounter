@@ -6,6 +6,12 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+	set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+	set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
+endif(CCACHE_FOUND)
+
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
