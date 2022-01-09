@@ -36,7 +36,7 @@ void AddNewTransactionUseCase::addTransaction(const Transaction& t)
         return;
     }
 
-    if (QDate::currentDate().daysTo(t.when.date()) > 360) {
+    if (QDate::currentDate().daysTo(t.when.date()) > 0) {
         emit transactionInvalid(InvalidReason::DateFarInTheFuture);
         return;
     }

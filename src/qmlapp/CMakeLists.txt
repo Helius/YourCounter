@@ -38,6 +38,11 @@ set(SRC
 		presenters/CategoryListModel.cpp
 		presenters/CurentBalancePresenter.h
 		presenters/CurentBalancePresenter.cpp
+		presenters/MonthReportModel.h
+		presenters/MonthReportModel.cpp
+
+		viewmodel/AmountVm.h
+		viewmodel/AmountVm.cpp
 		)
 
 

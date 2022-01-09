@@ -16,6 +16,7 @@
 //#include "presenters/timescalebuttonpresenter.h"
 #include <usecases/AddNewTransactionUsecase.h>
 #include <usecases/CurrentBalanceCalculateUsecase.h>
+#include <usecases/MonthReportUsecase.h>
 #include <usecases/StartUpUsecase.h>
 
 #include "presenters/AddCategoryPresenter.h"
@@ -23,6 +24,7 @@
 #include "presenters/AddTransactionPresenter.h"
 #include "presenters/CategoryListModel.h"
 #include "presenters/CurentBalancePresenter.h"
+#include "presenters/MonthReportModel.h"
 #include "presenters/StartUpScreenPresenter.h"
 #include "presenters/TransactionListModel.h"
 
@@ -57,7 +59,8 @@ int main(int argc, char* argv[])
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
         di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
         di::bind<StartupUseCase>.to<StartupUseCase>(),
-        di::bind<CurrentBalanceCalculateUsecase>.to<CurrentBalanceCalculateUsecase>());
+        di::bind<CurrentBalanceCalculateUsecase>.to<CurrentBalanceCalculateUsecase>(),
+        di::bind<MonthReportUsecase>.to<MonthReportUsecase>());
 
     //    builder.add<TimeScaleButtonPresenter>([&injector](const QVariant&) -> std::unique_ptr<TimeScaleButtonPresenter> {
     //        return injector.create<std::unique_ptr<TimeScaleButtonPresenter>>();
@@ -95,6 +98,9 @@ int main(int argc, char* argv[])
     });
     builder.add<CurentBalancePresenter>([&injector](const QVariant&) -> CurentBalancePresenterUnq {
         return injector.create<CurentBalancePresenterUnq>();
+    });
+    builder.add<MonthReportSortedModel>([&injector](const QVariant&) -> MonthReportSortedModelUnq {
+        return injector.create<MonthReportSortedModelUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");

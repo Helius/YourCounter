@@ -1,4 +1,5 @@
 #include "TransactionListModel.h"
+#include "../viewmodel/AmountVm.h"
 
 TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
     : QAbstractListModel(parent)
@@ -48,10 +49,7 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     case CategoryName:
         return getCategoryName(transaction.categoryId);
     case Amount:
-        //TODO: amount viewModel
-        return QString("%1,%2")
-            .arg(transaction.amount / 100, 0, 10)
-            .arg(abs(transaction.amount % 100), 2, 10, QLatin1Char('0'));
+        return AmountVM::formatAmount(transaction.amount);
 
     case Who:
         return transaction.who;

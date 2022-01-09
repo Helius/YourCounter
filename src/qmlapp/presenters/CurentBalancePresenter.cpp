@@ -1,4 +1,5 @@
 #include "CurentBalancePresenter.h"
+#include "../viewmodel/AmountVm.h"
 
 CurentBalancePresenter::CurentBalancePresenter(CurrentBalanceCalculateUsecaseUnq usecase)
     : QObject()
@@ -16,8 +17,6 @@ QString CurentBalancePresenter::currentBalance() const
 
 void CurentBalancePresenter::updateBalance(int64_t balance)
 {
-    m_currentBalance = QString("%1,%2")
-                           .arg(balance / 100, 0, 10)
-                           .arg(abs(balance % 100), 2, 10, QLatin1Char('0'));
+    m_currentBalance = AmountVM::formatAmount(balance);
     emit currentBalanceChanged();
 }
