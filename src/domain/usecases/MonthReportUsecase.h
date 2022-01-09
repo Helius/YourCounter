@@ -21,6 +21,9 @@ public:
 
     CategoriesTotalAmount generateMonthReport(const QDate& monthDate);
 
+signals:
+    void amountsChanged();
+
 private:
     std::pair<QString, QString> groupCategoryNameById(const QString& id);
 

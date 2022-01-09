@@ -7,6 +7,11 @@ MonthReportModel::MonthReportModel(MonthReportUsecaseUnq usecase)
 {
     Q_ASSERT(m_usecase);
     m_amounts = m_usecase->generateMonthReport(QDate::currentDate());
+    connect(m_usecase.get(), &MonthReportUsecase::amountsChanged, [this]() {
+        beginResetModel();
+        m_amounts = m_usecase->generateMonthReport(QDate::currentDate());
+        endResetModel();
+    });
 }
 
 int MonthReportModel::rowCount(const QModelIndex&) const

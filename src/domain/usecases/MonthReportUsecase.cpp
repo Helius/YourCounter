@@ -5,6 +5,7 @@ MonthReportUsecase::MonthReportUsecase(IEntityRepoPtr repo)
     , m_repo(repo)
 {
     Q_ASSERT(m_repo);
+    connect(m_repo->transactions().get(), &IRepoObserver::dataChanged, this, &MonthReportUsecase::amountsChanged);
 }
 
 MonthReportUsecase::CategoriesTotalAmount MonthReportUsecase::generateMonthReport(const QDate& monthDate)
