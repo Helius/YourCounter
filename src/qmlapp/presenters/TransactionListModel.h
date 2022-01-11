@@ -22,6 +22,7 @@ public:
 
 private:
     QString getCategoryName(const QString& id) const;
+    QString formatDate(const QDateTime& dateTime) const;
 
 private:
     IEntityRepoPtr m_repo;

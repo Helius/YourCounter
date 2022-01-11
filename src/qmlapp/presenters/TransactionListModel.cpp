@@ -19,7 +19,7 @@ TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
                 break;
             }
             beginResetModel();
-            qDebug() << "categories changed" << mode << startIndex << size;
+            qDebug() << "transactions changed" << mode << startIndex << size;
             endResetModel();
         });
 }
@@ -31,6 +31,11 @@ QString TransactionListModel::getCategoryName(const QString& id) const
         return c.id == id;
     });
     return it == categories.cend() ? "Category not found" : it->name;
+}
+
+QString TransactionListModel::formatDate(const QDateTime& dateTime) const
+{
+    return dateTime.date().toString("dddd dd MMMM");
 }
 
 int TransactionListModel::rowCount(const QModelIndex&) const
@@ -54,7 +59,7 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     case Who:
         return transaction.who;
     case Date:
-        return transaction.when.toString();
+        return formatDate(transaction.when);
     case RawDate:
         return transaction.when;
     case Comment:

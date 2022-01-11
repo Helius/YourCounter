@@ -24,8 +24,9 @@ QmlInjector {
                 border.color: "gray"
                 color: "transparent"
             }
+            clip: true
             Layout.fillHeight: true
-            Layout.preferredWidth: 200
+            Layout.preferredWidth: 250
             delegate: GroupCategoryDelegate {
                 groupId: model.groupId
                 groupName: model.groupName
@@ -80,6 +81,7 @@ QmlInjector {
             Layout.fillHeight: true
             Layout.fillWidth: true
             spacing: 4
+            clip: true
 
             headerPositioning: ListView.OverlayHeader
             header: QmlInjector {
@@ -97,6 +99,20 @@ QmlInjector {
                     text: "Current balance: " + $presenter.currentBalance
                 }
             }
+            section.property: "date"
+            section.criteria: ViewSection.FullString
+            section.delegate: Item {
+                required property string section
+                width: ListView.view.width
+                height: 20
+                Text {
+                    width: parent ? parent.width : 0
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: section
+                    color: "gray"
+                }
+            }
             delegate: Item {
                 width: ListView.view.width
                 height: col.implicitHeight
@@ -111,9 +127,16 @@ QmlInjector {
                     }
                     RowLayout {
                         width: parent.width
-                        spacing: 10
+                        spacing: 4
+                        Text {
+                            text: model.who
+                            font.pointSize: 8
+                            font.weight: Font.Light
+                            color: "gray"
+                        }
                         Text {
                             text: model.categoryName
+                            Layout.preferredWidth: implicitWidth
                             color: "white"
                             font.pointSize: 12
                         }
@@ -127,15 +150,10 @@ QmlInjector {
                         }
                         AmountCell {
                             Layout.alignment: Qt.AlignRight
+                            Layout.fillWidth: true
                             amount: model.amount
                             background: "transparent"
                         }
-                    }
-                    Text {
-                        text: model.date + " by " + model.who
-                        font.pointSize: 10
-                        font.weight: Font.Light
-                        color: "gray"
                     }
                 }
             }
@@ -172,6 +190,7 @@ QmlInjector {
             Layout.fillHeight: true
             Layout.fillWidth: true
             spacing: 4
+            clip: true
             section.property: "groupName"
             section.criteria: ViewSection.FullString
             section.delegate: Item {
@@ -203,11 +222,11 @@ QmlInjector {
                         text: model.categoryName
                         color: "white"
                     }
-                        AmountCell {
-                            Layout.alignment: Qt.AlignRight
-                            amount: model.totalAmount
-                            background: "transparent"
-                        }
+                    AmountCell {
+                        Layout.alignment: Qt.AlignRight
+                        amount: model.totalAmount
+                        background: "transparent"
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@ import "Controls"
 
 ApplicationWindow {
 
-    width: 1000
+    width: 1200
     height: 1000
     visible: true
     title: qsTr("Your Counter")

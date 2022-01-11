@@ -120,6 +120,8 @@ void CategorySortedListModel::setGroupId(const QString& groupId)
     m_groupId = groupId;
 }
 
+//===
+
 bool CategorySortedListModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
