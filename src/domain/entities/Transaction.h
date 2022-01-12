@@ -7,13 +7,13 @@ class Transaction {
 
 public:
     QString id;
-    int64_t amount;
+    int64_t amount = 0;
     QDateTime when;
     QString categoryId;
     QString who;
     QString comment;
 
-    Transaction() = delete;
+    Transaction() = default;
     static Transaction createRequest(
         int64_t amount,
         const QDateTime& when,
@@ -40,7 +40,7 @@ public:
 
     operator bool() const
     {
-        return !id.isEmpty() && amount != 0 && when.isValid();
+        return !id.isEmpty() && !categoryId.isEmpty() && amount != 0 && when.isValid();
     }
 
     bool operator==(const Transaction& other) const

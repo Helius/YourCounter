@@ -9,6 +9,7 @@ class TransactionListModel : public QAbstractListModel {
     Q_OBJECT
 public:
     enum Roles {
+        Id,
         CategoryName,
         Amount,
         Date,

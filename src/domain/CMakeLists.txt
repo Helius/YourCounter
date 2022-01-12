@@ -27,6 +27,8 @@ add_library(domain
 		usecases/CurrentBalanceCalculateUsecase.cpp
 		usecases/MonthReportUsecase.h
 		usecases/MonthReportUsecase.cpp
+		usecases/EditTransactionUsecase.h
+		usecases/EditTransactionUsecase.cpp
 
 		repos/ICRUDRepo.h
 		repos/ICRUDRepo.cpp

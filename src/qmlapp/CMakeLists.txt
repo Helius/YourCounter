@@ -43,6 +43,8 @@ set(SRC
 
 		viewmodel/AmountVm.h
 		viewmodel/AmountVm.cpp
+		viewmodel/TransactionFeildsVm.h
+		viewmodel/TransactionFeildsVm.cpp
 		)
 
 

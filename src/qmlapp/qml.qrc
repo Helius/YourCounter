@@ -22,5 +22,6 @@
         <file>qml/icons/add_shopping_cart_white_24dp.svg</file>
         <file>qml/Controls/DatePicker.qml</file>
         <file>qml/Controls/NamedField.qml</file>
+        <file>qml/icons/edit_white_24dp.svg</file>
     </qresource>
 </RCC>

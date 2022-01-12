@@ -116,7 +116,6 @@ QmlInjector {
             delegate: Item {
                 width: ListView.view.width
                 height: col.implicitHeight
-
                 Column {
                     id: col
                     anchors {
@@ -155,6 +154,36 @@ QmlInjector {
                             background: "transparent"
                         }
                     }
+                }
+                Rectangle {
+                    width: editButton.width
+                    height: editButton.height
+                    color: "gray"
+                    visible: hoverHandler.hovered
+                    radius: 2
+                    anchors {
+                        right: parent.right
+                        rightMargin: 8
+                    }
+                    Image {
+                        id: editButton
+                        source: "qrc:/qml/icons/edit_white_24dp.svg"
+                        width: 18
+                        height: width
+                        sourceSize {
+                            width: 18
+                            height: width
+                        }
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            console.log("helius: edit ", model.transactionId)
+                        }
+                    }
+                }
+                HoverHandler {
+                    id: hoverHandler
                 }
             }
 

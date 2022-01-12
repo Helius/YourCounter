@@ -51,11 +51,12 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     auto transaction = m_repo->transactions()->data().at(row);
 
     switch (role) {
+    case Id:
+        return transaction.id;
     case CategoryName:
         return getCategoryName(transaction.categoryId);
     case Amount:
         return AmountVM::formatAmount(transaction.amount);
-
     case Who:
         return transaction.who;
     case Date:
@@ -71,6 +72,7 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
 QHash<int, QByteArray> TransactionListModel::roleNames() const
 {
     return {
+        { Roles::Id, "transactionId" },
         { Roles::CategoryName, "categoryName" },
         { Roles::Amount, "amount" },
         { Roles::Date, "date" },
