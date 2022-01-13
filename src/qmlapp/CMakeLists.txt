@@ -40,6 +40,8 @@ set(SRC
 		presenters/CurentBalancePresenter.cpp
 		presenters/MonthReportModel.h
 		presenters/MonthReportModel.cpp
+		presenters/EditTransactionPresenter.h
+		presenters/EditTransactionPresenter.cpp
 
 		viewmodel/AmountVm.h
 		viewmodel/AmountVm.cpp

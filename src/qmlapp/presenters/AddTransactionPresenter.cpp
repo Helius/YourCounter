@@ -1,10 +1,8 @@
 #include "AddTransactionPresenter.h"
-#include <QRegularExpression>
-#include <QRegularExpressionValidator>
 
 AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq usecase)
     : m_usecase(std::move(usecase))
-    , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9][.0-9]*"), this))
+    , m_vm(new TransactionEditFeildsVm(this))
 {
     Q_ASSERT(m_usecase);
 
@@ -36,8 +34,7 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
         this, &AddTransactionPresenter::closePopup);
 }
 
-void AddTransactionPresenter::add()
+void AddTransactionPresenter::apply()
 {
-    Transaction t = Transaction::createRequest(static_cast<int>(m_amount.toFloat() * 100), m_when, m_categoryId, m_who, m_coment);
-    m_usecase->addTransaction(t);
+    m_usecase->addTransaction(m_vm->buildTransaction());
 }

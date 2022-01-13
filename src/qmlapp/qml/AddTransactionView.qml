@@ -28,9 +28,9 @@ QmlInjector {
             name: "Amount"
             edit.cursorVisible: true
             edit.focus: true
-            edit.validator: $presenter.amountValidator
+            edit.validator: $presenter.vm.amountValidator
             Binding {
-                target: $presenter
+                target: $presenter.vm
                 property: "amount"
                 value: amount.edit.text
             }
@@ -40,7 +40,7 @@ QmlInjector {
             Layout.preferredWidth: implicitWidth
             Layout.preferredHeight: implicitHeight
             onSetCategoryId: id => {
-                $presenter.categoryId = id;
+                $presenter.vm.categoryId = id;
             }
         }
         DatePicker {
@@ -48,14 +48,14 @@ QmlInjector {
             Layout.preferredWidth: 300
             Layout.preferredHeight: 180
             onClicked: date => {
-                $presenter.when = date;
+                $presenter.vm.when = date;
             }
         }
         NamedField {
             id: coment
             name: "Coment"
             Binding {
-                target: $presenter
+                target: $presenter.vm
                 property: "coment"
                 value: coment.edit.text
             }
@@ -65,7 +65,7 @@ QmlInjector {
             name: "Who"
             edit.text: "pc"
             Binding {
-                target: $presenter
+                target: $presenter.vm
                 property: "who"
                 value: who.edit.text
             }
@@ -74,11 +74,11 @@ QmlInjector {
             Layout.alignment: Qt.AlignCenter
             text: "Done"
             onClicked: {
-                $presenter.add()
+                $presenter.apply()
             }
         }
         Keys.onReturnPressed: {
-            $presenter.add()
+            $presenter.apply()
         }
     }
 }

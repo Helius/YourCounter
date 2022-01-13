@@ -25,3 +25,16 @@ private:
     IEntityRepoPtr m_repo;
     QString loadedTransactionId;
 };
+
+using EditTransactionUsecaseUnq = std::unique_ptr<EditTransactionUsecase>;
+
+class EditTransactionUsecaseBuilder {
+public:
+    EditTransactionUsecaseBuilder(IEntityRepoPtr repo);
+    EditTransactionUsecaseUnq build(const QString& transactionId);
+
+private:
+    IEntityRepoPtr m_repo;
+};
+
+using EditTransactionUsecaseBuilderUnq = std::unique_ptr<EditTransactionUsecaseBuilder>;
