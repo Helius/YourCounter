@@ -178,7 +178,7 @@ QmlInjector {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            console.log("helius: edit ", model.transactionId)
+                            editPopupLoader.setSource("qrc:/qml/EditTransactionPopup.qml", {"transactionId": model.transactionId});
                         }
                     }
                 }
@@ -189,12 +189,17 @@ QmlInjector {
 
             AddTransactionPopup {
                 id: addTransactionPopup
-                width: 400
-                height: 600
                 modal: true
                 focus: true
                 anchors.centerIn: parent
                 closePolicy: Popup.CloseOnEscape
+            }
+
+            Loader {
+                id: editPopupLoader
+                onLoaded: {
+                    item.open();
+                }
             }
 
             RoundButton {

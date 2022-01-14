@@ -2,6 +2,7 @@
 #define QMLINJECTOR_H
 
 #include <QQmlComponent>
+#include <QQmlParserStatus>
 #include <QQuickItem>
 
 class QmlInjector : public QQuickItem {
@@ -21,6 +22,10 @@ public:
     void setContext(QVariant context);
     void sourceComponent(QQmlComponent* sourceComponent);
     QQuickItem* view() const;
+
+    // QQmlParserStatus interface
+public:
+    void componentComplete() override;
 
 signals:
     void contextChanged();

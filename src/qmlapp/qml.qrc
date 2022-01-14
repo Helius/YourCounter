@@ -23,5 +23,8 @@
         <file>qml/Controls/DatePicker.qml</file>
         <file>qml/Controls/NamedField.qml</file>
         <file>qml/icons/edit_white_24dp.svg</file>
+        <file>qml/TransactionEditView.qml</file>
+        <file>qml/EditTransactionPopup.qml</file>
+        <file>qml/EditTransactionView.qml</file>
     </qresource>
 </RCC>

@@ -14,7 +14,7 @@ QmlInjector {
     sourceComponent: Item {
         height: col.implicitHeight
         width: col.implicitWidth
-        property AddTransactionPresenter $presenter
+        property EditTransactionPresenter $presenter
         property Item injector
 
         Connections {

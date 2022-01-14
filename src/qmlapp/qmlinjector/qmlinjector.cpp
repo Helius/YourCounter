@@ -28,14 +28,17 @@ void QmlInjector::sourceComponent(QQmlComponent* sourceComponent)
         return;
     m_sourceComponent = sourceComponent;
     emit sourceComponentChanged();
-    QTimer::singleShot(0, this, [this]() {
-        loadComponent();
-    });
 }
 
 QQuickItem* QmlInjector::view() const
 {
     return m_view;
+}
+
+void QmlInjector::componentComplete()
+{
+    QQuickItem::componentComplete();
+    loadComponent();
 }
 
 void QmlInjector::loadComponent()

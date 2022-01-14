@@ -8,7 +8,10 @@ import "Controls"
 
 QmlInjector {
     id: categorySuggester
-    signal setCategoryId(string id)
+    function setCategoryId(categoryId) {
+        view.$suggestModel.setCategoryId(categoryId);
+    }
+    signal categoryIdSelected(string id)
     implicitHeight: view ? view.implicitHeight : 0
     implicitWidth: view ? view.width : 0
     sourceComponent: ColumnLayout {

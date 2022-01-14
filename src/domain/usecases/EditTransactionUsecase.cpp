@@ -59,14 +59,3 @@ bool EditTransactionUsecase::checkCategoryExist(const QString& categoryId)
     }
     return false;
 }
-
-EditTransactionUsecaseBuilder::EditTransactionUsecaseBuilder(IEntityRepoPtr repo)
-    : m_repo(repo)
-{
-    Q_ASSERT(m_repo);
-}
-
-EditTransactionUsecaseUnq EditTransactionUsecaseBuilder::build(const QString& transactionId)
-{
-    return std::make_unique<EditTransactionUsecase>(m_repo, transactionId);
-}
