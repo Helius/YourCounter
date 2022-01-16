@@ -46,6 +46,7 @@ void StartupUseCase::start()
     m_repo->groups()->fetchAll();
     m_repo->transactions()->fetchAll();
     m_predictions->fetchAll();
+    checkReadyness();
 }
 
 const QStringList& StartupUseCase::getErrors() const

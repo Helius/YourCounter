@@ -5,13 +5,12 @@ import QtQuick.Layouts
 import "Controls"
 
 ColumnLayout {
-    id: col
+    id: root
     property var vm
     spacing: 20
 
     Component.onCompleted: {
-        amount.edit.text = vm.amount
-        categorySuggester
+        categorySuggester.setCategoryId(vm.categoryId);
     }
 
     NamedField {
@@ -30,9 +29,11 @@ ColumnLayout {
         id: categorySuggester
         Layout.preferredWidth: implicitWidth
         Layout.preferredHeight: implicitHeight
-        onCategoryIdSelected: id => {
-                             vm.categoryId = id;
-                         }
+        Binding {
+            target: vm
+            property: "categoryId"
+            value: categorySuggester.categoryId
+        }
     }
     DatePicker {
         id: datePicker
@@ -43,12 +44,12 @@ ColumnLayout {
                    }
     }
     NamedField {
-        id: coment
-        name: "Coment"
+        id: comment
+        name: "Comment"
         Binding {
             target: vm
-            property: "coment"
-            value: coment.edit.text
+            property: "comment"
+            value: comment.edit.text
         }
     }
     NamedField {

@@ -70,7 +70,10 @@ private:
 
 using CategorySortedListModelUnq = std::unique_ptr<CategorySortedListModel>;
 
+// ====
+
 class CategorySuggestModel : public QSortFilterProxyModel {
+
     Q_OBJECT
 
 public:

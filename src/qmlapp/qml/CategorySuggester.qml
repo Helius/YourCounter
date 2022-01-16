@@ -7,11 +7,11 @@ import injector
 import "Controls"
 
 QmlInjector {
-    id: categorySuggester
+    id: root
     function setCategoryId(categoryId) {
         view.$suggestModel.setCategoryId(categoryId);
     }
-    signal categoryIdSelected(string id)
+    property string categoryId
     implicitHeight: view ? view.implicitHeight : 0
     implicitWidth: view ? view.width : 0
     sourceComponent: ColumnLayout {
@@ -28,7 +28,7 @@ QmlInjector {
             }
             Keys.onReturnPressed: {
                 if (list.count === 1) {
-                    injector.setCategoryId(list.itemAtIndex(0).categoryId)
+                    injector.categoryId = list.itemAtIndex(0).catId
                     field.edit.text = list.itemAtIndex(0).text
                 }
             }
@@ -40,14 +40,14 @@ QmlInjector {
             height: 100
             model: $suggestModel
             delegate: Text {
-                property string categoryId: model.categoryId
+//                property string catId: model.categoryId
                 text: model.categoryName
                 color: "white"
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        injector.setCategoryId(categoryId)
-                        field.edit.text = text
+                        injector.categoryId = model.categoryId
+                        field.edit.text = model.text
                     }
                 }
             }

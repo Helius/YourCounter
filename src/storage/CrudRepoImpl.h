@@ -98,6 +98,8 @@ public:
 
         m_api->getObject(m_entryPoint)
             .then(this, [this](const QJsonObject& json) {
+                QJsonDocument doc(json);
+                qDebug() << doc.toJson(QJsonDocument::Compact);
                 for (const auto& key : json.keys()) {
                     const auto& val = json.value(key).toObject();
                     if (auto e = m_mapper->fromJson(key, val)) {

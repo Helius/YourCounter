@@ -27,7 +27,6 @@ FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::getObject(const QString& path)
                                           qWarning() << "Terrible error happened";
                                           return QJsonObject();
                                       });
-
     return future;
 }
 
@@ -49,7 +48,6 @@ FirebaseRtDbAPI::addObject(const QString& root, const QJsonObject& object)
                                           qWarning() << "Terrible error happened";
                                           return QJsonObject();
                                       });
-
     return future;
 }
 
@@ -72,8 +70,6 @@ FirebaseRtDbAPI::updateObject(const QString& root, const QString& id,
                                           qWarning() << "Terrible error happened";
                                           return QJsonObject();
                                       });
-    ;
-
     return future;
 }
 

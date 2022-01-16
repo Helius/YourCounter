@@ -22,6 +22,8 @@ target_sources(
 		EntityRepoImpl.cpp
 		PredictionRepoimpl.h
 		PredictionRepoimpl.cpp
+		LocalFileDbApi.h # for test purpose mostly
+		LocalFileDbApi.cpp
 		jsonMappers/TransactionMapper.cpp
 		jsonMappers/TransactionMapper.h
 		jsonMappers/CategoryMapper.cpp

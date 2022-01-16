@@ -20,6 +20,7 @@ QmlInjector {
         Connections {
             target: $presenter
             function onStartUpFinished() {
+                console.log("startup finished");
                 parent.startUpFinished();
             }
         }

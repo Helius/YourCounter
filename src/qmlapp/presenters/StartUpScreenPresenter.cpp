@@ -1,5 +1,6 @@
 #include "StartUpScreenPresenter.h"
 #include <QDebug>
+#include <QTimer>
 
 StartUpScreenPresenter::StartUpScreenPresenter(StartupUseCaseUnq usecase)
     : QObject()
@@ -9,7 +10,8 @@ StartUpScreenPresenter::StartUpScreenPresenter(StartupUseCaseUnq usecase)
     static auto m_notifierHolder = m_usecase->stateProperty.addNotifier([this]() {
         StartupUseCase::State state = m_usecase->stateProperty.value();
         if (state == StartupUseCase::State::Finished) {
-            emit startUpFinished();
+            QTimer::singleShot(1, this, [this]() { emit startUpFinished(); });
+            //            emit startUpFinished();
         } else {
             emit stateChanged();
         }

@@ -31,6 +31,7 @@
 #include "presenters/TransactionListModel.h"
 
 #include <EntityRepoImpl.h>
+#include <LocalFileDbApi.h>
 #include <PredictionRepoimpl.h>
 #include <firebaseRtDbAPI.h>
 
@@ -55,7 +56,8 @@ int main(int argc, char* argv[])
     const auto injector = di::make_injector(
         di::bind<QNetworkAccessManager>.to(std::make_shared<QNetworkAccessManager>()),
         di::bind<INetworkSettingsRepo>.to<NetworkSettingsRepoImpl>(),
-        di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
+        //        di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
+        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
         di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),

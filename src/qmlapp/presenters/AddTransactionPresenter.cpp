@@ -36,5 +36,5 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
 
 void AddTransactionPresenter::apply()
 {
-    m_usecase->addTransaction(m_vm->buildTransaction());
+    //    m_usecase->addTransaction(m_vm->buildTransaction());
 }

@@ -9,6 +9,7 @@ EditTransactionPresenter::EditTransactionPresenter(EditTransactionUsecaseUnq use
 
 void EditTransactionPresenter::apply()
 {
+    /*
     auto t = m_vm->buildTransaction();
     t.id = m_transactionId;
     switch (m_usecase->applyChanges(t)) {
@@ -32,10 +33,12 @@ void EditTransactionPresenter::apply()
         emit closePopup();
         break;
     }
+*/
 }
 
 void EditTransactionPresenter::setTransactionId(const QString& transactionId)
 {
     m_transactionId = transactionId;
-    m_vm->setTransaction(m_usecase->loadTransaction(transactionId));
+    auto t = m_usecase->loadTransaction(transactionId);
+    //    m_vm->
 }
