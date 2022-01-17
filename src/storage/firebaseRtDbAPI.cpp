@@ -82,7 +82,6 @@ FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::deleteObject(const QString&,
 QJsonObject FirebaseRtDbAPI::handler(QNetworkReply* reply)
 {
     auto data = reply->readAll();
-    qDebug() << "Got smth from network:" << data;
 
     auto errorStr = reply->errorString();
     auto err = reply->error();
