@@ -18,15 +18,14 @@ LocalFileDbApi::LocalFileDbApi()
                     { "amount", -1000 },
                     { "categoryId", "cid1" },
                     { "who", "pc" },
-                    { "comment", "bla-bla" },
-                    { "when", "20220101" } } } } },
+                    { "comment", "bla-bla commennt" },
+                    { "when", static_cast<qint64>(1641229200000) } } } } },
 
     };
 }
 
 IFirebaseRtDbApi::JsonFuture LocalFileDbApi::getObject(const QString& path)
 {
-    qDebug() << "getObject with path:" << path;
     return QtFuture::makeReadyFuture<QJsonObject>(m_storage.value(path).toObject());
 }
 
@@ -44,7 +43,7 @@ IFirebaseRtDbApi::JsonFuture LocalFileDbApi::updateObject(const QString& root, c
     QJsonObject r = m_storage.value(root).toObject();
     QJsonObject obj = r.value(id).toObject();
     r.insert(id, patch);
-    return QtFuture::makeReadyFuture<QJsonObject>();
+    return QtFuture::makeReadyFuture(patch);
 }
 
 IFirebaseRtDbApi::JsonFuture LocalFileDbApi::deleteObject(const QString& root, const QString& id)

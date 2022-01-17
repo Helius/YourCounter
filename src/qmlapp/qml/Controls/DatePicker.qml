@@ -6,15 +6,19 @@ ListView {
     id: root
 
  // public
+    signal clicked(date date);
+
     function set(date) { // new Date(2019, 10 - 1, 4)
         selectedDate = new Date(date)
         positionViewAtIndex((selectedDate.getFullYear()) * 12 + selectedDate.getMonth(), ListView.Center) // index from month year
     }
-
-    signal clicked(date date);  // onClicked: print('onClicked', date.toDateString())
-
+    Component.onCompleted: {
+        if(!selectedDate) {
+            set(new Date())
+        }
+    } // today (otherwise Jan 0000)
  // private
-    property date selectedDate: new Date()
+    property date selectedDate: undefined
 
     width: 500;  height: 100 // default size
     snapMode:    ListView.SnapOneItem
@@ -97,6 +101,4 @@ ListView {
             }
         }
     }
-
-    Component.onCompleted: set(new Date()) // today (otherwise Jan 0000)
 }

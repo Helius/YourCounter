@@ -8,11 +8,15 @@ QString formatAmount(const int64_t amount)
     return locale.toString(amount / 100.0, 'f', 2);
 }
 
-int8_t amountFromString(const QString& string)
+int64_t amountFromString(const QString& string)
 {
     bool ok = false;
-    auto value = static_cast<int8_t>(string.toFloat(&ok) * 100);
-    Q_ASSERT(ok);
+    auto locale = QLocale("ru_RU");
+    auto value = static_cast<int64_t>(locale.toDouble(string, &ok) * 100);
+    if (!ok) {
+        qCritical() << "Can't parse amount from:[" << string << "]";
+        Q_ASSERT(ok);
+    }
     return value;
 }
 

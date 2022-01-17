@@ -6,23 +6,34 @@ EditTransactionUsecase::EditTransactionUsecase(IEntityRepoPtr repo)
     Q_ASSERT(m_repo);
 }
 
-Transaction EditTransactionUsecase::loadTransaction(const QString& transactionId)
+std::pair<Transaction, QString> EditTransactionUsecase::loadTransaction(const QString& transactionId)
 {
     auto transactions = m_repo->transactions()->data();
+
     auto it = std::find_if(transactions.begin(), transactions.end(),
         [transactionId](const auto& t) {
             return t.id == transactionId;
         });
-    if (it != transactions.cend()) {
-        loadedTransactionId = transactionId;
-        return Transaction(*it);
-    }
-    return Transaction();
+
+    Q_ASSERT(it != transactions.cend());
+
+    m_loadedTransactionId = transactionId;
+    auto categories = m_repo->categories()->data();
+
+    Transaction result(*it);
+
+    auto categoryIt = std::find_if(categories.cbegin(), categories.cend(), [categoryId = result.categoryId](const auto& c) {
+        return c.id == categoryId;
+    });
+
+    Q_ASSERT(categoryIt != categories.cend());
+
+    return std::make_pair(result, categoryIt->name);
 }
 
 EditTransactionUsecase::EditError EditTransactionUsecase::applyChanges(const Transaction& t)
 {
-    if (t.id != loadedTransactionId) {
+    if (t.id != m_loadedTransactionId) {
         return EditError::TransactionIdDiffer;
     }
 

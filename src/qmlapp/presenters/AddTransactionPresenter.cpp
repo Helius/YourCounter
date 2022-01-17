@@ -1,4 +1,5 @@
 #include "AddTransactionPresenter.h"
+#include "../viewmodel/AmountVm.h"
 
 AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq usecase)
     : m_usecase(std::move(usecase))
@@ -36,5 +37,11 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
 
 void AddTransactionPresenter::apply()
 {
-    //    m_usecase->addTransaction(m_vm->buildTransaction());
+    auto t = Transaction::createRequest(
+        AmountVM::amountFromString(m_vm->amount()),
+        QDateTime(m_vm->when(), QTime::currentTime()),
+        m_vm->categoryId(),
+        m_vm->who(),
+        m_vm->comment());
+    m_usecase->addTransaction(t);
 }

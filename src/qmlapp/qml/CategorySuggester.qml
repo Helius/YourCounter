@@ -8,18 +8,31 @@ import "Controls"
 
 QmlInjector {
     id: root
-    function setCategoryId(categoryId) {
-        view.$suggestModel.setCategoryId(categoryId);
-    }
+
     property string categoryId
+    property string categoryText
+
     implicitHeight: view ? view.implicitHeight : 0
     implicitWidth: view ? view.width : 0
+
     sourceComponent: ColumnLayout {
         id: layout
         required property CategorySuggestModel $suggestModel
         required property Item injector
         width: 300
         spacing: 10
+
+        Component.onCompleted: {
+            Qt.callLater(function(){
+                $suggestModel.setFilterFixedString("");
+                field.edit.text = injector.categoryText;
+                $suggestModel.setFilterFixedString(injector.categoryText);
+                if (list.count === 1) {
+                    injector.categoryId = list.itemAtIndex(0).categoryId_
+                }
+            });
+        }
+
         NamedField {
             id: field
             name: "Category"
@@ -28,7 +41,7 @@ QmlInjector {
             }
             Keys.onReturnPressed: {
                 if (list.count === 1) {
-                    injector.categoryId = list.itemAtIndex(0).catId
+                    injector.categoryId = list.itemAtIndex(0).categoryId_
                     field.edit.text = list.itemAtIndex(0).text
                 }
             }
@@ -40,14 +53,14 @@ QmlInjector {
             height: 100
             model: $suggestModel
             delegate: Text {
-//                property string catId: model.categoryId
+                property string categoryId_: model.categoryId
                 text: model.categoryName
                 color: "white"
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         injector.categoryId = model.categoryId
-                        field.edit.text = model.text
+                        field.edit.text = model.categoryName
                     }
                 }
             }

@@ -61,8 +61,8 @@ FirebaseRtDbAPI::updateObject(const QString& root, const QString& id,
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QByteArray data = QJsonDocument(patch).toJson();
-    QNetworkReply* reply = m_nam->sendCustomRequest(request, "patch", data);
+    QByteArray data = QJsonDocument(patch).toJson(QJsonDocument::Compact);
+    QNetworkReply* reply = m_nam->sendCustomRequest(request, "PATCH", data);
 
     QFuture<QJsonObject> future = QtFuture::connect(reply, &QNetworkReply::finished)
                                       .then([this, reply] { return handler(reply); })

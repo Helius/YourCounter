@@ -7,26 +7,39 @@ class TransactionEditFeildsVm
     : public QObject {
     Q_OBJECT
 
-    Q_PROPERTY(QString category MEMBER m_category NOTIFY categoryChanged FINAL)
-    Q_PROPERTY(QDateTime when MEMBER m_when NOTIFY whenChanged FINAL)
-    Q_PROPERTY(QString who MEMBER m_who NOTIFY whoChanged FINAL)
-    Q_PROPERTY(QString amount MEMBER m_amount NOTIFY amountChanged FINAL)
-    Q_PROPERTY(QString comment MEMBER m_comment NOTIFY commentChanged FINAL)
+    Q_PROPERTY(QString category READ category NOTIFY categoryChanged FINAL)
+    Q_PROPERTY(QString categoryId READ categoryId WRITE setCategoryId NOTIFY categoryIdChanged FINAL)
+    Q_PROPERTY(QDate when READ when WRITE setWhen NOTIFY whenChanged FINAL)
+    Q_PROPERTY(QString who READ who WRITE setWho NOTIFY whoChanged FINAL)
+    Q_PROPERTY(QString amount READ amount WRITE setAmount NOTIFY amountChanged FINAL)
+    Q_PROPERTY(QString comment READ comment WRITE setComent NOTIFY commentChanged FINAL)
     Q_PROPERTY(QRegularExpressionValidator* amountValidator MEMBER m_amountValidator CONSTANT FINAL)
 
 public:
-    //    TransactionEditFeildsVm(const Transaction& t, QObject* parent = nullptr);
     TransactionEditFeildsVm(QObject* parent = nullptr);
-    //    Transaction buildTransaction();
-    //    void setTransaction(const Transaction& t);
+    TransactionEditFeildsVm(const QString& category,
+        const QDate& when,
+        const QString& who,
+        const QString& amount,
+        const QString& comment,
+        QObject* parent = nullptr);
 
-    void setCategory(const QString& category);
-    void setWhen(const QDateTime& when);
-    void setWho(const QString& who);
-    void setAmount(const QString& amount);
-    void setComment(const QString& comment);
+    QDate when() const;
+    QString who() const;
+    QString amount() const;
+    QString comment() const;
+    QString categoryId() const;
+    QString category() const;
+
+public slots:
+    void setAmount(QString amount);
+    void setComent(QString comment);
+    void setWho(QString who);
+    void setWhen(QDate when);
+    void setCategoryId(QString categoryId);
 
 signals:
+    void categoryIdChanged();
     void categoryChanged();
     void whenChanged();
     void whoChanged();
@@ -35,7 +48,8 @@ signals:
 
 private:
     QString m_category;
-    QDateTime m_when;
+    QString m_categoryId;
+    QDate m_when = QDate::currentDate();
     QString m_who;
     QString m_amount;
     QString m_comment;

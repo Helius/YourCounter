@@ -15,7 +15,7 @@ public:
     };
 
     EditTransactionUsecase(IEntityRepoPtr repo);
-    Transaction loadTransaction(const QString& transactionId);
+    std::pair<Transaction, QString> loadTransaction(const QString& transactionId);
     EditError applyChanges(const Transaction& t);
 
 private:
@@ -23,7 +23,7 @@ private:
 
 private:
     IEntityRepoPtr m_repo;
-    QString loadedTransactionId;
+    QString m_loadedTransactionId;
 };
 
 using EditTransactionUsecaseUnq = std::unique_ptr<EditTransactionUsecase>;

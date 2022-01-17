@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
     const auto injector = di::make_injector(
         di::bind<QNetworkAccessManager>.to(std::make_shared<QNetworkAccessManager>()),
         di::bind<INetworkSettingsRepo>.to<NetworkSettingsRepoImpl>(),
-        //        di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
-        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
+        di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
+        //        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
         di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
@@ -108,9 +108,8 @@ int main(int argc, char* argv[])
         return injector.create<MonthReportSortedModelUnq>();
     });
     builder.add<EditTransactionPresenter>([&injector](const QVariant& context) -> EditTransactionPresenterUnq {
-        auto p = injector.create<EditTransactionPresenterUnq>();
-        p->setTransactionId(context.toString());
-        return p;
+        auto builder = injector.create<EditTransactionBuilderUnq>();
+        return builder->build(context.toString());
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");

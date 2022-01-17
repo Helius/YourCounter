@@ -9,8 +9,19 @@ ColumnLayout {
     property var vm
     spacing: 20
 
+    QtObject {
+        id: priv
+        property bool enabled: false
+    }
+
     Component.onCompleted: {
-        categorySuggester.setCategoryId(vm.categoryId);
+        categorySuggester.categoryText = vm.category;
+        datePicker.set(vm.when);
+        comment.edit.text = vm.comment;
+        amount.edit.text = vm.amount;
+        who.edit.text = vm.who;
+
+        priv.enabled = true;
     }
 
     NamedField {
@@ -23,6 +34,7 @@ ColumnLayout {
             target: vm
             property: "amount"
             value: amount.edit.text
+            when: priv.enabled
         }
     }
     CategorySuggester {
@@ -33,6 +45,7 @@ ColumnLayout {
             target: vm
             property: "categoryId"
             value: categorySuggester.categoryId
+            when: priv.enabled
         }
     }
     DatePicker {
@@ -50,6 +63,7 @@ ColumnLayout {
             target: vm
             property: "comment"
             value: comment.edit.text
+            when: priv.enabled
         }
     }
     NamedField {
@@ -59,6 +73,7 @@ ColumnLayout {
             target: vm
             property: "who"
             value: who.edit.text
+            when: priv.enabled
         }
     }
 }
