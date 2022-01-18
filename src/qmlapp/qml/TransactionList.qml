@@ -24,23 +24,42 @@ ColumnLayout {
         headerPositioning: ListView.OverlayHeader
         header: QmlInjector {
             height: 40
-            z:3
+            z: 3
             width: parent.width
             sourceComponent: Rectangle {
                 color: "gray"
                 anchors.fill: parent
 
                 property CurentBalancePresenter $presenter
-                Text {
-                anchors {
-                    left: parent ? parent.left : undefined
-                    leftMargin: 10
-                    top: parent ? parent.top : undefined
-                    topMargin: 10
-                }
-                    font.pointSize: 14
-                    color: "white"
-                    text: "Current balance: " + $presenter.currentBalance
+                RowLayout {
+                    anchors {
+                        left: parent ? parent.left : undefined
+                        leftMargin: 10
+                        top: parent ? parent.top : undefined
+                        topMargin: 6
+                    }
+                    spacing: 16
+
+                    Text {
+                        font.pointSize: 14
+                        color: "white"
+                        text: "Balance: " + $presenter.currentBalance
+                    }
+
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 0
+                        Text {
+                            font.pointSize: 10
+                            color: "white"
+                            text: "Earn: " + $presenter.earn
+                        }
+                        Text {
+                            font.pointSize: 10
+                            color: "white"
+                            text: "Spend: " + $presenter.spend
+                        }
+                    }
                 }
             }
         }

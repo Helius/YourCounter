@@ -2,6 +2,7 @@
 
 #include <QDate>
 #include <QObject>
+#include <QProperty>
 #include <repos/IEntityRepo.h>
 
 struct CategoryTotalAmount {
@@ -20,9 +21,11 @@ public:
     MonthReportUsecase(IEntityRepoPtr repo);
 
     CategoriesTotalAmount generateMonthReport(const QDate& monthDate);
+    void calcEarnSpend(const QDate& monthDate);
 
 signals:
     void amountsChanged();
+    void earnSpendChanged(int64_t earn, int64_t spend);
 
 private:
     std::pair<QString, QString> groupCategoryNameById(const QString& id);

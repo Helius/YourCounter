@@ -27,6 +27,22 @@ MonthReportUsecase::CategoriesTotalAmount MonthReportUsecase::generateMonthRepor
     return result;
 }
 
+void MonthReportUsecase::calcEarnSpend(const QDate& monthDate)
+{
+    int64_t earn = 0;
+    int64_t spend = 0;
+    for (const auto& transaction : m_repo->transactions()->data()) {
+        if (transaction.when.date().month() == monthDate.month()) {
+            if (transaction.amount > 0) {
+                earn += transaction.amount;
+            } else {
+                spend += transaction.amount;
+            }
+        }
+    }
+    emit earnSpendChanged(earn, spend);
+}
+
 std::pair<QString, QString> MonthReportUsecase::groupCategoryNameById(const QString& id)
 {
     const auto& categories = m_repo->categories()->data();
