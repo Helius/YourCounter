@@ -42,11 +42,18 @@ set(SRC
 		presenters/MonthReportModel.cpp
 		presenters/EditTransactionPresenter.h
 		presenters/EditTransactionPresenter.cpp
+		)
 
+
+	add_library(viewmodel
 		viewmodel/AmountVm.h
 		viewmodel/AmountVm.cpp
 		viewmodel/TransactionFeildsVm.h
 		viewmodel/TransactionFeildsVm.cpp
+		)
+	target_link_libraries(viewmodel
+		PRIVATE domain
+		PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 		)
 
 
@@ -61,6 +68,13 @@ target_compile_definitions(YourCounter
 target_link_libraries(YourCounter
 	    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 		domain
+		viewmodel
 		settings
 		storage
 		)
+
+enable_testing(true)
+
+add_executable(test_amountVm viewmodel/test/test_AmountVm.cpp)
+add_test(NAME test_amountVm COMMAND test_AmaountVm)
+target_link_libraries(test_amountVm viewmodel  Qt::Test)
