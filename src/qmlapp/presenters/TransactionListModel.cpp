@@ -12,15 +12,22 @@ TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
         [this](UpdateMode mode, size_t startIndex, size_t size) {
             switch (mode) {
             case UpdateMode::Changed:
+                qDebug() << "transactions Changed" << mode << startIndex << size;
+                dataChanged(createIndex(startIndex, 0), createIndex(startIndex + size - 1, 0));
                 break;
             case UpdateMode::Inserted:
+                beginInsertRows(QModelIndex(), startIndex, startIndex + size - 1);
+                qDebug() << "transactions Inserted" << mode << startIndex << size;
+                endInsertRows();
                 break;
             case UpdateMode::Removed:
+                //TODO: beginRemoveRows
+                beginResetModel();
+                qDebug() << "transactions Removed" << mode << startIndex << size;
+                endResetModel();
                 break;
             }
-            beginResetModel();
-            qDebug() << "transactions changed" << mode << startIndex << size;
-            endResetModel();
+            sort(0);
         });
 }
 

@@ -21,6 +21,7 @@ private:
     EditTransactionUsecaseUnq m_usecase;
     QString m_transactionId;
     QDateTime m_origTime;
+    QString m_categoryId;
     TransactionEditFeildsVm* m_vm = nullptr;
 };
 

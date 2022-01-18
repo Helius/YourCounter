@@ -19,7 +19,7 @@ ColumnLayout {
         datePicker.set(vm.when);
         comment.edit.text = vm.comment;
         amount.edit.text = vm.amount;
-        who.edit.text = vm.who;
+        who.edit.text = vm.who || "pc";
 
         priv.enabled = true;
     }

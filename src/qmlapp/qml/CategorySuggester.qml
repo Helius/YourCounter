@@ -23,13 +23,9 @@ QmlInjector {
         spacing: 10
 
         Component.onCompleted: {
-            Qt.callLater(function(){
-                $suggestModel.setFilterFixedString("");
+            Qt.callLater(function() {
                 field.edit.text = injector.categoryText;
                 $suggestModel.setFilterFixedString(injector.categoryText);
-                if (list.count === 1) {
-                    injector.categoryId = list.itemAtIndex(0).categoryId_
-                }
             });
         }
 

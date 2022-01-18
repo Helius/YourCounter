@@ -12,6 +12,7 @@ EditTransactionPresenter::EditTransactionPresenter(EditTransactionUsecaseUnq use
     auto t = m_usecase->loadTransaction(transactionId);
     auto transaction = std::get<0>(t);
     m_origTime = transaction.when;
+    m_categoryId = transaction.categoryId;
     QString categoryName = std::get<1>(t);
 
     m_vm = new TransactionEditFeildsVm(
@@ -29,7 +30,7 @@ void EditTransactionPresenter::apply()
         AmountVM::amountFromString(m_vm->amount()),
         //TODO: bullshit, not presenter's responsibility
         m_vm->when() != m_origTime.date() ? QDateTime(m_vm->when(), QTime::currentTime()) : m_origTime,
-        m_vm->categoryId(),
+        m_vm->categoryId().isEmpty() ? m_categoryId : m_vm->categoryId(),
         m_vm->who(),
         m_vm->comment());
 
