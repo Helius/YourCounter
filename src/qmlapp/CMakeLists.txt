@@ -76,5 +76,5 @@ target_link_libraries(YourCounter
 enable_testing(true)
 
 add_executable(test_amountVm viewmodel/test/test_AmountVm.cpp)
-add_test(NAME test_amountVm COMMAND test_AmaountVm)
+add_test(NAME test_amountVm COMMAND $<TARGET_FILE:test_amountVm>)
 target_link_libraries(test_amountVm viewmodel  Qt::Test)
