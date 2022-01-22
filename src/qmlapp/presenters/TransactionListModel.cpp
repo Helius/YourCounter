@@ -45,6 +45,18 @@ QString TransactionListModel::formatDate(const QDateTime& dateTime) const
     return dateTime.date().toString("dddd dd MMMM");
 }
 
+void TransactionListModel::updateSelectedAmount()
+{
+    m_selectedAmount = 0;
+    const auto& transactions = m_repo->transactions()->data();
+    for (const auto& index : m_selectedItems) {
+        if (static_cast<size_t>(index) < transactions.size()) {
+            m_selectedAmount += transactions[index].amount;
+        }
+    }
+    emit selectedAmountChanged();
+}
+
 int TransactionListModel::rowCount(const QModelIndex&) const
 {
     return m_repo->transactions()->data().size();
@@ -72,6 +84,8 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
         return transaction.when;
     case Comment:
         return transaction.comment;
+    case Selected:
+        return m_selectedItems.find(index.row()) != m_selectedItems.cend();
     }
     return QVariant();
 }
@@ -85,7 +99,28 @@ QHash<int, QByteArray> TransactionListModel::roleNames() const
         { Roles::Date, "date" },
         { Roles::Who, "who" },
         { Roles::Comment, "comment" },
+        { Roles::Selected, "selected" },
     };
+}
+
+bool TransactionListModel::setData(const QModelIndex& index, const QVariant&, int role)
+{
+    if (role == Roles::Selected) {
+        if (m_selectedItems.find(index.row()) != m_selectedItems.cend()) {
+            m_selectedItems.erase(index.row());
+        } else {
+            m_selectedItems.insert(index.row());
+        }
+        emit dataChanged(index, index, { Roles::Selected });
+        updateSelectedAmount();
+        return true;
+    }
+    return false;
+}
+
+QString TransactionListModel::selectedAmountStr()
+{
+    return m_selectedAmount != 0 ? AmountVM::formatAmount(m_selectedAmount) : QString();
 }
 
 TransactionSortedListModel::TransactionSortedListModel(IEntityRepoPtr repo)
@@ -95,10 +130,15 @@ TransactionSortedListModel::TransactionSortedListModel(IEntityRepoPtr repo)
     setSourceModel(m_sourceModel);
     setDynamicSortFilter(true);
     sort(0);
+    connect(m_sourceModel, &TransactionListModel::selectedAmountChanged, this, &TransactionSortedListModel::selectedAmountChanged);
 }
 
 bool TransactionSortedListModel::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
 {
     return source_left.data(TransactionListModel::RawDate).toDateTime()
         < source_right.data(TransactionListModel::RawDate).toDateTime();
+}
+const QString TransactionSortedListModel::selectedAmount() const
+{
+    return m_sourceModel->selectedAmountStr();
 }

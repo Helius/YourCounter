@@ -63,6 +63,18 @@ ColumnLayout {
                 }
             }
         }
+        footer: Item {
+            visible: model.selectedAmount
+            height: 30
+            width: parent.width
+            Text {
+                anchors.right: parent.right
+                anchors.rightMargin: 20
+                verticalAlignment: Text.AlignVCenter
+                color: "gray"
+                text: model.selectedAmount
+            }
+        }
         section.property: "date"
         section.criteria: ViewSection.FullString
         section.delegate: Item {
@@ -77,9 +89,19 @@ ColumnLayout {
                 color: "gray"
             }
         }
-        delegate: Item {
+        delegate: Rectangle {
             width: ListView.view.width
             height: col.implicitHeight
+            color: "transparent"
+            border.width: model.selected ? 1 : 0
+            border.color: "gray"
+
+            MouseArea {
+                anchors.fill: col
+                onClicked: {
+                    model.selected = !model.selected;
+                }
+            }
             Column {
                 id: col
                 anchors {
