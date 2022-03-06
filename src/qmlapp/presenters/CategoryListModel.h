@@ -36,6 +36,7 @@ public:
         CategoryId,
         Name,
         GroupId,
+        GroupName,
     };
     Q_ENUM(Roles);
 
@@ -78,6 +79,10 @@ class CategorySuggestModel : public QSortFilterProxyModel {
 
 public:
     CategorySuggestModel(IEntityRepoPtr m_repo);
+
+    // QSortFilterProxyModel interface
+protected:
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 private:
     CategoryListModel* m_sourceModel;

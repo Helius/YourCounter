@@ -116,6 +116,15 @@ public:
         return m_fetched;
     };
 
+    std::optional<Entity> find(const QString& id) override
+    {
+        const auto& it = std::find_if(m_data.cbegin(), m_data.cend(), [id](const Entity& e) { return id == e.id; });
+        if (it != m_data.cend()) {
+            return *it;
+        }
+        return std::nullopt;
+    }
+
     const std::vector<Entity>& data() override { return m_data; }
 
 private:

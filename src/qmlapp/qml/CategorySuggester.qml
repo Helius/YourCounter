@@ -25,7 +25,7 @@ QmlInjector {
         Component.onCompleted: {
             Qt.callLater(function() {
                 field.edit.text = injector.categoryText;
-                $suggestModel.setFilterFixedString(injector.categoryText);
+                $suggestModel.setFilterRegularExpression(injector.categoryText);
             });
         }
 
@@ -33,7 +33,7 @@ QmlInjector {
             id: field
             name: "Category"
             onNewText: text => {
-                $suggestModel.setFilterFixedString(text);
+                $suggestModel.setFilterRegularExpression(text);
             }
             Keys.onReturnPressed: {
                 if (list.count === 1) {
@@ -50,7 +50,7 @@ QmlInjector {
             model: $suggestModel
             delegate: Text {
                 property string categoryId_: model.categoryId
-                text: model.categoryName
+                text: model.groupName + ": " + model.categoryName
                 color: "white"
                 MouseArea {
                     anchors.fill: parent

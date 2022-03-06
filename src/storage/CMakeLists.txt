@@ -20,9 +20,9 @@ target_sources(
 		IFirebaseRtDbApi.h
 		EntityRepoImpl.h
 		EntityRepoImpl.cpp
-		PredictionRepoimpl.h
-		PredictionRepoimpl.cpp
-		LocalFileDbApi.h # for test purpose mostly
+#		PredictionRepoimpl.h
+#		PredictionRepoimpl.cpp
+        LocalFileDbApi.h # for test purpose mostly
 		LocalFileDbApi.cpp
 		jsonMappers/TransactionMapper.cpp
 		jsonMappers/TransactionMapper.h

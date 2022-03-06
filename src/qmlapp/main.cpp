@@ -32,7 +32,7 @@
 
 #include <EntityRepoImpl.h>
 #include <LocalFileDbApi.h>
-#include <PredictionRepoimpl.h>
+//#include <PredictionRepoimpl.h>
 #include <firebaseRtDbAPI.h>
 
 #include <SettingsImpl.h>
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
         //        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
-        di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
+        //        di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
         di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
         di::bind<StartupUseCase>.to<StartupUseCase>(),

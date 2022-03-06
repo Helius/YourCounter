@@ -84,15 +84,18 @@ QVariant CategoryListModel::data(const QModelIndex& index, int role) const
     if (static_cast<size_t>(row) >= m_repo->categories()->data().size()) {
         return QVariant();
     }
-    auto category = m_repo->categories()->data().at(row);
+    const auto& category = m_repo->categories()->data().at(row);
+    const auto& groupOpt = m_repo->groups()->find(category.groupId);
 
     switch (role) {
     case Name:
         return category.name;
-    case GroupId:
-        return category.groupId;
     case CategoryId:
         return category.id;
+    case GroupId:
+        return category.groupId;
+    case GroupName:
+        return groupOpt ? groupOpt->name : "???";
     }
     return QVariant();
 }
@@ -102,6 +105,7 @@ QHash<int, QByteArray> CategoryListModel::roleNames() const
     return {
         { Roles::Name, "categoryName" },
         { Roles::CategoryId, "categoryId" },
+        { Roles::GroupName, "groupName" },
     };
 }
 
@@ -120,8 +124,6 @@ void CategorySortedListModel::setGroupId(const QString& groupId)
     m_groupId = groupId;
 }
 
-//===
-
 bool CategorySortedListModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
@@ -136,4 +138,11 @@ CategorySuggestModel::CategorySuggestModel(IEntityRepoPtr m_repo)
     setFilterRole(CategoryListModel::Roles::Name);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setDynamicSortFilter(true);
+}
+
+bool CategorySuggestModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
+{
+    QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    return index.data(CategoryListModel::Roles::GroupName).toString().contains(filterRegularExpression())
+        || index.data(CategoryListModel::Roles::Name).toString().contains(filterRegularExpression());
 }

@@ -68,7 +68,7 @@ ColumnLayout {
             height: 30
             width: parent.width
             Text {
-                anchors.right: parent.right
+                anchors.right: parent ? parent.right : undefined
                 anchors.rightMargin: 20
                 verticalAlignment: Text.AlignVCenter
                 color: "gray"
@@ -99,7 +99,7 @@ ColumnLayout {
             MouseArea {
                 anchors.fill: col
                 onClicked: {
-                    model.selected = !model.selected;
+                    model.selected = !model.selected
                 }
             }
             Column {
