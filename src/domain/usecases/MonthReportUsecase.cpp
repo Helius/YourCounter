@@ -45,16 +45,11 @@ void MonthReportUsecase::calcEarnSpend(const QDate& monthDate)
 
 std::pair<QString, QString> MonthReportUsecase::groupCategoryNameById(const QString& id)
 {
-    const auto& categories = m_repo->categories()->data();
-    const auto& categoryIt = std::find_if(categories.cbegin(), categories.cend(), [id](const auto cat) {
-        return id == cat.id;
-    });
-    Q_ASSERT(categoryIt != categories.cend());
-    const auto& groups = m_repo->groups()->data();
-    const auto& groupIt = std::find_if(groups.cbegin(), groups.cend(),
-        [id = categoryIt->groupId](const auto g) {
-            return id == g.id;
-        });
-    Q_ASSERT(groupIt != groups.cend());
-    return { groupIt->name, categoryIt->name };
+    const auto categoryOpt = m_repo->categories()->find(id);
+    Q_ASSERT(!!categoryOpt);
+
+    const auto& groupOpt = m_repo->groups()->find(categoryOpt->groupId);
+    Q_ASSERT(!!groupOpt);
+
+    return { groupOpt->name, categoryOpt->name };
 }
