@@ -43,8 +43,5 @@ bool AddNewCategoryUseCase::checkNameUnique(const QString& name)
 
 bool AddNewCategoryUseCase::checkGroupExist(const QString& groupId)
 {
-    const auto& groups = m_repo->groups()->data();
-    return groups.cend() != std::find_if(groups.cbegin(), groups.cend(), [groupId](const auto& g) {
-        return g.id == groupId;
-    });
+    return !!m_repo->groups()->find(groupId);
 }

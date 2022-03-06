@@ -33,11 +33,8 @@ TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
 
 QString TransactionListModel::getCategoryName(const QString& id) const
 {
-    const auto& categories = m_repo->categories()->data();
-    const auto it = std::find_if(categories.cbegin(), categories.cend(), [id](const auto& c) {
-        return c.id == id;
-    });
-    return it == categories.cend() ? "Category not found" : it->name;
+    const auto categoryOpt = m_repo->categories()->find(id);
+    return categoryOpt ? categoryOpt->name : "Category not found";
 }
 
 QString TransactionListModel::formatDate(const QDateTime& dateTime) const

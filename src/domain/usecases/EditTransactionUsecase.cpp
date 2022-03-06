@@ -10,25 +10,20 @@ std::pair<Transaction, QString> EditTransactionUsecase::loadTransaction(const QS
 {
     auto transactions = m_repo->transactions()->data();
 
-    auto it = std::find_if(transactions.begin(), transactions.end(),
-        [transactionId](const auto& t) {
-            return t.id == transactionId;
-        });
+    const auto tOpt = m_repo->transactions()->find(transactionId);
 
-    Q_ASSERT(it != transactions.cend());
+    Q_ASSERT(!!tOpt);
 
     m_loadedTransactionId = transactionId;
     auto categories = m_repo->categories()->data();
 
-    Transaction result(*it);
+    Transaction result(*tOpt);
 
-    auto categoryIt = std::find_if(categories.cbegin(), categories.cend(), [categoryId = result.categoryId](const auto& c) {
-        return c.id == categoryId;
-    });
+    auto categoryOpt = m_repo->categories()->find(result.categoryId);
 
-    Q_ASSERT(categoryIt != categories.cend());
+    Q_ASSERT(!!categoryOpt);
 
-    return std::make_pair(result, categoryIt->name);
+    return std::make_pair(result, categoryOpt->name);
 }
 
 EditTransactionUsecase::EditError EditTransactionUsecase::applyChanges(const Transaction& t)
