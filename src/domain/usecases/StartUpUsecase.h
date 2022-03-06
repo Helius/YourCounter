@@ -21,7 +21,7 @@ public:
 
 public:
     StartupUseCase() = delete;
-    StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo, IPredictionRepoPtr predictions);
+    StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr repo);
     void setDbUrl(const QString& url);
 
     QProperty<State> stateProperty;
@@ -37,7 +37,6 @@ private:
 private:
     INetworkSettingsRepoPtr m_settings;
     IEntityRepoPtr m_repo;
-    IPredictionRepoPtr m_predictions;
     QStringList m_errors;
 };
 

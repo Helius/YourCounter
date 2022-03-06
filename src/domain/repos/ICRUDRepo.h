@@ -28,5 +28,6 @@ public:
     virtual void update(const Entity& t) = 0;
     virtual bool fetched() = 0;
     virtual const std::vector<Entity>& data() = 0;
+    virtual std::optional<Entity> find(const QString& id) = 0;
     virtual ~ICRUDRepo() = default;
 };
