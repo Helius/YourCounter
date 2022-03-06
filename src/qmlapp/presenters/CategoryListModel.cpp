@@ -143,6 +143,5 @@ CategorySuggestModel::CategorySuggestModel(IEntityRepoPtr m_repo)
 bool CategorySuggestModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    return index.data(CategoryListModel::Roles::GroupName).toString().contains(filterRegularExpression())
-        || index.data(CategoryListModel::Roles::Name).toString().contains(filterRegularExpression());
+    return (index.data(CategoryListModel::Roles::GroupName).toString() + index.data(CategoryListModel::Roles::Name).toString()).contains(filterRegularExpression());
 }
