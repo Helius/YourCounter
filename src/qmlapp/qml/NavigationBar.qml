@@ -8,8 +8,9 @@ import "Controls"
 
 Rectangle {
     border.width: 1
-    border.color: "gray"
-    color: "transparent"
+    border.color: "#938F99"
+    color: Material.background
+    Material.elevation: 1
     radius: 4
 
     Column {
