@@ -35,7 +35,7 @@ QmlInjector {
             Rectangle {
                 anchors.fill: parent
                 border.width: 1
-                border.color: "gray"
+                border.color: "#938F99"
                 color: "transparent"
             }
             Layout.fillHeight: true

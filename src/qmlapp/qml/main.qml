@@ -12,6 +12,11 @@ ApplicationWindow {
     visible: true
     title: qsTr("Your Counter")
     Material.theme: Material.Dark
+    Material.accent: "#fdbb4a"
+    Material.primary: "#00315f"
+    Material.background: "#1C1B1F"
+    Material.foreground: "#d3e3ff"
+    property color errorColor: "#8C1D18"
 
     RowLayout {
         anchors.fill: parent

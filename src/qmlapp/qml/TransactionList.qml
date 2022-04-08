@@ -27,7 +27,7 @@ ColumnLayout {
             z: 3
             width: parent.width
             sourceComponent: Rectangle {
-                color: "gray"
+                color: Material.primary
                 anchors.fill: parent
 
                 property CurentBalancePresenter $presenter
@@ -42,6 +42,7 @@ ColumnLayout {
 
                     Text {
                         font.pointSize: 14
+                        font.weight: Font.Light
                         color: "white"
                         text: "Balance: " + $presenter.currentBalance
                     }
@@ -51,11 +52,13 @@ ColumnLayout {
                         spacing: 0
                         Text {
                             font.pointSize: 10
+                            font.weight: Font.Light
                             color: "white"
                             text: "Earn: " + $presenter.earn
                         }
                         Text {
                             font.pointSize: 10
+                            font.weight: Font.Light
                             color: "white"
                             text: "Spend: " + $presenter.spend
                         }
@@ -87,6 +90,7 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
                 text: section
                 color: "gray"
+                font.weight: Font.Light
             }
         }
         delegate: Rectangle {
@@ -124,6 +128,7 @@ ColumnLayout {
                         Layout.preferredWidth: implicitWidth
                         color: "white"
                         font.pointSize: 12
+                        font.weight: Font.Light
                     }
                     Text {
                         Layout.fillWidth: true
