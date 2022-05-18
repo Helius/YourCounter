@@ -2,20 +2,26 @@
 #include <QJsonDocument>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QUrlQuery>
 
-FirebaseRtDbAPI::FirebaseRtDbAPI(QNetworkAccessManagerPtr nam, INetworkSettingsRepoPtr settings)
+FirebaseRtDbAPI::FirebaseRtDbAPI(QNetworkAccessManagerPtr nam, INetworkSettingsRepoPtr settings, IAuthTokenRepoPtr tokenRepo)
     : m_nam(nam)
     , m_settings(settings)
+    , m_tokenRepo(tokenRepo)
 {
     Q_ASSERT(m_nam);
     Q_ASSERT(m_settings);
+    Q_ASSERT(m_tokenRepo);
 }
 
 FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::getObject(const QString& path)
 {
     QUrl url;
-    url.setUrl(m_settings->getDbUrl());
+    url.setUrl(m_settings->get().dbUrl);
     url.setPath(path + ".json");
+    QUrlQuery query;
+    query.addQueryItem("auth", m_tokenRepo->getToken());
+    url.setQuery(query);
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -34,8 +40,11 @@ FirebaseRtDbAPI::JsonFuture
 FirebaseRtDbAPI::addObject(const QString& root, const QJsonObject& object)
 {
     QUrl url;
-    url.setUrl(m_settings->getDbUrl());
+    url.setUrl(m_settings->get().dbUrl);
     url.setPath(root + ".json");
+    QUrlQuery query;
+    query.addQueryItem("auth", m_tokenRepo->getToken());
+    url.setQuery(query);
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -56,8 +65,11 @@ FirebaseRtDbAPI::updateObject(const QString& root, const QString& id,
     const QJsonObject& patch)
 {
     QUrl url;
-    url.setUrl(m_settings->getDbUrl());
+    url.setUrl(m_settings->get().dbUrl);
     url.setPath(root + "/" + id + ".json");
+    QUrlQuery query;
+    query.addQueryItem("auth", m_tokenRepo->getToken());
+    url.setQuery(query);
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -76,6 +88,7 @@ FirebaseRtDbAPI::updateObject(const QString& root, const QString& id,
 FirebaseRtDbAPI::JsonFuture FirebaseRtDbAPI::deleteObject(const QString&,
     const QString&)
 {
+    qWarning() << "deleteObject not implemented yet";
     return QtFuture::makeReadyFuture(QJsonObject());
 }
 

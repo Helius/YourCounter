@@ -10,12 +10,14 @@ public:
 
     // IEntityRepo interface
 public:
-    ITransactionRepoUnq& transactions() override { return m_transactions; };
-    ICategoryRepoUnq& categories() override { return m_categories; };
-    IGroupRepoUnq& groups() override { return m_groups; };
+    const ITransactionRepoUnq& transactions() const override { return m_transactions; };
+    const ICategoryRepoUnq& categories() const override { return m_categories; };
+    const IGroupRepoUnq& groups() const override { return m_groups; };
+    bool needLogin() const override { return m_needLogin; }
 
 private:
     ITransactionRepoUnq m_transactions;
     ICategoryRepoUnq m_categories;
     IGroupRepoUnq m_groups;
+    bool m_needLogin = false;
 };

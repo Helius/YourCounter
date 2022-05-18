@@ -3,7 +3,7 @@
 namespace {
 
 QLatin1String dbUrlKey("dbUrl");
-QLatin1String ATKey("AT");
+QLatin1String ATKey("AppToken");
 
 }
 
@@ -23,8 +23,19 @@ void NetworkSettingsRepoImpl::setDbUrl(const QString& value)
     m_settings.sync();
 }
 
-void NetworkSettingsRepoImpl::setAccessToken(const QString& value)
+void NetworkSettingsRepoImpl::setAppToken(const QString& value)
 {
     m_settings.setValue(ATKey, value);
     m_settings.sync();
+}
+
+NetworkSettings NetworkSettingsRepoImpl::get()
+{
+    return { getDbUrl(), getAccessToken() };
+}
+
+void NetworkSettingsRepoImpl::set(const NetworkSettings& settings)
+{
+    setDbUrl(settings.dbUrl);
+    setAppToken(settings.appToken);
 }

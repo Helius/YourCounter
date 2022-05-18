@@ -35,6 +35,8 @@ add_library(domain
 		repos/IEntityRepo.h
 		repos/idatecolumnadapter.h
 		repos/INetworkSettingsRepo.h
+		repos/ICredentionalStore.h
+		repos/IAuthService.h
 #		repos/IPredictionRepo.h
         )
 

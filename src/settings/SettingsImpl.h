@@ -10,12 +10,16 @@ public:
     NetworkSettingsRepoImpl() = default;
     ~NetworkSettingsRepoImpl() = default;
 
-    // ISettingsRepo interface
+    // INetworkSettingsRepo interface
 public:
-    QString getDbUrl() override;
-    QString getAccessToken() override;
-    void setDbUrl(const QString&) override;
-    void setAccessToken(const QString&) override;
+    NetworkSettings get() override;
+    void set(const NetworkSettings&) override;
+
+private:
+    QString getDbUrl();
+    QString getAccessToken();
+    void setDbUrl(const QString&);
+    void setAppToken(const QString&);
 
 private:
     QSettings m_settings;
