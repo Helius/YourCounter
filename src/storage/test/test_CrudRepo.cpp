@@ -93,6 +93,10 @@ public:
 
 public:
     QJsonObject response;
+
+    // IFirebaseRtDbApi interface
+public:
+    bool needLogin() const override { return false; }
 };
 
 class TestTransactionRepo : public QObject {

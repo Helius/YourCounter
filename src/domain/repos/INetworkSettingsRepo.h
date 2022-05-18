@@ -2,13 +2,21 @@
 
 #include <QString>
 
+struct NetworkSettings {
+    QString dbUrl;
+    QString appToken;
+
+    operator bool() const
+    {
+        return !dbUrl.isEmpty() && !appToken.isEmpty();
+    }
+};
+
 class INetworkSettingsRepo {
 public:
-    virtual QString getDbUrl() = 0;
-    virtual QString getAccessToken() = 0;
+    virtual NetworkSettings get() = 0;
 
-    virtual void setDbUrl(const QString&) = 0;
-    virtual void setAccessToken(const QString&) = 0;
+    virtual void set(const NetworkSettings&) = 0;
 
     virtual ~INetworkSettingsRepo() = default;
 };
