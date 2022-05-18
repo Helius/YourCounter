@@ -32,6 +32,8 @@ target_sources(
 		jsonMappers/GroupMappers.h
 		jsonMappers/PredictionMapper.h
 		jsonMappers/PredictionMapper.cpp
+		AuthServiceImpl.h
+		AuthServiceImpl.cpp
 )
 
 target_include_directories(storage

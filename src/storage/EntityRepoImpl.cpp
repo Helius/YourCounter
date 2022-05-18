@@ -20,4 +20,5 @@ EntityRepoImpl::EntityRepoImpl(const IFirebaseRtDbAPIPtr& api)
         "/groups",
         api,
         std::make_shared<GroupMapper>());
+    m_needLogin = api->needLogin();
 }

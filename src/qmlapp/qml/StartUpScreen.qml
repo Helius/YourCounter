@@ -40,7 +40,7 @@ QmlInjector {
                     currentIndex: {
                         if(st === $presenter.StateError)
                             return 1;
-                        if(st === $presenter.StateShowDbUrlInput)
+                        if(st === $presenter.StateShowInputs)
                             return 2;
                         return 0;
                     }
@@ -78,19 +78,56 @@ QmlInjector {
                             anchors.centerIn: parent
                             Layout.preferredWidth: parent.width
 
-                            NamedField {
-                                id: url
-                                Layout.fillWidth: true
-                                name: "Enter DB URL please"
-                            }
+                            ColumnLayout {
 
-                            Button {
-                                text: "Save"
-                                enabled: !!url.edit.text
-                                onClicked: {
-                                    $presenter.setDbUrl(url.edit.text);
+                                NamedField {
+                                    id: url
+                                    Layout.fillWidth: true
+                                    name: "DB URL:"
+                                    edit.text: $presenter.dbUrl
+                                    onNewText: function(newText) { $presenter.dbUrl = newText };
+                                }
+                                NamedField {
+                                    id: token
+                                    Layout.fillWidth: true
+                                    name: "App token"
+                                    edit.text: $presenter.appToken
+                                    onNewText: function(newText) { $presenter.appToken = newText };
+                                }
+                                NamedField {
+                                    id: name
+                                    Layout.fillWidth: true
+                                    name: "Name:"
+                                    edit.text: $presenter.userName
+                                    onNewText: function(newText) { $presenter.userName = newText };
+                                }
+                                NamedField {
+                                    id: passwd
+                                    Layout.fillWidth: true
+                                    name: "Passwd:"
+                                    edit.text: $presenter.passwd
+                                    onNewText: function(newText) { $presenter.passwd = newText };
+                                }
+                                RowLayout {
+                                    Layout.alignment: Qt.AlignCenter
+                                    spacing: 20
+                                    Button {
+                                        text: "Login"
+                                        enabled: $presenter.signEnabled;
+                                        onClicked: {
+                                            $presenter.signIn();
+                                        }
+                                    }
+                                    Button {
+                                        text: "Sign up"
+                                        enabled: $presenter.signEnabled;
+                                        onClicked: {
+                                            $presenter.signUp();
+                                        }
+                                    }
                                 }
                             }
+
                         }
                     }
                 }

@@ -8,6 +8,8 @@
 #include "qmlinjector/qmlinjector.h"
 #include "qmlinjector/qmlinjectorbuilder.h"
 
+#include <repos/IAuthService.h>
+#include <repos/ICredentionalStore.h>
 #include <repos/INetworkSettingsRepo.h>
 #include <repos/IPredictionRepo.h>
 //#include <repos/datecolumnadapter.h>
@@ -35,6 +37,8 @@
 //#include <PredictionRepoimpl.h>
 #include <firebaseRtDbAPI.h>
 
+#include <AuthServiceImpl.h>
+#include <CredentialStoreImpl.h>
 #include <SettingsImpl.h>
 
 int main(int argc, char* argv[])
@@ -56,10 +60,12 @@ int main(int argc, char* argv[])
     const auto injector = di::make_injector(
         di::bind<QNetworkAccessManager>.to(std::make_shared<QNetworkAccessManager>()),
         di::bind<INetworkSettingsRepo>.to<NetworkSettingsRepoImpl>(),
+        di::bind<ICredentialStore>.to<CredentialStoreImpl>(),
+        di::bind<IAuthService>.to<AuthServiceImpl>(),
+        di::bind<IAuthTokenRepo>.to<AuthServiceImpl>(),
         di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
         //        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
-        //        di::bind<IPredictionRepo>.to<PredictionRepoImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
         di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
         di::bind<StartupUseCase>.to<StartupUseCase>(),

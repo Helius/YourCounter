@@ -15,9 +15,10 @@ using IGroupRepoUnq = std::unique_ptr<IGroupRepo>;
 
 class IEntityRepo {
 public:
-    virtual ITransactionRepoUnq& transactions() = 0;
-    virtual ICategoryRepoUnq& categories() = 0;
-    virtual IGroupRepoUnq& groups() = 0;
+    virtual const ITransactionRepoUnq& transactions() const = 0;
+    virtual const ICategoryRepoUnq& categories() const = 0;
+    virtual const IGroupRepoUnq& groups() const = 0;
+    virtual bool needLogin() const = 0;
     virtual ~IEntityRepo() = default;
 };
 
