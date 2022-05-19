@@ -17,7 +17,9 @@ public:
         Who,
         RawDate,
         Comment,
-        Selected
+        Selected,
+        TotalBy,
+        AmountRaw,
     };
     Q_ENUM(Roles);
 
@@ -60,9 +62,18 @@ signals:
     // QSortFilterProxyModel interface
 protected:
     bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+    // QAbstractItemModel interface
+public:
+    QVariant data(const QModelIndex& index, int role) const override;
 
 private:
     TransactionListModel* m_sourceModel;
+
+private:
+    int64_t proxyData(const QModelIndex& index, int role) const;
+
+private:
+    mutable std::map<int, int64_t> m_cachedTotalBy;
 };
 
 using TransactionSortedListModelUnq = std::unique_ptr<TransactionSortedListModel>;

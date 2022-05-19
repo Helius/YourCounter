@@ -18,7 +18,7 @@ ColumnLayout {
             border.color: "gray"
             color: "transparent"
         }
-        spacing: 4
+        spacing: 0
         clip: true
 
         headerPositioning: ListView.OverlayHeader
@@ -106,7 +106,7 @@ ColumnLayout {
                     model.selected = !model.selected
                 }
             }
-            Column {
+            ColumnLayout {
                 id: col
                 anchors {
                     left: parent.left
@@ -116,13 +116,7 @@ ColumnLayout {
                 }
                 RowLayout {
                     width: parent.width
-                    spacing: 4
-                    Text {
-                        text: model.who
-                        font.pointSize: 8
-                        font.weight: Font.Light
-                        color: "gray"
-                    }
+                    spacing: 12
                     Text {
                         text: model.categoryName
                         Layout.preferredWidth: implicitWidth
@@ -143,6 +137,25 @@ ColumnLayout {
                         Layout.fillWidth: true
                         amount: model.amount
                         background: "transparent"
+                    }
+                }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.topMargin: -6
+                    Text {
+                        Layout.alignment: Qt.AlignLeft
+                    Layout.fillWidth: true
+                        text: model.who
+                        font.pointSize: 8
+                        font.weight: Font.Light
+                        color: "gray"
+                    }
+                    Text {
+                        Layout.alignment: Qt.AlignRight
+                        text: model.totalBy
+                        font.pointSize: 8
+                        font.weight: Font.Light
+                        color: "gray"
                     }
                 }
             }

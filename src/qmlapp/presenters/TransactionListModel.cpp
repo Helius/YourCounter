@@ -83,6 +83,8 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
         return transaction.comment;
     case Selected:
         return m_selectedItems.find(index.row()) != m_selectedItems.cend();
+    case AmountRaw:
+        return QVariant::fromValue(transaction.amount);
     }
     return QVariant();
 }
@@ -97,6 +99,7 @@ QHash<int, QByteArray> TransactionListModel::roleNames() const
         { Roles::Who, "who" },
         { Roles::Comment, "comment" },
         { Roles::Selected, "selected" },
+        { Roles::TotalBy, "totalBy" },
     };
 }
 
@@ -128,6 +131,16 @@ TransactionSortedListModel::TransactionSortedListModel(IEntityRepoPtr repo)
     setDynamicSortFilter(true);
     sort(0);
     connect(m_sourceModel, &TransactionListModel::selectedAmountChanged, this, &TransactionSortedListModel::selectedAmountChanged);
+
+    auto invalidateCache = [this]() {
+        m_cachedTotalBy.clear();
+        emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+    };
+
+    connect(m_sourceModel, &TransactionListModel::rowsInserted, this, invalidateCache);
+    connect(m_sourceModel, &TransactionListModel::rowsMoved, this, invalidateCache);
+    connect(m_sourceModel, &TransactionListModel::rowsRemoved, this, invalidateCache);
+    connect(m_sourceModel, &TransactionListModel::modelAboutToBeReset, this, invalidateCache);
 }
 
 bool TransactionSortedListModel::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
@@ -135,6 +148,37 @@ bool TransactionSortedListModel::lessThan(const QModelIndex& source_left, const 
     return source_left.data(TransactionListModel::RawDate).toDateTime()
         < source_right.data(TransactionListModel::RawDate).toDateTime();
 }
+
+int64_t TransactionSortedListModel::proxyData(const QModelIndex& ind, int) const
+{
+    int row = ind.row();
+    const auto amount = static_cast<int64_t>(QAbstractProxyModel::data(ind, TransactionListModel::AmountRaw).toInt());
+    if (row == 0) {
+        m_cachedTotalBy[0] = amount;
+        return amount;
+    } else if (row > 0) {
+        if (const auto it = m_cachedTotalBy.find(row); it != m_cachedTotalBy.cend()) {
+            return it->second;
+        } else {
+            const int64_t prevTotalBy = proxyData(index(row - 1, 0), TransactionListModel::TotalBy);
+            const int64_t result = prevTotalBy + amount;
+            m_cachedTotalBy[row] = result;
+            return result;
+        }
+    }
+    return 0;
+}
+
+QVariant TransactionSortedListModel::data(const QModelIndex& ind, int role) const
+{
+
+    if (role == TransactionListModel::TotalBy) {
+        return AmountVM::formatAmount(proxyData(ind, role));
+    }
+
+    return QAbstractProxyModel::data(ind, role);
+}
+
 const QString TransactionSortedListModel::selectedAmount() const
 {
     return m_sourceModel->selectedAmountStr();
