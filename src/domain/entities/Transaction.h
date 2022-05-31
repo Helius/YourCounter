@@ -12,6 +12,7 @@ public:
     QString categoryId;
     QString who;
     QString comment;
+    using IdType = QString;
 
     Transaction() = default;
     static Transaction createRequest(

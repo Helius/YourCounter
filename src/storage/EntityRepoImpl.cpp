@@ -3,6 +3,7 @@
 #include "jsonMappers/CategoryMapper.h"
 #include "jsonMappers/GroupMappers.h"
 #include "jsonMappers/TransactionMapper.h"
+#include "jsonMappers/WalletMapper.h"
 
 EntityRepoImpl::EntityRepoImpl(const IFirebaseRtDbAPIPtr& api)
 {
@@ -20,5 +21,11 @@ EntityRepoImpl::EntityRepoImpl(const IFirebaseRtDbAPIPtr& api)
         "/groups",
         api,
         std::make_shared<GroupMapper>());
+
+    m_wallets = std::make_unique<CrudRepository<Wallet>>(
+        "/wallets",
+        api,
+        std::make_shared<WalletMapper>());
+
     m_needLogin = api->needLogin();
 }

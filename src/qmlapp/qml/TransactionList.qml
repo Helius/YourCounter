@@ -2,12 +2,18 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import "Controls"
+import "Controls/wallets"
 
 import injector
 import presenters
 
 ColumnLayout {
     property alias model: list.model
+
+    WalletHorisontalList {
+        Layout.fillWidth: true
+    }
+
     ListView {
         id: list
         Layout.fillHeight: true

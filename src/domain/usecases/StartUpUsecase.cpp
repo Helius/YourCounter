@@ -15,10 +15,12 @@ StartupUseCase::StartupUseCase(INetworkSettingsRepoPtr settings, IEntityRepoPtr 
     connect(m_repo->categories().get(), &IRepoObserver::dataChanged, this, &StartupUseCase::checkReadyness);
     connect(m_repo->groups().get(), &IRepoObserver::dataChanged, this, &StartupUseCase::checkReadyness);
     connect(m_repo->transactions().get(), &IRepoObserver::dataChanged, this, &StartupUseCase::checkReadyness);
+    connect(m_repo->wallets().get(), &IRepoObserver::dataChanged, this, &StartupUseCase::checkReadyness);
 
     connect(m_repo->categories().get(), &IRepoObserver::onError, this, &StartupUseCase::setError);
     connect(m_repo->groups().get(), &IRepoObserver::onError, this, &StartupUseCase::setError);
     connect(m_repo->transactions().get(), &IRepoObserver::onError, this, &StartupUseCase::setError);
+    connect(m_repo->wallets().get(), &IRepoObserver::onError, this, &StartupUseCase::setError);
 }
 
 void StartupUseCase::loginWithParams(const NetworkSettings& settings, const Credentials& creds)
@@ -53,6 +55,7 @@ void StartupUseCase::start()
         m_repo->categories()->fetchAll();
         m_repo->groups()->fetchAll();
         m_repo->transactions()->fetchAll();
+        m_repo->wallets()->fetchAll();
         checkReadyness();
     };
 
@@ -104,7 +107,8 @@ void StartupUseCase::checkReadyness()
 {
     if (m_repo->categories()->fetched()
         && m_repo->groups()->fetched()
-        && m_repo->transactions()->fetched()) {
+        && m_repo->transactions()->fetched()
+        && m_repo->wallets()->fetched()) {
         stateProperty.setValue(State::Finished);
     }
 }

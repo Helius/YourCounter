@@ -2,11 +2,26 @@
 
 #include <QString>
 
-struct Category {
+class CategoryId {
+public:
+    explicit CategoryId(QString id)
+        : m_id(id)
+    {
+    }
+    operator bool() const { return !m_id.isEmpty(); }
+    QString toString() const { return m_id; }
 
+private:
+    QString m_id;
+};
+
+class Category {
+
+public:
     QString id;
     QString name;
     QString groupId;
+    using IdType = QString;
 
     Category() = delete;
     static Category createRequest(const QString& name, const QString& groupId)

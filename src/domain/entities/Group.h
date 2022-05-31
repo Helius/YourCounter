@@ -5,6 +5,7 @@
 struct Group {
     QString id;
     QString name;
+    using IdType = QString;
 
     Group() = delete;
 

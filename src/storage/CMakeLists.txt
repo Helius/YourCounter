@@ -32,6 +32,8 @@ target_sources(
 		jsonMappers/GroupMappers.h
 		jsonMappers/PredictionMapper.h
 		jsonMappers/PredictionMapper.cpp
+		jsonMappers/WalletMapper.h
+		jsonMappers/WalletMapper.cpp
 		AuthServiceImpl.h
 		AuthServiceImpl.cpp
 )

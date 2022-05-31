@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IJsonMapper.h"
 #include <QJsonObject>
 #include <entities/Category.h>

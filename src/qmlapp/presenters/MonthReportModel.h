@@ -8,7 +8,7 @@ class MonthReportModel : public QAbstractListModel {
     Q_OBJECT
 public:
     enum Roles {
-        GroupName,
+        GroupName = Qt::UserRole + 1,
         CategoryName,
         TotalAmount,
     };
