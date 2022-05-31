@@ -1,8 +1,10 @@
 #include "CategoryMapper.h"
 
 namespace {
+
 QLatin1String nameKey("name");
 QLatin1String groupIdKey("groupId");
+
 } // namespace
 
 Category CategoryMapper::fromJson(const QString& id, const QJsonObject& json)

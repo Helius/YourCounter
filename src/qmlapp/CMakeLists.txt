@@ -42,6 +42,8 @@ set(SRC
 		presenters/MonthReportModel.cpp
 		presenters/EditTransactionPresenter.h
 		presenters/EditTransactionPresenter.cpp
+		presenters/wallets/WalletListModel.h
+		presenters/wallets/WalletListModel.cpp
 		)
 
 

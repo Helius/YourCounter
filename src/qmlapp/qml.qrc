@@ -28,5 +28,8 @@
         <file>qml/EditTransactionView.qml</file>
         <file>qml/GroupCategoryList.qml</file>
         <file>qml/TransactionList.qml</file>
+        <file>qml/icons/control_point_white_24dp.svg</file>
+        <file>qml/Controls/wallets/WalletHorisontalList.qml</file>
+        <file>qml/icons/all_inbox_white_24dp.svg</file>
     </qresource>
 </RCC>

@@ -10,7 +10,7 @@ class GroupListModel
 
 public:
     enum Roles {
-        GroupName = 0,
+        GroupName = Qt::UserRole + 1,
         GroupId
     };
 
@@ -33,7 +33,7 @@ class CategoryListModel
     Q_OBJECT
 public:
     enum Roles {
-        CategoryId,
+        CategoryId = Qt::UserRole + 1,
         Name,
         GroupId,
         GroupName,

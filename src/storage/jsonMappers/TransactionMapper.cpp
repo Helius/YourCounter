@@ -10,7 +10,7 @@ QLatin1String commentKey("comment");
 
 Transaction TransactionMapper::fromJson(const QString& id, const QJsonObject& json)
 {
-    float amount = json.value(amountKey).toInt(0);
+    int64_t amount = json.value(amountKey).toInt(0);
     QDateTime when = QDateTime::fromMSecsSinceEpoch(json.value(whenKey).toInteger());
     QString who = json.value(whoKey).toString();
     QString categoryId = json.value(categoryIdKey).toString();

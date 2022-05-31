@@ -21,6 +21,7 @@
 #include <usecases/EditTransactionUsecase.h>
 #include <usecases/MonthReportUsecase.h>
 #include <usecases/StartUpUsecase.h>
+#include <usecases/wallets/AddNewWalletUsecase.h>
 
 #include "presenters/AddCategoryPresenter.h"
 #include "presenters/AddGroupPresenter.h"
@@ -31,6 +32,7 @@
 #include "presenters/MonthReportModel.h"
 #include "presenters/StartUpScreenPresenter.h"
 #include "presenters/TransactionListModel.h"
+#include "presenters/wallets/WalletListModel.h"
 
 #include <EntityRepoImpl.h>
 #include <LocalFileDbApi.h>
@@ -71,7 +73,8 @@ int main(int argc, char* argv[])
         di::bind<StartupUseCase>.to<StartupUseCase>(),
         di::bind<CurrentBalanceCalculateUsecase>.to<CurrentBalanceCalculateUsecase>(),
         di::bind<EditTransactionUsecase>.to<EditTransactionUsecase>(),
-        di::bind<MonthReportUsecase>.to<MonthReportUsecase>());
+        di::bind<MonthReportUsecase>.to<MonthReportUsecase>(),
+        di::bind<AddNewWalletUseCase>.to<AddNewWalletUseCase>());
 
     //    builder.add<TimeScaleButtonPresenter>([&injector](const QVariant&) -> std::unique_ptr<TimeScaleButtonPresenter> {
     //        return injector.create<std::unique_ptr<TimeScaleButtonPresenter>>();
@@ -116,6 +119,9 @@ int main(int argc, char* argv[])
     builder.add<EditTransactionPresenter>([&injector](const QVariant& context) -> EditTransactionPresenterUnq {
         auto builder = injector.create<EditTransactionBuilderUnq>();
         return builder->build(context.toString());
+    });
+    builder.add<WalletListModel>([&injector](const QVariant&) -> WalletListModelUnq {
+        return injector.create<WalletListModelUnq>();
     });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");
