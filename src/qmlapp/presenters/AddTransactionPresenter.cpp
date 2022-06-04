@@ -33,6 +33,8 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
 
     connect(m_usecase.get(), &AddNewTransactionUseCase::transactionAdded,
         this, &AddTransactionPresenter::closePopup);
+
+    m_vm->setComent(QString());
 }
 
 void AddTransactionPresenter::apply()
@@ -41,6 +43,7 @@ void AddTransactionPresenter::apply()
         AmountVM::amountFromString(m_vm->amount()),
         QDateTime(m_vm->when(), QTime::currentTime()),
         m_vm->categoryId(),
+        WalletId(m_vm->walletId()),
         m_vm->who(),
         m_vm->comment());
     m_usecase->addTransaction(t);

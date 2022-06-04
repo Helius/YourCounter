@@ -6,6 +6,7 @@ import injector
 import "Controls"
 
 ApplicationWindow {
+    id: appWindow
 
     width: 1200
     height: 1000

@@ -12,10 +12,7 @@ public:
     explicit AddNewWalletUseCase(IEntityRepoPtr repo);
 
 public:
-    void add(const QString& name, const CategoryId srcId);
-
-signals:
-    void error(QString error);
+    bool add(const QString& name, int64_t initAmount);
 
 private:
     bool checkNameUnique(const QString& name);

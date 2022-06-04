@@ -12,6 +12,7 @@ public:
     enum Roles {
         Id = Qt::UserRole + 1,
         CategoryName,
+        CategoryId,
         Amount,
         Date,
         Who,
@@ -20,6 +21,8 @@ public:
         Selected,
         TotalBy,
         AmountRaw,
+        WalletId,
+        WalletName,
     };
     Q_ENUM(Roles);
 
@@ -37,7 +40,8 @@ signals:
     void selectedAmountChanged();
 
 private:
-    QString getCategoryName(const QString& id) const;
+    QString getTransactionName(const Transaction& t) const;
+    QString getWalletName(const Transaction &t) const;
     QString formatDate(const QDateTime& dateTime) const;
     void updateSelectedAmount();
 
@@ -51,29 +55,36 @@ class TransactionSortedListModel
     : public QSortFilterProxyModel {
     Q_OBJECT
     Q_PROPERTY(QString selectedAmount READ selectedAmount NOTIFY selectedAmountChanged FINAL)
+    Q_PROPERTY(QString currentWalletId READ currentWalletId WRITE setCurrentWalletId NOTIFY currentWalletIdChanged)
 
 public:
     TransactionSortedListModel(IEntityRepoPtr repo);
     const QString selectedAmount() const;
+    QString currentWalletId() const
+    {
+        return m_currentWalletId;
+    }
+    void setCurrentWalletId(const QString& walletId);
 
 signals:
     void selectedAmountChanged();
+    void currentWalletIdChanged();
 
-    // QSortFilterProxyModel interface
 protected:
+    // QSortFilterProxyModel interface
     bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
     // QAbstractItemModel interface
-public:
     QVariant data(const QModelIndex& index, int role) const override;
-
-private:
-    TransactionListModel* m_sourceModel;
+    // QSortFilterProxyModel interface
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 private:
     int64_t proxyData(const QModelIndex& index, int role) const;
 
 private:
+    TransactionListModel* m_sourceModel;
     mutable std::map<int, int64_t> m_cachedTotalBy;
+    QString m_currentWalletId;
 };
 
 using TransactionSortedListModelUnq = std::unique_ptr<TransactionSortedListModel>;

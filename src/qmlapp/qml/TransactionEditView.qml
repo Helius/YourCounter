@@ -56,6 +56,17 @@ ColumnLayout {
                        vm.when = date;
                    }
     }
+
+    WalletSelector {
+        id: walletSelector
+        Binding {
+            target: vm
+            property: "walletId"
+            value: walletSelector.walletId
+            when: priv.enabled
+        }
+    }
+
     NamedField {
         id: comment
         name: "Comment"

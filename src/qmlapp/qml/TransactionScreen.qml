@@ -18,7 +18,7 @@ QmlInjector {
         // group list
         GroupCategoryList {
             Layout.fillHeight: true
-            Layout.preferredWidth: 250
+            Layout.preferredWidth: 180
             model: $groupModel
         }
 
@@ -39,7 +39,7 @@ QmlInjector {
                 color: "transparent"
             }
             Layout.fillHeight: true
-            Layout.preferredWidth: 300
+            Layout.preferredWidth: 240
             spacing: 4
             clip: true
             section.property: "groupName"

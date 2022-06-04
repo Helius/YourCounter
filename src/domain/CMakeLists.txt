@@ -11,6 +11,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQU
 add_library(domain
 	    entities/Transaction.h
 		entities/Wallet.h
+		entities/WalletId.h
 		entities/Category.h
 		entities/Group.h
 		entities/Prediction.h
@@ -30,9 +31,13 @@ add_library(domain
 		usecases/MonthReportUsecase.cpp
 		usecases/EditTransactionUsecase.h
 		usecases/EditTransactionUsecase.cpp
+		usecases/TransferUsecase.h
+		usecases/TransferUsecase.cpp
 
 		usecases/wallets/AddNewWalletUsecase.h
 		usecases/wallets/AddNewWalletUsecase.cpp
+		usecases/wallets/CalcWalletBallanceUsecase.h
+		usecases/wallets/CalcWalletBallanceUsecase.cpp
 
 		repos/ICRUDRepo.h
 		repos/ICRUDRepo.cpp
@@ -41,6 +46,11 @@ add_library(domain
 		repos/INetworkSettingsRepo.h
 		repos/ICredentionalStore.h
 		repos/IAuthService.h
+		repos/IWalletBallanceProvider.h
+		repos/IWalletBallanceProvider.cpp
+
+		WalletBallanceProviderImpl.h
+		WalletBallanceProviderImpl.cpp
 #		repos/IPredictionRepo.h
         )
 
