@@ -23,6 +23,7 @@ private:
         100,
         QDateTime::currentDateTime(),
         "catId",
+        WalletId("walletId"),
         "who",
         "comment");
     TransactionMapper m;

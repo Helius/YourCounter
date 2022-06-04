@@ -29,7 +29,11 @@
         <file>qml/GroupCategoryList.qml</file>
         <file>qml/TransactionList.qml</file>
         <file>qml/icons/control_point_white_24dp.svg</file>
-        <file>qml/Controls/wallets/WalletHorisontalList.qml</file>
         <file>qml/icons/all_inbox_white_24dp.svg</file>
+        <file>qml/AddWalletView.qml</file>
+        <file>qml/WalletHorisontalList.qml</file>
+        <file>qml/icons/sync_alt_white_24dp.svg</file>
+        <file>qml/AddTransferPopup.qml</file>
+        <file>qml/Controls/WalletSelector.qml</file>
     </qresource>
 </RCC>

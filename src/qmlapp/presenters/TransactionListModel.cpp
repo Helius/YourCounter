@@ -31,10 +31,20 @@ TransactionListModel::TransactionListModel(IEntityRepoPtr repo, QObject* parent)
         });
 }
 
-QString TransactionListModel::getCategoryName(const QString& id) const
+QString TransactionListModel::getTransactionName(const Transaction& t) const
 {
-    const auto categoryOpt = m_repo->categories()->find(id);
-    return categoryOpt ? categoryOpt->name : "Category not found";
+    const auto categoryOpt = m_repo->categories()->find(t.categoryId);
+    if (categoryOpt) {
+        const auto groupOpt = m_repo->groups()->find(categoryOpt->groupId);
+        return (groupOpt ? groupOpt->name + ": " : "") + categoryOpt->name;
+    }
+
+    const auto destWalletOpt = m_repo->wallets()->find(t.categoryId);
+    const auto srcWalletOpt = m_repo->wallets()->find(t.walletId.toString());
+    if (destWalletOpt) {
+        return "From " + (!!srcWalletOpt ? srcWalletOpt->name : "Main") + " -> To " + destWalletOpt->name;
+    }
+    return "Destination not found";
 }
 
 QString TransactionListModel::formatDate(const QDateTime& dateTime) const
@@ -70,7 +80,9 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
     case Id:
         return transaction.id;
     case CategoryName:
-        return getCategoryName(transaction.categoryId);
+        return getTransactionName(transaction);
+    case CategoryId:
+        return transaction.categoryId;
     case Amount:
         return AmountVM::formatAmount(transaction.amount);
     case Who:
@@ -85,6 +97,10 @@ QVariant TransactionListModel::data(const QModelIndex& index, int role) const
         return m_selectedItems.find(index.row()) != m_selectedItems.cend();
     case AmountRaw:
         return QVariant::fromValue(transaction.amount);
+    case WalletId:
+        return transaction.walletId.toString();
+    case WalletName:
+        return getWalletName(transaction);
     }
     return QVariant();
 }
@@ -100,7 +116,17 @@ QHash<int, QByteArray> TransactionListModel::roleNames() const
         { Roles::Comment, "comment" },
         { Roles::Selected, "selected" },
         { Roles::TotalBy, "totalBy" },
+        { Roles::WalletName, "walletName" },
     };
+}
+
+QString TransactionListModel::getWalletName(const Transaction& t) const
+{
+    const auto& wallet = m_repo->wallets()->find(t.walletId.toString());
+    if (wallet) {
+        return wallet->name;
+    }
+    return QString();
 }
 
 bool TransactionListModel::setData(const QModelIndex& index, const QVariant&, int role)
@@ -177,6 +203,32 @@ QVariant TransactionSortedListModel::data(const QModelIndex& ind, int role) cons
     }
 
     return QAbstractProxyModel::data(ind, role);
+}
+
+bool TransactionSortedListModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
+{
+    if (m_currentWalletId.isEmpty()) {
+        return true;
+    }
+
+    QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+
+    if (index.data(TransactionListModel::WalletId).toString() == m_currentWalletId) {
+        return true;
+    } else if (index.data(TransactionListModel::CategoryId).toString() == m_currentWalletId) {
+        return true;
+    }
+    return false;
+}
+
+void TransactionSortedListModel::setCurrentWalletId(const QString& walletId)
+{
+    if (m_currentWalletId != walletId) {
+        m_currentWalletId = walletId;
+        emit currentWalletIdChanged();
+        beginResetModel();
+        endResetModel();
+    }
 }
 
 const QString TransactionSortedListModel::selectedAmount() const

@@ -8,10 +8,12 @@
 #include "qmlinjector/qmlinjector.h"
 #include "qmlinjector/qmlinjectorbuilder.h"
 
+#include <WalletBallanceProviderImpl.h>
 #include <repos/IAuthService.h>
 #include <repos/ICredentionalStore.h>
 #include <repos/INetworkSettingsRepo.h>
 #include <repos/IPredictionRepo.h>
+#include <repos/IWalletBallanceProvider.h>
 //#include <repos/datecolumnadapter.h>
 
 //#include "presenters/timelinetablemodel.h"
@@ -32,6 +34,8 @@
 #include "presenters/MonthReportModel.h"
 #include "presenters/StartUpScreenPresenter.h"
 #include "presenters/TransactionListModel.h"
+#include "presenters/wallets/AddNewWalletPresenter.h"
+#include "presenters/wallets/NewTransferPresenter.h"
 #include "presenters/wallets/WalletListModel.h"
 
 #include <EntityRepoImpl.h>
@@ -68,6 +72,7 @@ int main(int argc, char* argv[])
         di::bind<IFirebaseRtDbApi>.to<FirebaseRtDbAPI>(),
         //        di::bind<IFirebaseRtDbApi>.to<LocalFileDbApi>(),
         di::bind<IEntityRepo>.to<EntityRepoImpl>(),
+        di::bind<IWalletBallanceProvider>.to<WalletBallanceProviderImpl>(),
         di::bind<AddNewTransactionUseCase>.to<AddNewTransactionUseCase>(),
         di::bind<AddNewGroupUseCase>.to<AddNewGroupUseCase>(),
         di::bind<StartupUseCase>.to<StartupUseCase>(),
@@ -123,12 +128,14 @@ int main(int argc, char* argv[])
     builder.add<WalletListModel>([&injector](const QVariant&) -> WalletListModelUnq {
         return injector.create<WalletListModelUnq>();
     });
+    builder.add<AddNewWalletPresenter>([&injector](const QVariant&) -> AddNewWalletPresenterUnq {
+        return injector.create<AddNewWalletPresenterUnq>();
+    });
+    builder.add<NewTransferPresenter>([&injector](const QVariant&) -> NewTransferPresenterUnq {
+        return injector.create<NewTransferPresenterUnq>();
+    });
 
     qmlRegisterType<QmlInjector>("injector", 1, 0, "QmlInjector");
-    //    qmlRegisterSingletonType<TimeLineTableModel>("Models", 1, 0, "TimeTable",
-    //        [&injector](QQmlEngine*, QJSEngine*) -> QObject* {
-    //            return injector.create<std::unique_ptr<TimeLineTableModel>>().release();
-    //        });
 
     engine.rootContext()->setContextObject(builder.build());
 

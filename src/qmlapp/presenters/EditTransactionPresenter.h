@@ -22,6 +22,7 @@ private:
     QString m_transactionId;
     QDateTime m_origTime;
     QString m_categoryId;
+    WalletId m_walletId;
     TransactionEditFeildsVm* m_vm = nullptr;
 };
 

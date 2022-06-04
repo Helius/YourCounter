@@ -6,16 +6,41 @@ import injector
 import presenters
 
 QmlInjector {
-    id: root
+
+    property string currentWalletId: ""
 
     implicitHeight: view ? view.implicitHeight : 0
 
     sourceComponent: Item {
 
         property WalletListModel $model
+        property Item injector
+
 
         implicitHeight: flow.height
         width: parent ? parent.width : undefined
+
+        Connections {
+            target: $model
+            function onSelectedWalletIdChanged() {
+                injector.currentWalletId = $model.selectedWalletId;
+            }
+        }
+
+        function showAddWalletPopup() {
+            popUpLoader.active = true;
+        }
+
+
+        Loader {
+            id: popUpLoader
+            active: false
+            sourceComponent: AddWalletView {
+            }
+            onLoaded: {
+                item.open()
+            }
+        }
 
         component WalletDelegate:
             Rectangle {
@@ -69,7 +94,7 @@ QmlInjector {
                 anchors.top: amount.text ? parent.top : undefined
                 anchors.topMargin: amount.text ? 10 : undefined
                 anchors.verticalCenter: amount.text ? undefined : parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                 sourceSize {
                     width: 32
                     height: width
@@ -99,10 +124,10 @@ QmlInjector {
             anchors.margins: 8
             spacing: 0
             WalletDelegate {
-                selected: $model.selected
+                selected: !$model.selectedWalletId
                 showBorder: false
                 icon: "qrc:/qml/icons/all_inbox_white_24dp.svg"
-                amount: "114050,32"
+                amount: $model.defaultWalletTotal
                 onClicked: {
                     $model.clearSelection();
                 }
@@ -110,10 +135,11 @@ QmlInjector {
             Repeater {
                 model: $model
                 delegate: WalletDelegate {
-                    name: modelData.roleName
-                    amount: modelData.roleAmount
+                    selected: model.roleSelected
+                    name: model.roleName
+                    amount: model.roleAmount
                     onClicked: {
-                        $model.selectWallet(modelData.index);
+                        model.roleSelected = !model.roleSelected
                     }
                 }
             }

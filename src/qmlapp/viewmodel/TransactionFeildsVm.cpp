@@ -13,6 +13,7 @@ TransactionEditFeildsVm::TransactionEditFeildsVm(
     const QDate& when,
     const QString& who,
     const QString& amount,
+    const WalletId& walletId,
     const QString& comment,
     QObject* parent)
     : QObject(parent)
@@ -20,6 +21,7 @@ TransactionEditFeildsVm::TransactionEditFeildsVm(
     , m_when(when)
     , m_who(who)
     , m_amount(amount)
+    , m_walletId(walletId.toString())
     , m_comment(comment)
     , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9][ ,0-9]*"), this))
 {
@@ -50,12 +52,17 @@ QString TransactionEditFeildsVm::categoryId() const
     return m_categoryId;
 }
 
+QString TransactionEditFeildsVm::walletId() const
+{
+    return m_walletId;
+}
+
 QString TransactionEditFeildsVm::category() const
 {
     return m_category;
 }
 
-void TransactionEditFeildsVm::setAmount(QString amount)
+void TransactionEditFeildsVm::setAmount(const QString& amount)
 {
     if (m_amount == amount)
         return;
@@ -64,7 +71,7 @@ void TransactionEditFeildsVm::setAmount(QString amount)
     emit amountChanged();
 }
 
-void TransactionEditFeildsVm::setComent(QString comment)
+void TransactionEditFeildsVm::setComent(const QString& comment)
 {
     if (m_comment == comment)
         return;
@@ -73,7 +80,7 @@ void TransactionEditFeildsVm::setComent(QString comment)
     emit commentChanged();
 }
 
-void TransactionEditFeildsVm::setWho(QString who)
+void TransactionEditFeildsVm::setWho(const QString& who)
 {
     if (m_who == who)
         return;
@@ -82,7 +89,7 @@ void TransactionEditFeildsVm::setWho(QString who)
     emit whoChanged();
 }
 
-void TransactionEditFeildsVm::setWhen(QDate when)
+void TransactionEditFeildsVm::setWhen(const QDate& when)
 {
     if (m_when == when)
         return;
@@ -91,11 +98,21 @@ void TransactionEditFeildsVm::setWhen(QDate when)
     emit whenChanged();
 }
 
-void TransactionEditFeildsVm::setCategoryId(QString categoryId)
+void TransactionEditFeildsVm::setCategoryId(const QString& categoryId)
 {
-    if (m_categoryId == categoryId)
+    if (m_categoryId == categoryId) {
         return;
+    }
 
     m_categoryId = categoryId;
     emit categoryIdChanged();
+}
+
+void TransactionEditFeildsVm::setWalletId(const QString& walletId)
+{
+    if (m_walletId == walletId) {
+        return;
+    }
+    m_walletId = walletId;
+    emit walletIdChanged();
 }

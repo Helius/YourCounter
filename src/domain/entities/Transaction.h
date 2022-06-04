@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QString>
+#include <entities/WalletId.h>
 
 class Transaction {
 
@@ -10,6 +11,7 @@ public:
     int64_t amount = 0;
     QDateTime when;
     QString categoryId;
+    WalletId walletId;
     QString who;
     QString comment;
     using IdType = QString;
@@ -19,21 +21,23 @@ public:
         int64_t amount,
         const QDateTime& when,
         const QString& categoryId,
+        const WalletId& walletId,
         const QString& who = QString(),
         const QString& comment = QString())
     {
-        return Transaction(QString(), amount, when, categoryId, who, comment);
+        return Transaction(QString(), amount, when, categoryId, walletId, who, comment);
     }
     static Transaction createFromValue(
         const QString& id,
         int64_t amount,
         const QDateTime& when,
         const QString& categoryId,
+        const WalletId& walletId,
         const QString& who = QString(),
         const QString& comment = QString())
     {
         Q_ASSERT(!id.isEmpty());
-        return Transaction(id, amount, when, categoryId, who, comment);
+        return Transaction(id, amount, when, categoryId, walletId, who, comment);
     }
 
     Transaction(const Transaction& other) = default;
@@ -50,6 +54,7 @@ public:
             && amount == other.amount
             && when == other.when
             && categoryId == other.categoryId
+            && walletId == other.walletId
             && who == other.who
             && comment == other.comment;
     }
@@ -60,12 +65,14 @@ private:
         int64_t amount,
         const QDateTime& when,
         const QString& categoryId,
+        const WalletId& walletId,
         const QString& who = QString(),
         const QString& comment = QString())
         : id(id)
         , amount(amount)
         , when(when)
         , categoryId(categoryId)
+        , walletId(walletId)
         , who(who)
         , comment(comment)
     {

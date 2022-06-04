@@ -7,24 +7,26 @@ AddNewWalletUseCase::AddNewWalletUseCase(IEntityRepoPtr repo)
     Q_ASSERT(m_repo);
 }
 
-void AddNewWalletUseCase::add(const QString& name, const CategoryId srcId)
+bool AddNewWalletUseCase::add(const QString& name, int64_t initAmount)
 {
-    if (!srcId) {
-        emit error("Source category id mustn't be empty");
-        return;
+    if (name.isEmpty()) {
+        qWarning() << "Name can't be empty";
+        return false;
     }
 
     if (!checkNameUnique(name)) {
-        emit error("Wallet name already exist");
-        return;
+        qWarning() << "Wallet name already exist";
+        return false;
     }
 
-    m_repo->create(Wallet::createRequest(name, srcId));
+    m_repo->create(Wallet::createRequest(name, initAmount));
+
+    return true;
 }
 
 bool AddNewWalletUseCase::checkNameUnique(const QString& name)
 {
     return std::find_if(m_repo->data().cbegin(), m_repo->data().cend(), [name](const auto& w) {
         return w.name.toLower() == name.toLower();
-    }) != m_repo->data().cend();
+    }) == m_repo->data().cend();
 }

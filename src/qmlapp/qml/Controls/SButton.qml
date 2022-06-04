@@ -7,6 +7,7 @@ Rectangle {
     id: root
     property alias text: label.text
     property bool selected: false
+    property bool active: true
 
     signal clicked();
 
@@ -23,7 +24,7 @@ Rectangle {
         height: parent ? parent.height : 0
         anchors.leftMargin: 5
         anchors.left: parent ? parent.left : undefined
-        color: "white"
+        color: active ? "white" : "gray"
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.bold: selected
@@ -33,7 +34,9 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         onClicked: {
-            root.clicked();
+            if (active) {
+                root.clicked();
+            }
         }
 
     }

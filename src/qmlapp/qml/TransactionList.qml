@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import "Controls"
-import "Controls/wallets"
 
 import injector
 import presenters
@@ -11,7 +10,11 @@ ColumnLayout {
     property alias model: list.model
 
     WalletHorisontalList {
+        id: walletList
         Layout.fillWidth: true
+        onCurrentWalletIdChanged:  {
+            model.currentWalletId = walletList.currentWalletId;
+        }
     }
 
     ListView {
@@ -24,54 +27,57 @@ ColumnLayout {
             border.color: "gray"
             color: "transparent"
         }
-        spacing: 0
+        spacing: 2
         clip: true
+        Component.onCompleted: {
+            list.positionViewAtEnd();
+        }
 
         headerPositioning: ListView.OverlayHeader
-        header: QmlInjector {
-            height: 40
-            z: 3
-            width: parent.width
-            sourceComponent: Rectangle {
-                color: Material.primary
-                anchors.fill: parent
+//        header: QmlInjector {
+//            height: 40
+//            z: 3
+//            width: parent.width
+//            sourceComponent: Rectangle {
+//                color: Material.primary
+//                anchors.fill: parent
 
-                property CurentBalancePresenter $presenter
-                RowLayout {
-                    anchors {
-                        left: parent ? parent.left : undefined
-                        leftMargin: 10
-                        top: parent ? parent.top : undefined
-                        topMargin: 6
-                    }
-                    spacing: 16
+//                property CurentBalancePresenter $presenter
+//                RowLayout {
+//                    anchors {
+//                        left: parent ? parent.left : undefined
+//                        leftMargin: 10
+//                        top: parent ? parent.top : undefined
+//                        topMargin: 6
+//                    }
+//                    spacing: 16
 
-                    Text {
-                        font.pointSize: 14
-                        font.weight: Font.Light
-                        color: "white"
-                        text: "Balance: " + $presenter.currentBalance
-                    }
+//                    Text {
+//                        font.pointSize: 14
+//                        font.weight: Font.Light
+//                        color: "white"
+//                        text: "Balance: " + $presenter.currentBalance
+//                    }
 
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 0
-                        Text {
-                            font.pointSize: 10
-                            font.weight: Font.Light
-                            color: "white"
-                            text: "Earn: " + $presenter.earn
-                        }
-                        Text {
-                            font.pointSize: 10
-                            font.weight: Font.Light
-                            color: "white"
-                            text: "Spend: " + $presenter.spend
-                        }
-                    }
-                }
-            }
-        }
+//                    ColumnLayout {
+//                        Layout.fillWidth: true
+//                        spacing: 0
+//                        Text {
+//                            font.pointSize: 10
+//                            font.weight: Font.Light
+//                            color: "white"
+//                            text: "Earn: " + $presenter.earn
+//                        }
+//                        Text {
+//                            font.pointSize: 10
+//                            font.weight: Font.Light
+//                            color: "white"
+//                            text: "Spend: " + $presenter.spend
+//                        }
+//                    }
+//                }
+//            }
+//        }
         footer: Item {
             visible: model.selectedAmount
             height: 30
@@ -114,6 +120,7 @@ ColumnLayout {
             }
             ColumnLayout {
                 id: col
+
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -146,20 +153,36 @@ ColumnLayout {
                     }
                 }
                 RowLayout {
-                    Layout.fillWidth: true
                     Layout.topMargin: -6
-                    Text {
-                        Layout.alignment: Qt.AlignLeft
                     Layout.fillWidth: true
-                        text: model.who
-                        font.pointSize: 8
+                    Text {
+                        text: model.walletName
+                        font.pointSize: 9
                         font.weight: Font.Light
                         color: "gray"
+                    }
+                    Rectangle {
+                        width: visible ? 6 : 0
+                        height: 6
+                        radius: 3
+                        color: "gray"
+                        visible: model.walletName && model.who
+                    }
+                    Text {
+                        text: model.who
+                        font.pointSize: 9
+                        font.weight: Font.Light
+                        color: "gray"
+                    }
+                    Item {
+                        height: 1
+                        Layout.fillWidth: true
+
                     }
                     Text {
                         Layout.alignment: Qt.AlignRight
                         text: model.totalBy
-                        font.pointSize: 8
+                        font.pointSize: 9
                         font.weight: Font.Light
                         color: "gray"
                     }
@@ -209,6 +232,22 @@ ColumnLayout {
         }
 
         Loader {
+            id: transferPopupLoader
+            active: false
+            sourceComponent: AddTransferPopup {
+                id: transferPopup
+                anchors.centerIn: parent
+                closePolicy: Popup.CloseOnEscape
+                focus: true
+                modal: true
+            }
+            onLoaded: {
+                item.open()
+            }
+        }
+
+
+        Loader {
             id: editPopupLoader
             onLoaded: {
                 item.open()
@@ -216,11 +255,20 @@ ColumnLayout {
         }
     }
 
-    RoundButton {
-        Layout.alignment: Qt.AlignCenter
-        text: "Add transaction"
-        onClicked: {
-            addTransactionPopup.open()
+    RowLayout {
+            Layout.alignment: Qt.AlignCenter
+        RoundButton {
+            text: "Add transaction"
+            onClicked: {
+                addTransactionPopup.open()
+            }
+        }
+        RoundButton {
+            text: "Transfer"
+            onClicked: {
+                transferPopupLoader.active = true;
+            }
         }
     }
+
 }
