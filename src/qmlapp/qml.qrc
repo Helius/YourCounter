@@ -34,5 +34,6 @@
         <file>qml/WalletHorisontalList.qml</file>
         <file>qml/AddTransferPopup.qml</file>
         <file>qml/Controls/WalletSelector.qml</file>
+        <file>qml/CurrentMonthSummary.qml</file>
     </qresource>
 </RCC>

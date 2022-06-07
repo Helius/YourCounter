@@ -59,7 +59,7 @@ std::pair<QString, QString> MonthReportUsecase::groupCategoryNameById(const QStr
         const auto wallet = m_repo->wallets()->find(id);
         Q_ASSERT(!!wallet);
         cName = wallet->name;
-        gName = "wallet";
+        gName = "wallets";
     }
 
     return { gName, cName };
