@@ -35,6 +35,8 @@ QVariant MonthReportModel::data(const QModelIndex& index, int role) const
         return m_amounts.at(row).categoryName;
     case Roles::TotalAmount:
         return AmountVM::formatAmount(m_amounts.at(row).totalAmount);
+    case Roles::CategoryId:
+        return m_amounts.at(row).categoryId;
     }
     return QVariant();
 }
@@ -45,6 +47,7 @@ QHash<int, QByteArray> MonthReportModel::roleNames() const
         { Roles::GroupName, "groupName" },
         { Roles::CategoryName, "categoryName" },
         { Roles::TotalAmount, "totalAmount" },
+        { Roles::Selected, "selected" },
     };
 }
 
@@ -120,4 +123,34 @@ int MonthReportSortedModel::monthIndex() const
 void MonthReportSortedModel::setMonthIndex(int newMonthIndex)
 {
     return static_cast<MonthReportModel*>(sourceModel())->setMonthIndex(newMonthIndex);
+}
+
+const QString& MonthReportSortedModel::selectedCategoryId() const
+{
+    return m_selectedCategoryId;
+}
+
+bool MonthReportSortedModel::setData(const QModelIndex& ind, const QVariant& value, int role)
+{
+    if (role == MonthReportModel::Roles::Selected) {
+
+        if (const QString id = ind.data(MonthReportModel::Roles::CategoryId).toString();
+            !id.isEmpty() && id != m_selectedCategoryId) {
+
+            m_selectedCategoryId = id;
+        } else if (!value.toBool()) {
+            m_selectedCategoryId = QString();
+        }
+        emit dataChanged(index(0, 0), index(rowCount() - 1, 0), { MonthReportModel::Roles::Selected });
+        emit selectedCategoryIdChanged();
+    }
+    return true;
+}
+
+QVariant MonthReportSortedModel::data(const QModelIndex& index, int role) const
+{
+    if (role == MonthReportModel::Roles::Selected) {
+        return index.data(MonthReportModel::Roles::CategoryId).toString() == m_selectedCategoryId;
+    }
+    return sourceModel()->data(index, role);
 }

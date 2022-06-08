@@ -81,6 +81,13 @@ ColumnLayout {
         delegate: Item {
             width: ListView.view.width
             height: 20
+            Rectangle {
+                anchors.fill: rowLayout
+                border.width: 1
+                border.color: "gray"
+                color: "transparent"
+                visible: model.selected
+            }
             RowLayout {
                 id: rowLayout
                 anchors {
@@ -97,6 +104,12 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignRight
                     amount: model.totalAmount
                     background: "transparent"
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    model.selected = !model.selected;
                 }
             }
         }

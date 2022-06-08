@@ -41,7 +41,7 @@ signals:
 
 private:
     QString getTransactionName(const Transaction& t) const;
-    QString getWalletName(const Transaction &t) const;
+    QString getWalletName(const Transaction& t) const;
     QString formatDate(const QDateTime& dateTime) const;
     void updateSelectedAmount();
 
@@ -56,6 +56,7 @@ class TransactionSortedListModel
     Q_OBJECT
     Q_PROPERTY(QString selectedAmount READ selectedAmount NOTIFY selectedAmountChanged FINAL)
     Q_PROPERTY(QString currentWalletId READ currentWalletId WRITE setCurrentWalletId NOTIFY currentWalletIdChanged)
+    Q_PROPERTY(QString filterByCategoryId READ filterByCategoryId WRITE setFilterByCategoryId NOTIFY filterByCategoryIdChanged)
 
 public:
     TransactionSortedListModel(IEntityRepoPtr repo);
@@ -66,9 +67,14 @@ public:
     }
     void setCurrentWalletId(const QString& walletId);
 
+    const QString& filterByCategoryId() const;
+    void setFilterByCategoryId(const QString& newFilterByCategoryId);
+
 signals:
     void selectedAmountChanged();
     void currentWalletIdChanged();
+
+    void filterByCategoryIdChanged();
 
 protected:
     // QSortFilterProxyModel interface
@@ -85,6 +91,7 @@ private:
     TransactionListModel* m_sourceModel;
     mutable std::map<int, int64_t> m_cachedTotalBy;
     QString m_currentWalletId;
+    QString m_filterByCategoryId;
 };
 
 using TransactionSortedListModelUnq = std::unique_ptr<TransactionSortedListModel>;

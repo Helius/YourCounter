@@ -9,6 +9,7 @@ struct CategoryTotalAmount {
     QString groupName;
     QString categoryName;
     int64_t totalAmount = 0;
+    QString categoryId;
 };
 
 class MonthReportUsecase

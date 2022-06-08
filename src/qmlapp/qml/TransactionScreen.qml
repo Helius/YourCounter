@@ -15,6 +15,12 @@ QmlInjector {
         property GroupListModel $groupModel
         property MonthReportSortedModel $monthReportModel
 
+        Binding {
+            target: $transactionModel
+            property: "filterByCategoryId"
+            value: $monthReportModel.selectedCategoryId
+        }
+
         // group list
         GroupCategoryList {
             Layout.preferredWidth: 180

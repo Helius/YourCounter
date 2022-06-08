@@ -207,18 +207,22 @@ QVariant TransactionSortedListModel::data(const QModelIndex& ind, int role) cons
 
 bool TransactionSortedListModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
-    if (m_currentWalletId.isEmpty()) {
+
+    if (m_filterByCategoryId.isEmpty() && m_currentWalletId.isEmpty()) {
         return true;
     }
 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    QString categoryId = index.data(TransactionListModel::CategoryId).toString();
 
-    if (index.data(TransactionListModel::WalletId).toString() == m_currentWalletId) {
-        return true;
-    } else if (index.data(TransactionListModel::CategoryId).toString() == m_currentWalletId) {
-        return true;
-    }
-    return false;
+    bool categoryMatched = (categoryId == m_filterByCategoryId)
+        || m_filterByCategoryId.isEmpty();
+
+    bool walletMatched = (index.data(TransactionListModel::WalletId).toString() == m_currentWalletId)
+        || categoryId == m_currentWalletId
+        || m_currentWalletId.isEmpty();
+
+    return categoryMatched && walletMatched;
 }
 
 void TransactionSortedListModel::setCurrentWalletId(const QString& walletId)
@@ -234,4 +238,19 @@ void TransactionSortedListModel::setCurrentWalletId(const QString& walletId)
 const QString TransactionSortedListModel::selectedAmount() const
 {
     return m_sourceModel->selectedAmountStr();
+}
+
+const QString& TransactionSortedListModel::filterByCategoryId() const
+{
+    return m_filterByCategoryId;
+}
+
+void TransactionSortedListModel::setFilterByCategoryId(const QString& newFilterByCategoryId)
+{
+    if (m_filterByCategoryId == newFilterByCategoryId)
+        return;
+    m_filterByCategoryId = newFilterByCategoryId;
+    emit filterByCategoryIdChanged();
+    beginResetModel();
+    endResetModel();
 }

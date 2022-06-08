@@ -22,7 +22,7 @@ MonthReportUsecase::CategoriesTotalAmount MonthReportUsecase::generateMonthRepor
             QString groupName;
             QString categoryName;
             std::tie(groupName, categoryName) = groupCategoryNameById(keyValue.first);
-            return CategoryTotalAmount { groupName, categoryName, keyValue.second };
+            return CategoryTotalAmount { groupName, categoryName, keyValue.second, keyValue.first };
         });
     return result;
 }
