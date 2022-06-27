@@ -90,6 +90,7 @@ private:
 private:
     TransactionListModel* m_sourceModel;
     mutable std::map<int, int64_t> m_cachedTotalBy;
+    IEntityRepoPtr m_repo;
     QString m_currentWalletId;
     QString m_filterByCategoryId;
 };

@@ -152,6 +152,7 @@ QString TransactionListModel::selectedAmountStr()
 TransactionSortedListModel::TransactionSortedListModel(IEntityRepoPtr repo)
     : QSortFilterProxyModel(nullptr)
     , m_sourceModel(new TransactionListModel(repo, this))
+    , m_repo(repo)
 {
     setSourceModel(m_sourceModel);
     setDynamicSortFilter(true);
@@ -178,16 +179,39 @@ bool TransactionSortedListModel::lessThan(const QModelIndex& source_left, const 
 int64_t TransactionSortedListModel::proxyData(const QModelIndex& ind, int) const
 {
     int row = ind.row();
+
     const auto amount = static_cast<int64_t>(QAbstractProxyModel::data(ind, TransactionListModel::AmountRaw).toInt());
+
+    bool isItTransferToHere = m_currentWalletId == QAbstractProxyModel::data(ind, TransactionListModel::CategoryId);
+
     if (row == 0) {
-        m_cachedTotalBy[0] = amount;
-        return amount;
+        m_cachedTotalBy[0] = isItTransferToHere ? -amount : amount;
+        if (!m_currentWalletId.isEmpty()) {
+            const auto walletOpt = m_repo->wallets()->find(m_currentWalletId);
+            Q_ASSERT(walletOpt);
+            m_cachedTotalBy[0] += walletOpt->fixedAmount;
+        }
+        return m_cachedTotalBy[0];
     } else if (row > 0) {
         if (const auto it = m_cachedTotalBy.find(row); it != m_cachedTotalBy.cend()) {
             return it->second;
         } else {
             const int64_t prevTotalBy = proxyData(index(row - 1, 0), TransactionListModel::TotalBy);
-            const int64_t result = prevTotalBy + amount;
+
+            // don't count transaction from another walletId
+            bool shouldAdd = m_currentWalletId == QAbstractProxyModel::data(ind, TransactionListModel::WalletId);
+            int64_t result = 0;
+
+            if (shouldAdd) {
+                result = prevTotalBy + amount;
+            } else {
+                if (isItTransferToHere) {
+                    result = prevTotalBy - amount;
+                } else {
+                    result = prevTotalBy;
+                }
+            }
+
             m_cachedTotalBy[row] = result;
             return result;
         }
@@ -231,6 +255,7 @@ void TransactionSortedListModel::setCurrentWalletId(const QString& walletId)
         m_currentWalletId = walletId;
         emit currentWalletIdChanged();
         beginResetModel();
+        m_cachedTotalBy.clear();
         endResetModel();
     }
 }
