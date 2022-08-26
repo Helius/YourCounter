@@ -12,6 +12,7 @@ public:
         SrcAndDstWalletsTheSame,
         AmountShouldBePositive,
         NotEnoughtMoneyOnSrc,
+        DateSeemsNotCorrect,
     };
 
     TransferUseCase(IEntityRepoPtr repo, IWalletBallanceProviderPtr ballanceProvider);
@@ -20,6 +21,7 @@ public:
         const WalletId& from,
         const WalletId& to,
         int64_t amount,
+        QDate date,
         const QString& comment = QString());
 
 private:

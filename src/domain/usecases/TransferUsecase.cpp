@@ -12,6 +12,7 @@ TransferUseCase::TransferResult TransferUseCase::createTransfer(
     const WalletId& from,
     const WalletId& to,
     int64_t amount,
+    QDate date,
     const QString& comment)
 {
     if (amount <= 0) {
@@ -37,9 +38,14 @@ TransferUseCase::TransferResult TransferUseCase::createTransfer(
         return TransferResult::NotEnoughtMoneyOnSrc;
     }
 
+    int days = date.daysTo(QDate::currentDate());
+    if (days < 0 || days > 30) {
+        return TransferResult::DateSeemsNotCorrect;
+    }
+
     Transaction t = Transaction::createRequest(
         -amount,
-        QDateTime::currentDateTime(),
+        QDateTime(date, QTime::currentTime()),
         to.toString(),
         from,
         "pc",

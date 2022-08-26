@@ -21,6 +21,9 @@ Popup {
         sourceComponent: ColumnLayout {
             property NewTransferPresenter $presenter
             property Item injector
+            Component.onCompleted: {
+                datePicker.set($presenter.when);
+            }
 
             RowLayout {
                 spacing: 8
@@ -54,6 +57,14 @@ Popup {
                     property: "amount"
                     value: amount.edit.text
                 }
+            }
+            DatePicker {
+                id: datePicker
+                Layout.preferredWidth: 300
+                Layout.preferredHeight: 180
+                onClicked: date => {
+                               $presenter.when = date;
+                           }
             }
             SButton {
                 Layout.alignment: Qt.AlignCenter

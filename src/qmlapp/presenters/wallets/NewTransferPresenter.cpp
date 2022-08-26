@@ -57,7 +57,8 @@ bool NewTransferPresenter::add()
     const auto error = m_usecase->createTransfer(
         WalletId(m_srcWallet),
         WalletId(m_dstWallet),
-        AmountVM::amountFromString(m_amount));
+        AmountVM::amountFromString(m_amount),
+        m_date);
 
     if (error == TransferUseCase::TransferResult::Ok) {
         return true;
@@ -80,9 +81,25 @@ bool NewTransferPresenter::add()
         qWarning()
             << "Both wallets the same";
         break;
+    case TransferUseCase::TransferResult::DateSeemsNotCorrect:
+        qWarning()
+            << "Date in the future or too far in the past";
     default:
         break;
     }
 
     return false;
+}
+
+const QDate& NewTransferPresenter::when() const
+{
+    return m_date;
+}
+
+void NewTransferPresenter::setWhen(const QDate& newWhen)
+{
+    if (m_date == newWhen)
+        return;
+    m_date = newWhen;
+    emit whenChanged();
 }
