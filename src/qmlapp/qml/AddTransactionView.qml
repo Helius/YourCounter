@@ -9,13 +9,23 @@ import "Controls"
 QmlInjector {
     id: root
     signal closePopup
+    signal init
     implicitWidth: view ? view.width : 0
     implicitHeight: view ? view.height : 0
+
+
     sourceComponent: Item {
         height: col.implicitHeight
         width: col.implicitWidth
         property AddTransactionPresenter $presenter
         property Item injector
+
+        Connections {
+            target: parent
+            function onInit() {
+                editView.init();
+            }
+        }
 
         Connections {
             target: $presenter

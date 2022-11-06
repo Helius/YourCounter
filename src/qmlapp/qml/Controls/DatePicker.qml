@@ -20,7 +20,8 @@ ListView {
  // private
     property date selectedDate: undefined
 
-    width: 500;  height: 100 // default size
+    width: 500;
+    height: col.height // default size
     snapMode:    ListView.SnapOneItem
     orientation: Qt.Horizontal
     clip:        true
@@ -35,6 +36,7 @@ ListView {
         width: root.width;  height: root.height
 
         Column {
+            id: col
             Item { // month year header
                 width: root.width;  height: root.height - grid.height
 
@@ -43,6 +45,7 @@ ListView {
                     text: ['January', 'February', 'March', 'April', 'May', 'June',
                            'July', 'August', 'September', 'October', 'November', 'December'][month] + ' ' + year
                     font {pixelSize: 0.5 * grid.cellHeight}
+                    color: "white"
                 }
             }
 

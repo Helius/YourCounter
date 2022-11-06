@@ -41,6 +41,15 @@ QmlInjector {
                     field.edit.text = list.itemAtIndex(0).text
                 }
             }
+            Button {
+                text: "x"
+                Layout.alignment: Qt.AlignRight
+                onClicked: {
+                    field.edit.text = "";
+                    $suggestModel.setFilterRegularExpression("");
+                    injector.categoryId = ""
+                }
+            }
         }
         ListView {
             id: list

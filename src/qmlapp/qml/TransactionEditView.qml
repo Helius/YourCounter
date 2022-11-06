@@ -9,6 +9,11 @@ ColumnLayout {
     property var vm
     spacing: 20
 
+    function init() {
+        comment.edit.text = "";
+        amount.edit.text = "";
+    }
+
     QtObject {
         id: priv
         property bool enabled: false

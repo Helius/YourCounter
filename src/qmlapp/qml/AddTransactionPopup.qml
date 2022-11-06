@@ -6,6 +6,10 @@ Popup {
     id: root
     padding: 30
     AddTransactionView {
+        id: view
         onClosePopup: root.close()
+    }
+    onOpened: {
+        view.init();
     }
 }
