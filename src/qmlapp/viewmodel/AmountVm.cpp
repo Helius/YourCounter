@@ -14,6 +14,11 @@ int64_t amountFromString(const QString& string)
     auto locale = QLocale("ru_RU");
     auto value = static_cast<int64_t>(locale.toDouble(string, &ok) * 100);
     if (!ok) {
+        auto locale = QLocale("en_EN");
+        auto value = static_cast<int64_t>(locale.toDouble(string, &ok) * 100);
+        if (ok) {
+            return value;
+        }
         qCritical() << "Can't parse amount from:[" << string << "]";
         Q_ASSERT(ok);
     }

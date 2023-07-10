@@ -11,7 +11,8 @@ ColumnLayout {
 
     function init() {
         comment.edit.text = "";
-        amount.edit.text = "";
+        amount.edit.text = "-";
+        amount.forceActiveFocus();
     }
 
     QtObject {
@@ -75,6 +76,7 @@ ColumnLayout {
     NamedField {
         id: comment
         name: "Comment"
+        selectOnFocus: true
         Binding {
             target: vm
             property: "comment"

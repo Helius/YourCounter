@@ -39,7 +39,7 @@ TransferUseCase::TransferResult TransferUseCase::createTransfer(
     }
 
     int days = date.daysTo(QDate::currentDate());
-    if (days < 0 || days > 30) {
+    if (days < 0 || days > 60) {
         return TransferResult::DateSeemsNotCorrect;
     }
 

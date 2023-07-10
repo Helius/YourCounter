@@ -51,15 +51,19 @@ void TestAmountVm::TestStringToAmount()
     QCOMPARE(amountFromString("1,001"), 100);
 
     QCOMPARE(amountFromString("10,01"), 1001);
+    QCOMPARE(amountFromString("10.01"), 1001);
 
     QCOMPARE(amountFromString("100,99"), 10099);
     QCOMPARE(amountFromString("999,99"), 99999);
     QCOMPARE(amountFromString("-999,99"), -99999);
+    QCOMPARE(amountFromString("-999.99"), -99999);
 
     QCOMPARE(amountFromString("1 000,99"), 100099);
     QCOMPARE(amountFromString("10 000,99"), 1000099);
 
     QCOMPARE(amountFromString("10000,99"), 1000099);
+
+    QCOMPARE(amountFromString("-12378,67"), -1237867);
 }
 
 QTEST_MAIN(TestAmountVm)

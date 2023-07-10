@@ -15,6 +15,12 @@ QmlInjector {
     implicitHeight: view ? view.implicitHeight : 0
     implicitWidth: view ? view.width : 0
 
+    function selectAll() {
+        if (view) {
+            view.field.edit.selectAll();
+        }
+    }
+
     sourceComponent: ColumnLayout {
         id: layout
         required property CategorySuggestModel $suggestModel
@@ -27,6 +33,7 @@ QmlInjector {
                 field.edit.text = injector.categoryText;
                 $suggestModel.setFilterRegularExpression(injector.categoryText);
             });
+
         }
 
         NamedField {
@@ -58,6 +65,7 @@ QmlInjector {
             height: 100
             model: $suggestModel
             delegate: Text {
+                width: parent.width
                 property string categoryId_: model.categoryId
                 text: model.groupName + ": " + model.categoryName
                 color: "white"

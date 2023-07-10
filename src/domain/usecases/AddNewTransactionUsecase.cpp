@@ -31,7 +31,7 @@ void AddNewTransactionUseCase::addTransaction(const Transaction& t)
         return;
     }
 
-    if (t.when.date().daysTo(QDate::currentDate()) > 30) {
+    if (t.when.date().daysTo(QDate::currentDate()) > 90) {
         emit transactionInvalid(InvalidReason::DateFarInThePast);
         return;
     }

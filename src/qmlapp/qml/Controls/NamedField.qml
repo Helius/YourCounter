@@ -6,6 +6,7 @@ RowLayout {
     property alias name: text.text
     property alias edit: edit
     signal newText(var text)
+    property bool selectOnFocus: false
 
     Layout.preferredWidth: 300
     spacing: 10
@@ -25,6 +26,11 @@ RowLayout {
         color: "white"
         onTextEdited: {
             newText(edit.text)
+        }
+        onActiveFocusChanged: {
+            if (selectOnFocus && activeFocus) {
+                edit.selectAll();
+            }
         }
     }
 }
