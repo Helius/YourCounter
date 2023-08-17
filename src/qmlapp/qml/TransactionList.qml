@@ -34,50 +34,6 @@ ColumnLayout {
         }
 
         headerPositioning: ListView.OverlayHeader
-//        header: QmlInjector {
-//            height: 40
-//            z: 3
-//            width: parent.width
-//            sourceComponent: Rectangle {
-//                color: Material.primary
-//                anchors.fill: parent
-
-//                property CurentBalancePresenter $presenter
-//                RowLayout {
-//                    anchors {
-//                        left: parent ? parent.left : undefined
-//                        leftMargin: 10
-//                        top: parent ? parent.top : undefined
-//                        topMargin: 6
-//                    }
-//                    spacing: 16
-
-//                    Text {
-//                        font.pointSize: 14
-//                        font.weight: Font.Light
-//                        color: "white"
-//                        text: "Balance: " + $presenter.currentBalance
-//                    }
-
-//                    ColumnLayout {
-//                        Layout.fillWidth: true
-//                        spacing: 0
-//                        Text {
-//                            font.pointSize: 10
-//                            font.weight: Font.Light
-//                            color: "white"
-//                            text: "Earn: " + $presenter.earn
-//                        }
-//                        Text {
-//                            font.pointSize: 10
-//                            font.weight: Font.Light
-//                            color: "white"
-//                            text: "Spend: " + $presenter.spend
-//                        }
-//                    }
-//                }
-//            }
-//        }
         footer: Item {
             visible: model.selectedAmount
             height: 30

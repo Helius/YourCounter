@@ -4,7 +4,7 @@
 
 TransactionEditFeildsVm::TransactionEditFeildsVm(QObject* parent)
     : QObject(parent)
-    , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9][ .,0-9]*"), this))
+    , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9 ][ .,0-9 ]*"), this))
 {
 }
 
@@ -23,7 +23,7 @@ TransactionEditFeildsVm::TransactionEditFeildsVm(
     , m_amount(amount)
     , m_walletId(walletId.toString())
     , m_comment(comment)
-    , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9][ .,0-9]*"), this))
+    , m_amountValidator(new QRegularExpressionValidator(QRegularExpression("^[-0-9 ][ .,0-9 ]*"), this))
 {
 }
 

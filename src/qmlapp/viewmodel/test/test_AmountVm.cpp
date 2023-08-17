@@ -64,6 +64,8 @@ void TestAmountVm::TestStringToAmount()
     QCOMPARE(amountFromString("10000,99"), 1000099);
 
     QCOMPARE(amountFromString("-12378,67"), -1237867);
+    // hard cases
+    QCOMPARE(amountFromString("567.06"), 56706);
 }
 
 QTEST_MAIN(TestAmountVm)
