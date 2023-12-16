@@ -14,6 +14,7 @@ ColumnLayout {
         Layout.fillWidth: true
         onCurrentWalletIdChanged:  {
             model.currentWalletId = walletList.currentWalletId;
+            list.positionViewAtEnd();
         }
     }
 
@@ -32,18 +33,43 @@ ColumnLayout {
         Component.onCompleted: {
             list.positionViewAtEnd();
         }
+        property bool scrolled: !atYEnd
+        onContentYChanged: {
+            scrolled = !atYEnd
+        }
+        onFlickEnded: {
+            scrolled = !atYEnd
+        }
 
         headerPositioning: ListView.OverlayHeader
-        footer: Item {
-            visible: model.selectedAmount
+        footerPositioning: ListView.OverlayFooter
+        footer: Pane {
+            visible: model.selectedAmount || list.scrolled
             height: 30
+            z: 2
             width: parent.width
-            Text {
+            Row {
+                id: footerRow
+                anchors.top: parent ? parent.top : undefined
                 anchors.right: parent ? parent.right : undefined
                 anchors.rightMargin: 20
-                verticalAlignment: Text.AlignVCenter
-                color: "gray"
-                text: model.selectedAmount
+                spacing: 10
+                Text {
+                    verticalAlignment: Text.AlignVCenter
+                    color: "gray"
+                    text: model.selectedAmount
+                }
+                RoundButton {
+                    anchors.top: parent.top
+                    anchors.topMargin: -10
+                    width: 100
+                    height: 30
+                    text: "Down"
+                    visible: list.scrolled
+                    onClicked: {
+                        list.positionViewAtEnd()
+                    }
+                }
             }
         }
         section.property: "date"
