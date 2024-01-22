@@ -189,7 +189,7 @@ int64_t TransactionSortedListModel::proxyData(const QModelIndex& ind, int) const
         if (!m_currentWalletId.isEmpty()) {
             const auto walletOpt = m_repo->wallets()->find(m_currentWalletId);
             Q_ASSERT(walletOpt);
-            m_cachedTotalBy[0] += walletOpt->fixedAmount;
+            m_cachedTotalBy[0] += walletOpt->initAmount;
         }
         return m_cachedTotalBy[0];
     } else if (row > 0) {

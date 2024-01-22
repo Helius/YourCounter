@@ -58,15 +58,6 @@ QmlInjector {
             }
         }
 
-        Delegate {
-            name: "Default"
-            amount: $model.defaultWalletTotal
-            selected: !$model.selectedWalletId
-            onItemSelected: {
-                $model.clearSelection();
-            }
-        }
-
         ListView {
             spacing: 2
             width: 150

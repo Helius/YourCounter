@@ -7,7 +7,7 @@ MonthReportModel::MonthReportModel(MonthReportUsecaseUnq usecase)
 {
     Q_ASSERT(m_usecase);
 
-    connect(m_usecase.get(), &MonthReportUsecase::amountsChanged, [this]() {
+    connect(m_usecase.get(), &MonthReportUsecase::amountsChanged, this, [this]() {
         beginResetModel();
         m_amounts = m_usecase->generateMonthReport(calcReportMonth());
         endResetModel();

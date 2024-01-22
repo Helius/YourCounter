@@ -13,6 +13,7 @@ public:
     AddTransactionPresenter(AddNewTransactionUseCaseUnq usecase);
 
     Q_INVOKABLE void apply();
+	Q_INVOKABLE void initWithData(const QString & text);
 
 signals:
     void closePopup();

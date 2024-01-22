@@ -5,7 +5,7 @@
 
 #include <repos/ICRUDRepo.h>
 
-#include "firebaseRtDbAPI.h"
+#include "IFirebaseRtDbApi.h"
 #include "jsonMappers/IJsonMapper.h"
 
 template <typename Entity>

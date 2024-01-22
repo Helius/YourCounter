@@ -1,11 +1,7 @@
-#ifndef CALCWALLETBALLANCEUSECASE_H
-#define CALCWALLETBALLANCEUSECASE_H
-
+#pragma once
 
 class CalcWalletBallanceUsecase
 {
 public:
     CalcWalletBallanceUsecase();
 };
-
-#endif // CALCWALLETBALLANCEUSECASE_H

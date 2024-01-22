@@ -1,5 +1,6 @@
 #include "AddTransactionPresenter.h"
 #include "../viewmodel/AmountVm.h"
+#include <QtCore/QRegularExpression>
 
 AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq usecase)
     : m_usecase(std::move(usecase))
@@ -28,6 +29,9 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
             case AddNewTransactionUseCase::InvalidReason::DateFarInThePast:
                 qDebug() << "date far in the past";
                 break;
+            case AddNewTransactionUseCase::InvalidReason::EmptyWalletId:
+                qDebug() << "empty wallet Id";
+                break;
             }
         });
 
@@ -39,12 +43,26 @@ AddTransactionPresenter::AddTransactionPresenter(AddNewTransactionUseCaseUnq use
 
 void AddTransactionPresenter::apply()
 {
-    auto t = Transaction::createRequest(
-        AmountVM::amountFromString(m_vm->amount()),
-        QDateTime(m_vm->when(), QTime::currentTime()),
-        m_vm->categoryId(),
-        WalletId(m_vm->walletId()),
-        m_vm->who(),
-        m_vm->comment());
-    m_usecase->addTransaction(t);
+	auto t = Transaction::createRequest(
+		AmountVM::amountFromString(m_vm->amount()),
+		QDateTime(m_vm->when(), QTime::currentTime()),
+		m_vm->categoryId(),
+		WalletId(m_vm->walletId()),
+		std::nullopt,
+		m_vm->who(),
+		m_vm->comment());
+	m_usecase->addTransaction(t);
+}
+
+void AddTransactionPresenter::initWithData(const QString &text)
+{
+	static QRegularExpression re("Покупка[^0-9]+([. 0-9]+)р");
+	QRegularExpressionMatch match = re.match(text);
+	if (match.hasMatch()) {
+		QString amount = match.captured(1); // day == "08"
+		qDebug() << "helius: matched amount " << amount;
+		m_vm->setAmount("-" + amount);
+	} else {
+		qDebug() << "can't match " << text;
+	}
 }

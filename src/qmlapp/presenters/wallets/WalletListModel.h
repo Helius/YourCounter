@@ -8,7 +8,7 @@ class WalletListModel : public QAbstractListModel {
     Q_OBJECT
 
     Q_PROPERTY(QString selectedWalletId READ selectedWalletId NOTIFY selectedWalletIdChanged FINAL)
-    Q_PROPERTY(QString defaultWalletTotal READ defaultWalletTotal NOTIFY defaultWalletTotalChanged FINAL)
+    // Q_PROPERTY(QString defaultWalletTotal READ defaultWalletTotal NOTIFY defaultWalletTotalChanged FINAL)
 
 public:
     enum Roles {
@@ -17,7 +17,7 @@ public:
         Selected
     };
 
-    explicit WalletListModel(IEntityRepoPtr repo, IWalletBallanceProviderPtr ballanceProvider);
+    explicit WalletListModel(IWalletBallanceProviderPtr ballanceProvider);
     QString selectedWalletId();
 
     Q_INVOKABLE void clearSelection();
@@ -28,14 +28,13 @@ public:
     QVariant data(const QModelIndex& index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
-    QString defaultWalletTotal() const;
+    // QString defaultWalletTotal() const;
 
 signals:
     void selectedWalletIdChanged();
     void defaultWalletTotalChanged();
 
 private:
-    const IWalletRepoUnq& m_repo;
     const IWalletBallanceProviderPtr m_ballanceProvider;
     int m_selectedInd = -1;
 };

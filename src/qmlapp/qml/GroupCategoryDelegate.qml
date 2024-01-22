@@ -48,6 +48,10 @@ Item {
                     text: model.categoryName
                     color: "white"
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: console.log(model.categoryName, model.categoryId)
+                }
             }
         }
     }

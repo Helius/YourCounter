@@ -76,6 +76,19 @@ QmlInjector {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        TextMetrics {
+                            id: textMetrics
+                            font.family: name.font.family
+                            font.weight: Font.Light
+                            font.pointSize: name.font.pointSize
+                            text: name.text
+                        }
+                        Component.onCompleted: {
+                            if (textMetrics.boundingRect.width > parent.width) {
+                                name.font.pointSize = 10
+                            }
+                        }
                     }
                     Text {
                         id: amount
@@ -123,15 +136,6 @@ QmlInjector {
             width: parent ? parent.width : 0
             anchors.margins: 8
             spacing: 0
-            WalletDelegate {
-                selected: !$model.selectedWalletId
-                showBorder: false
-                icon: "qrc:/qml/icons/all_inbox_white_24dp.svg"
-                amount: $model.defaultWalletTotal
-                onClicked: {
-                    $model.clearSelection();
-                }
-            }
             Repeater {
                 model: $model
                 delegate: WalletDelegate {
