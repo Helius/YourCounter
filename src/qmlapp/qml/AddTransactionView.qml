@@ -9,7 +9,7 @@ import "Controls"
 QmlInjector {
     id: root
     signal closePopup
-    signal init
+    signal init(var data)
     implicitWidth: view ? view.width : 0
     implicitHeight: view ? view.height : 0
 
@@ -22,8 +22,9 @@ QmlInjector {
 
         Connections {
             target: parent
-            function onInit() {
+            function onInit(data) {
                 editView.init();
+                $presenter.initWithData(data)
             }
         }
 

@@ -98,6 +98,7 @@ ColumnLayout {
                 anchors.fill: col
                 onClicked: {
                     model.selected = !model.selected
+                    console.log("transactionId: ", model.transactionId, "walletName:", model.walletName, "categoryName:")
                 }
             }
             ColumnLayout {
@@ -233,6 +234,14 @@ ColumnLayout {
             id: editPopupLoader
             onLoaded: {
                 item.open()
+            }
+        }
+        DropArea {
+            anchors.fill: parent
+            onDropped: {
+                console.log("helius: drop text", drop.text)
+                addTransactionPopup.open()
+                addTransactionPopup.init(drop.text)
             }
         }
     }

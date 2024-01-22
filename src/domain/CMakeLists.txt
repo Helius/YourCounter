@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-find_package(QT NAMES Qt6 COMPONENTS Core Quick LinguistTools Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools Test REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Quick Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Test REQUIRED)
 
 add_library(domain
 	    entities/Transaction.h
@@ -33,6 +33,10 @@ add_library(domain
 		usecases/EditTransactionUsecase.cpp
 		usecases/TransferUsecase.h
 		usecases/TransferUsecase.cpp
+        usecases/SmsParserUsecase.h 
+        usecases/SmsParserUsecase.cpp
+        usecases/smsParser/SmsParser.h
+        usecases/smsParser/SmsParser.cpp
 
 		usecases/wallets/AddNewWalletUsecase.h
 		usecases/wallets/AddNewWalletUsecase.cpp
@@ -65,3 +69,9 @@ target_link_libraries(
 	    domain
 		PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick
 )
+
+enable_testing(true)
+
+add_executable(test_smsParser test/test_SmsParser.cpp)
+add_test(NAME test_smsParser COMMAND test_smsParser)
+target_link_libraries(test_smsParser domain Qt::Test)

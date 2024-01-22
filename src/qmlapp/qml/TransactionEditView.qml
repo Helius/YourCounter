@@ -10,9 +10,6 @@ ColumnLayout {
     spacing: 20
 
     function init() {
-        comment.edit.text = "";
-        amount.edit.text = "-";
-        amount.forceActiveFocus();
     }
 
     QtObject {
@@ -24,7 +21,8 @@ ColumnLayout {
         categorySuggester.categoryText = vm.category;
         datePicker.set(vm.when);
         comment.edit.text = vm.comment;
-        amount.edit.text = vm.amount;
+        console.log("set vm data on complete")
+        // amount.edit.text = vm.amount;
         who.edit.text = vm.who || "pc";
 
         priv.enabled = true;
@@ -33,6 +31,7 @@ ColumnLayout {
     NamedField {
         id: amount
         name: "Amount"
+        edit.text: vm.amount
         edit.cursorVisible: true
         edit.focus: true
         edit.validator: vm.amountValidator
