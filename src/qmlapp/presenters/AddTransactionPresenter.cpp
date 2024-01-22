@@ -48,7 +48,6 @@ void AddTransactionPresenter::apply()
 		QDateTime(m_vm->when(), QTime::currentTime()),
 		m_vm->categoryId(),
 		WalletId(m_vm->walletId()),
-		std::nullopt,
 		m_vm->who(),
 		m_vm->comment());
 	m_usecase->addTransaction(t);
